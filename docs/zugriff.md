@@ -99,8 +99,11 @@ Server-Befehle absetzen. Behandle den Link wie ein Passwort.
 
 Daraus folgen drei Regeln:
 
-- **Nur `127.0.0.1` ist sicher, ohne dass du etwas tun musst.** Der Standard bindet ausschließlich an
-  die lokale Adresse; von außen ist nichts erreichbar.
+- **`127.0.0.1` genügt überall dort, wo etwas davorsteht.** Bei einer Client-Installation (Modus `[1]`)
+  erreichst du die Oberfläche über den SSH-Tunnel — der Server selbst muss nichts nach außen öffnen.
+  Bei einer Server-Installation mit Domain (Modus `[2]`) bleibt noah ebenfalls auf `127.0.0.1`, und
+  nginx reicht die Anfragen verschlüsselt weiter. Nur Modus `[3]` bindet direkt an alle Adressen
+  (`--host 0.0.0.0`) — und genau dafür gilt der nächste Punkt.
 - **Unverschlüsseltes HTTP im Internet ist keine Option.** Im Modus `[3]` (direkt über IP und Port)
   wandert der Token im Klartext über jede Zwischenstation — WLAN, Proxy, Anbieter, Firmennetz. Wer ihn
   dort mitliest, hat Vollzugriff. Wenn es öffentlich sein muss: Modus `[2]` mit HTTPS.

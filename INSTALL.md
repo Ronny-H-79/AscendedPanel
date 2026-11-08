@@ -76,7 +76,8 @@ laedt nginx neu und holt das Zertifikat). Ohne nginx geht auch HTTPS direkt:
 Die Oberflaeche ist eine Administrationskonsole: **wer den Token hat, kann alles steuern** - Server
 starten, stoppen, loeschen, Mods eintragen, Konsolenbefehle absetzen. Deshalb:
 
-- Standard (`127.0.0.1`) ist sicher - von aussen nicht erreichbar.
+- Client-Installation (Modus `[1]`) und Server mit Domain (Modus `[2]`): noah bleibt auf `127.0.0.1`,
+  der Zugang laeuft ueber SSH-Tunnel bzw. nginx mit HTTPS. Nur Modus `[3]` bindet direkt nach aussen.
 - **Nicht unverschluesselt ins Internet stellen.** Bei `--host 0.0.0.0` ohne TLS wandert der Token im
   Klartext ueber jede Zwischenstation. Fuer oeffentlichen Zugriff HTTPS per `noah proxy` oder TLS direkt.
 - Der Installer warnt bei Modus `[3]` (IP und Port) und fragt vorher nach.
