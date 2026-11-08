@@ -43,6 +43,23 @@ noah wizard              # Instanz anlegen, Server laden, Dienst einrichten
 und installiert sie auf Wunsch (`pacman`, `apt`, `dnf`, `zypper`). SteamCMD lädt er selbst nach,
 root-Rechte braucht nur das Nachinstallieren von Wine.
 
+**Wo es getestet ist** — Stand 8. November 2026, jeweils mit laufendem ARK-ASA-Server:
+
+| System | Version | Umgebung |
+|---|---|---|
+| Ubuntu LTS | 24.04.5 | Python 3.12.3, Wine 9.0 |
+| Arch Linux (CachyOS) | aktuell | Python 3.14.9, Wine 11.21 |
+
+Debian, Fedora und openSUSE unterstützt der Installer ebenfalls (`apt`, `dnf`, `zypper`), dort ist
+noah aber noch nicht durchgetestet — Rückmeldung willkommen. Nötig ist 64-Bit-Wine (für den
+Windows-Server von ARK); ältere Wine-Stände unter 8.0 sind nicht getestet.
+
+Prüfen, was die eigene Kiste hat:
+
+```bash
+. /etc/os-release && echo "$PRETTY_NAME"; python3 --version; wine --version
+```
+
 Der Installer stellt nacheinander:
 
 - **Sprache** (Deutsch/Englisch)

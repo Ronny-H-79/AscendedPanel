@@ -41,6 +41,23 @@ noah wizard              # create an instance, download the server, set up the s
 installer (`pacman`, `apt`, `dnf`, `zypper`). SteamCMD is downloaded automatically; root is only needed
 to install Wine.
 
+**Where it is tested** — as of 8 November 2026, each with a running ARK ASA server:
+
+| System | Version | Environment |
+|---|---|---|
+| Ubuntu LTS | 24.04.5 | Python 3.12.3, Wine 9.0 |
+| Arch Linux (CachyOS) | current | Python 3.14.9, Wine 11.21 |
+
+Debian, Fedora and openSUSE are supported by the installer as well (`apt`, `dnf`, `zypper`), but noah
+has not been tested there yet — feedback welcome. 64-bit Wine is required (the ARK server is a Windows
+build); Wine older than 8.0 is untested.
+
+Check your own box:
+
+```bash
+. /etc/os-release && echo "$PRETTY_NAME"; python3 --version; wine --version
+```
+
 The installer asks, in order:
 
 - **language** (German/English)
