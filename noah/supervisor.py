@@ -314,11 +314,6 @@ class Supervisor:
                                  "%s: %s" % (exc.__class__.__name__, exc), "error",
                                  {"Instanz": self.inst.name})
 
-        # geplantes Backup
-        bdue = self.backup_due()
-        if bdue:
-            self._do_backup()
-
         # geplanter Snapshot (eigene Uhrzeiten, unabhaengig vom Zeitplan)
         sd = self.snapshot_due()
         if sd:

@@ -725,9 +725,8 @@ INST = """<!doctype html><html lang="__LANG__"><head><meta charset="utf-8">
 
   <section class="tab tab-server"><h2 data-t="bk.title">Backups</h2>
     <div id="backups">…</div>
-    <div class="setrow"><label><b data-t="bk.times">Backup-Uhrzeiten</b>
-      <small data-t="bk.times_hint">hint</small></label>
-      <input id="schedBackup" type="text" placeholder="03:00"></div>
+    <div class="meta" data-t="bk.hint_schedule" style="margin:8px 0 0">Backups laufen als Aufgabe im Zeitplan
+      (Aktion „Backup"). „Jetzt sichern" erstellt sofort eine Welt-Sicherung.</div>
     <div class="row" style="margin-top:8px">
       <button class="primary" onclick="makeBackup()" data-t="bk.now">Jetzt sichern</button>
       <span class="meta" id="bkmsg"></span>
@@ -1284,7 +1283,6 @@ async function loadSchedule(){
   document.getElementById('schedRestart').value=(s.restart_times||[]).join(',');
   TASKS=(s.tasks||[]).map(t=>Object.assign({days:[]},t));
   renderTasks();
-  document.getElementById('schedBackup').value=(s.backup_times||[]).join(',');
   document.getElementById('schedWarn').value=s.warn_minutes;
   document.getElementById('schedKeep').value=s.backups_keep;
   const sk=document.getElementById('snapKeep'); if(sk) sk.value=(s.snapshot_keep!==undefined?s.snapshot_keep:3);
@@ -1292,7 +1290,6 @@ async function loadSchedule(){
 }
 async function saveSchedule(){
   const p=new URLSearchParams({restart:document.getElementById('schedRestart').value,
-    backup:document.getElementById('schedBackup').value,
     warn:document.getElementById('schedWarn').value,
     keep:document.getElementById('schedKeep').value,
     snapkeep:(document.getElementById('snapKeep')||{}).value||'',
@@ -1816,8 +1813,6 @@ class Handler(BaseHTTPRequestHandler):
                 return [t.strip() for t in raw.split(",") if t.strip()]
             if "restart" in q:
                 inst.restart_times = _times("restart")
-            if "backup" in q:
-                inst.backup_times = _times("backup")
             if "warn" in q and q["warn"][0].isdigit():
                 inst.warn_minutes = int(q["warn"][0])
             if "keep" in q and q["keep"][0].isdigit():

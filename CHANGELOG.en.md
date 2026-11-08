@@ -4,6 +4,13 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.67] — 2026-11-08
+
+### Changed
+- **"Backup times" is gone** — backups run exclusively as a task in the schedule (action "Backup"), so the
+  same effect no longer lives in two places. The backup box now points to that and keeps "Back up now"
+  for an immediate world backup.
+
 ## [0.3.66] — 2026-11-08
 
 ### Fixed

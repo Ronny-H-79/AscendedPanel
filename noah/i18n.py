@@ -184,6 +184,10 @@ T: dict[str, dict[str, str]] = {
     "bk.none": {"de": "keine Backups", "en": "no backups"},
     "bk.none_dash": {"de": "keine", "en": "none"},
     "bk.times": {"de": "Backup-Uhrzeiten", "en": "Backup times"},
+    "bk.hint_schedule": {"de": "Backups laufen als Aufgabe im Zeitplan (Aktion „Backup“). "
+                               "„Jetzt sichern“ erstellt sofort eine Welt-Sicherung.",
+                         "en": "Backups run as a task in the schedule (action “Backup”). "
+                               "“Back up now” creates a world backup immediately."},
     "bk.times_hint": {"de": "kommagetrennt, z. B. 03:00 — leer = kein geplantes Backup",
                       "en": "comma separated, e.g. 03:00 — empty = no scheduled backup"},
     "bk.kind_manual": {"de": "manuell", "en": "manual"},

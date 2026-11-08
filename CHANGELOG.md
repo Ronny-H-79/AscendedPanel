@@ -4,6 +4,13 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.67] — 2026-11-08
+
+### Geändert
+- **„Backup-Uhrzeiten" ist entfallen** — Backups laufen ausschließlich als Aufgabe im Zeitplan
+  (Aktion „Backup"), damit es nicht zwei Stellen mit derselben Wirkung gibt. Die Backup-Box zeigt jetzt
+  den Hinweis darauf und behält „Jetzt sichern" für eine sofortige Welt-Sicherung.
+
 ## [0.3.66] — 2026-11-08
 
 ### Behoben
