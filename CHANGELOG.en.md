@@ -4,6 +4,17 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.8] — 2026-11-08
+
+### Security
+- **Constant-time token comparison** (`hmac.compare_digest`) instead of `==`.
+- **Security headers** on every response: `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`,
+  `Referrer-Policy: no-referrer` (keeps the token out of the Referer header) and a restrictive CSP.
+- **Mod IDs are validated** (digits only, max 10) — previously the value went unfiltered into the server
+  command line (`-mods=…`).
+- **Player IDs** (whitelist/bans) only as Steam64 or hex UniqueNetId; newlines and special characters are
+  rejected instead of being written to the file.
+
 ## [0.3.7] — 2026-11-08
 
 ### Changed

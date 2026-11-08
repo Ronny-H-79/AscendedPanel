@@ -91,6 +91,12 @@ def set_mods(inst: Instance, ids: list[str]) -> None:
 
 
 def add_mod(inst: Instance, mod_id: str) -> None:
+    """Mod-ID eintragen. Nur Ziffern - der Wert landet in der Server-Kommandozeile."""
+    mod_id = str(mod_id).strip()
+    if not re.fullmatch(r"[0-9]{1,10}", mod_id):
+        raise ValueError("Mod-ID muss eine Zahl sein (z. B. 947033)")
+    if mod_id in [str(m) for m in inst.mods]:
+        return
     set_mods(inst, [str(m) for m in inst.mods] + [mod_id])
 
 

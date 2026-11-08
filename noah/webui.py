@@ -4,6 +4,7 @@ from __future__ import annotations
 import json
 import os
 import re
+import hmac
 import secrets
 import ssl
 import threading
@@ -1101,7 +1102,17 @@ class Handler(BaseHTTPRequestHandler):
     def _auth(self) -> bool:
         q = urllib.parse.urlparse(self.path).query
         tok = urllib.parse.parse_qs(q).get("token", [""])[0] or self.headers.get("X-Token", "")
-        return tok == token()
+        return hmac.compare_digest(tok, token())
+
+    def end_headers(self) -> None:
+        """Sicherheits-Header auf jeder Antwort."""
+        self.send_header("X-Content-Type-Options", "nosniff")
+        self.send_header("X-Frame-Options", "DENY")
+        self.send_header("Referrer-Policy", "no-referrer")
+        self.send_header("Content-Security-Policy",
+                         "default-src 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; "
+                         "script-src 'self' 'unsafe-inline'; connect-src 'self'")
+        super().end_headers()
 
     def _send(self, code: int, body: bytes, ctype: str = "text/plain; charset=utf-8") -> None:
         self.send_response(code)
@@ -1357,11 +1368,17 @@ class Handler(BaseHTTPRequestHandler):
             except Exception as exc:  # noqa: BLE001
                 self._send(200, ("RCON-Fehler: %s" % exc).encode())
         elif path == "/api/whitelist/add":
-            wl.add_to_whitelist(inst, q.get("id", [""])[0])
-            self._send(200, ("%s auf die Whitelist gesetzt" % q.get("id", [""])[0]).encode())
+            try:
+                wl.add_to_whitelist(inst, q.get("id", [""])[0])
+                self._send(200, ("%s auf die Whitelist gesetzt" % q.get("id", [""])[0]).encode())
+            except ValueError as exc:
+                self._send(200, ("Fehler: %s" % exc).encode())
         elif path == "/api/whitelist/remove":
-            wl.remove_from_whitelist(inst, q.get("id", [""])[0])
-            self._send(200, ("%s von der Whitelist entfernt" % q.get("id", [""])[0]).encode())
+            try:
+                wl.remove_from_whitelist(inst, q.get("id", [""])[0])
+                self._send(200, ("%s von der Whitelist entfernt" % q.get("id", [""])[0]).encode())
+            except ValueError as exc:
+                self._send(200, ("Fehler: %s" % exc).encode())
         elif path == "/api/whitelist/enable":
             on = q.get("on", ["0"])[0] == "1"
             wl.set_enabled(inst, on)

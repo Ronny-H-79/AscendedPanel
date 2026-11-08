@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import os
+import re
 
 from .instance import Instance
 from . import registry
@@ -35,7 +36,16 @@ def write_whitelist(inst: Instance, ids: list[str]) -> None:
             fh.write(value + "\n")
 
 
+def _valid_id(player_id: str) -> str:
+    """Nur Steam64 (Ziffern) oder Hex-UniqueNetId - der Wert landet in einer Textdatei."""
+    pid = str(player_id).strip()
+    if not (re.fullmatch(r"[0-9]{6,20}", pid) or re.fullmatch(r"[0-9a-fA-F]{8,32}", pid)):
+        raise ValueError("ungueltige Spieler-ID")
+    return pid
+
+
 def add_to_whitelist(inst: Instance, player_id: str) -> None:
+    player_id = _valid_id(player_id)
     ids = read_whitelist(inst)
     if str(player_id) not in ids:
         ids.append(str(player_id))
@@ -43,6 +53,7 @@ def add_to_whitelist(inst: Instance, player_id: str) -> None:
 
 
 def remove_from_whitelist(inst: Instance, player_id: str) -> None:
+    player_id = _valid_id(player_id)
     write_whitelist(inst, [i for i in read_whitelist(inst) if i != str(player_id)])
 
 
