@@ -25,22 +25,23 @@ LANG_SEL="${NOAH_LANG:-}"
 WANT_WEB=""
 SERVICE_USER=""
 
-for arg in "$@"; do
-  case "$arg" in
+while [ $# -gt 0 ]; do
+  case "$1" in
     --wizard) RUN_WIZARD=1 ;;
     --uninstall) UNINSTALL=1 ;;
     --check) CHECK_ONLY=1 ;;
     --auto|-y|--yes) AUTO=1 ;;
     --web) WANT_WEB=1 ;;
     --no-web) WANT_WEB=0 ;;
-    --user=*) SERVICE_USER="${arg#*=}" ;;
-    --user) shift || true; SERVICE_USER="${1:-}" ;;
-    --lang=*) LANG_SEL="${arg#*=}" ;;
-    --lang) shift || true; LANG_SEL="${1:-}" ;;
-    -h|--help) sed -n '2,12p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
-    de|en) LANG_SEL="$arg" ;;
-    *) echo "Unbekannte Option: $arg"; exit 1 ;;
+    --user=*) SERVICE_USER="${1#*=}" ;;
+    --user) shift; SERVICE_USER="${1:-}" ;;
+    --lang=*) LANG_SEL="${1#*=}" ;;
+    --lang) shift; LANG_SEL="${1:-}" ;;
+    -h|--help) sed -n '2,13p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    de|en) LANG_SEL="$1" ;;
+    *) echo "Unbekannte Option: $1"; exit 1 ;;
   esac
+  shift
 done
 
 # ---------------------------------------------------------------- Dienst-Benutzer

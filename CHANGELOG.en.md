@@ -4,6 +4,12 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.31] — 2026-11-08
+
+### Fixed
+- **`--user NAME` was not recognised** ("unknown option"): the argument loop could not read a second word with
+  `shift`. It is a `while` loop now, so `--user noah` and `--user=noah` work (as does `--lang de`).
+
 ## [0.3.30] — 2026-11-08
 
 ### Fixed
