@@ -4,6 +4,14 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.16] — 2026-11-08
+
+### Fixed (important)
+- **The UI was dead after page load:** the update progress code (0.3.13) contained a raw newline inside a
+  JavaScript string — a syntax error that invalidated the whole script. Tabs stopped switching and mod
+  buttons, settings and everything else stopped responding. Replaced with `String.fromCharCode(10)`;
+  JavaScript is now checked with `node --check` before pushing.
+
 ## [0.3.15] — 2026-11-08
 
 ### Fixed

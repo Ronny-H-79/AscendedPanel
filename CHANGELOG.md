@@ -4,6 +4,15 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.16] — 2026-11-08
+
+### Behoben (wichtig)
+- **Die Oberfläche war tot, sobald die Seite geladen war:** im Update-Fortschritt (0.3.13) stand ein
+  Zeilenumbruch als echtes Zeichen im JavaScript, das war ein Syntaxfehler — damit war das ganze Skript
+  ungültig. Folge: Reiter ließen sich nicht wechseln, Mod-Knöpfe, Einstellungen und alles andere
+  reagierten nicht. Ersetzt durch `String.fromCharCode(10)`, JavaScript wird jetzt vor dem Push mit
+  `node --check` geprüft.
+
 ## [0.3.15] — 2026-11-08
 
 ### Behoben

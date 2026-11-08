@@ -690,12 +690,13 @@ async function updCheck(){
     }
   }catch(e){}
 }
+const JOIN_NL=String.fromCharCode(10);
 let UPDATE_POLL=null;
 async function updateProgress(){
   try{
     const s=JSON.parse(await api('/api/update/progress'));
     const out=document.getElementById('out');
-    if(out && s.log && s.log.length){ out.textContent=s.log.join('\n'); }
+    if(out && s.log && s.log.length){ out.textContent=s.log.join(JOIN_NL); }
     if(!s.active){
       if(UPDATE_POLL){ clearInterval(UPDATE_POLL); UPDATE_POLL=null; setTimeout(refresh,1500); }
     }
