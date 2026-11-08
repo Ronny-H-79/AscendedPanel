@@ -374,6 +374,10 @@ if command -v git >/dev/null 2>&1 && [ -d "$SRC/.git" ]; then
   VER="$(grep -m1 __version__ "$DEST/noah/__init__.py" 2>/dev/null | cut -d'"' -f2)"
   if [ -n "$SHA" ]; then
     printf '{"sha": "%s", "version": "%s", "written": "%s"}\n' "$SHA" "$VER" "$(date '+%F %T')" > "$DEST/noah/.build"
+  else
+    # Installation aus einem Archiv (kein .git): alten Stand nicht stehen lassen,
+    # sonst meldet die Pruefung dauerhaft "neuer Stand verfuegbar"
+    rm -f "$DEST/noah/.build"
   fi
 fi
 
