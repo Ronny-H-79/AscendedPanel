@@ -25,11 +25,11 @@ Was noah kann: Überblick, Screenshots, Mod-Verwaltung und Benachrichtigungen.
 
 | Einstellungen als Formular | Mod-Verwaltung mit Bildern |
 |---|---|
-| ![Einstellungen](screenshot-settings.png) | ![Mods](screenshot-mods.png) |
+| ![Einstellungen](screenshot-settings-de.png) | ![Mods](screenshot-mods-de.png) |
 
 | Server-Log, Befehle und Spieler | Backups, Snapshots und Zeitplan |
 |---|---|
-| ![Übersicht](screenshot-instance.png) | ![Verwaltung](screenshot-manage.png) |
+| ![Übersicht](screenshot-instance-de.png) | ![Verwaltung](screenshot-manage-de.png) |
 
 ## Mods suchen
 

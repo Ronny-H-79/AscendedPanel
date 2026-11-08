@@ -35,4 +35,4 @@ from an archive can update itself too.
 Every label, form field, command button, prompt and message lives in `noah/i18n.py` (German and English).
 New text only needs one more entry in the catalogue.
 
-![Dashboard English](screenshot-dashboard-en.png)
+![Dashboard English](screenshot-dashboard.png)

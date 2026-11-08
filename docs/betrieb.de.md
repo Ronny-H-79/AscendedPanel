@@ -44,5 +44,5 @@ Danach steht `noah self-update` zur Verfügung.
 Alle Beschriftungen, Formularfelder, Befehlsschaltflächen, Rückfragen und Meldungen liegen in
 `noah/i18n.py` (Deutsch und Englisch). Neue Texte brauchen nur einen weiteren Eintrag im Katalog.
 
-![Dashboard englisch](screenshot-dashboard-en.png)
+![Dashboard englisch](screenshot-dashboard-de.png)
 

@@ -13,14 +13,14 @@ Einstellungen und Spielerverwaltung über eine Weboberfläche.
 Reines Python (nur Standardbibliothek), SteamCMD für Installation und Updates, Wine für den
 Serverprozess, RCON für alles, was der Server von außen anbietet.
 
-![Dashboard](docs/screenshot-dashboard.png)
+![Dashboard](docs/screenshot-dashboard-de.png)
 
 ## Einblicke
 
 | | |
 |:--:|:--:|
-| ![Einstellungen](docs/screenshot-settings.png) | ![Mods](docs/screenshot-mods.png) |
-| ![Übersicht](docs/screenshot-instance.png) | ![Verwaltung](docs/screenshot-manage.png) |
+| ![Einstellungen](docs/screenshot-settings-de.png) | ![Mods](docs/screenshot-mods-de.png) |
+| ![Übersicht](docs/screenshot-instance-de.png) | ![Verwaltung](docs/screenshot-manage-de.png) |
 
 Mehr dazu: [docs/funktionen.md](docs/funktionen.md)
 
