@@ -723,16 +723,6 @@ INST = """<!doctype html><html lang="__LANG__"><head><meta charset="utf-8">
     <pre id="schedmsg">–</pre>
   </section>
 
-  <section class="tab tab-server"><h2 data-t="bk.title">Backups</h2>
-    <div id="backups">…</div>
-    <div class="meta" data-t="bk.hint_schedule" style="margin:8px 0 0">Backups laufen als Aufgabe im Zeitplan
-      (Aktion „Backup"). „Jetzt sichern" erstellt sofort eine Welt-Sicherung.</div>
-    <div class="row" style="margin-top:8px">
-      <button class="primary" onclick="makeBackup()" data-t="bk.now">Jetzt sichern</button>
-      <span class="meta" id="bkmsg"></span>
-    </div>
-  </section>
-
 
 </main>
 <script>""" + BG_JS + """
@@ -1234,9 +1224,11 @@ async function delSnap(name){
   loadSnaps();
 }
 async function loadBackups(){
+  const box=document.getElementById('backups');
+  if(!box) return;                       // Backup-Box wurde entfernt
   try{
     const list=JSON.parse(await api('/api/backups'));
-    document.getElementById('backups').innerHTML=list.length?list.slice(0,8).map(b=>
+    box.innerHTML=list.length?list.slice(0,8).map(b=>
       `<div class="p"><span><b>${b.mtime} · ${L['bk.kind_'+({manuell:'manual',geplant:'auto','vor Restore':'pre_restore','älter':'old'}[b.kind]||'old')]}</b><br><small>${b.file} · ${b.size_mb} MB</small></span>
        <span class="row">
          <button onclick="restoreBk('${b.file}')">${L['bk.restore']}</button>
@@ -1245,14 +1237,16 @@ async function loadBackups(){
   }catch(e){}
 }
 async function makeBackup(){
-  document.getElementById('bkmsg').textContent='sichert …';
-  document.getElementById('bkmsg').textContent=await api('/api/backup',{method:'POST'});
+  const msg=document.getElementById('bkmsg'); if(msg) msg.textContent='sichert …';
+  const res=await api('/api/backup',{method:'POST'});
+  if(msg) msg.textContent=res;
   loadBackups();
 }
 async function restoreBk(f){
   if(!confirm(L['msg.confirm_restore']))return;
-  document.getElementById('bkmsg').textContent='spielt ein …';
-  document.getElementById('bkmsg').textContent=await api('/api/backup/restore?file='+encodeURIComponent(f),{method:'POST'});
+  const m=document.getElementById('bkmsg'); if(m) m.textContent='spielt ein …';
+  const r=await api('/api/backup/restore?file='+encodeURIComponent(f),{method:'POST'});
+  if(m) m.textContent=r;
   setTimeout(refresh,3000);
 }
 async function delBk(f){

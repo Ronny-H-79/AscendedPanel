@@ -4,6 +4,13 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.68] — 2026-11-08
+
+### Changed
+- **The backup box is gone entirely.** World backups run exclusively as a task in the schedule (action
+  "Backup"); snapshots keep their own box. The UI no longer offers restoring single backups — the files
+  under `~/noah-backups` and the API remain.
+
 ## [0.3.67] — 2026-11-08
 
 ### Changed
