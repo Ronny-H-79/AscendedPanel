@@ -675,13 +675,13 @@ INST = """<!doctype html><html lang="__LANG__"><head><meta charset="utf-8">
       die Installation zerschießt. Ein Welt-Backup hilft dort nicht, weil SteamCMD immer die neue
       Programmversion liefert. Platzbedarf: ca. 12 GB pro Snapshot.</div>
     <div id="snaps" style="margin-top:10px">…</div>
-    <div class="setrow"><label><b data-t="snap.keep">Auto-Snapshots behalten</b>
-      <small data-t="snap.keep_hint">hint</small></label>
-      <input id="snapKeep" type="number" min="1" max="20" placeholder="3"></div>
     <div class="row" style="margin-top:8px">
       <button class="primary" onclick="makeSnap()" data-t="snap.create">Snapshot erstellen</button>
       <span class="meta" id="snapmsg"></span>
     </div>
+    <div class="setrow" style="margin-top:10px"><label><b data-t="snap.keep">Auto-Snapshots behalten</b>
+      <small data-t="snap.keep_hint">hint</small></label>
+      <input id="snapKeep" type="number" min="1" max="40" placeholder="3"></div>
   </section>
 
   <section class="tab tab-server"><h2 data-t="notify.title">Benachrichtigungen (Discord)</h2>

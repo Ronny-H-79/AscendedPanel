@@ -4,6 +4,12 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.64] — 2026-11-08
+
+### Changed
+- **"Keep auto snapshots" now sits below the button** instead of above it, and the hint states the disk
+  math (3 = one day at 3 per day, 15 ≈ 180 GB).
+
 ## [0.3.63] — 2026-11-08
 
 ### Added

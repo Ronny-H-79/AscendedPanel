@@ -227,8 +227,10 @@ T: dict[str, dict[str, str]] = {
     "sched.a.backup": {"de": "Backup", "en": "Backup"},
     "sched.a.snapshot": {"de": "Snapshot", "en": "Snapshot"},
     "snap.keep": {"de": "Auto-Snapshots behalten", "en": "Keep auto snapshots"},
-    "snap.keep_hint": {"de": "ältere werden nach jedem geplanten Snapshot entfernt (je ca. 12 GB)",
-                       "en": "older ones are removed after each scheduled snapshot (~12 GB each)"},
+    "snap.keep_hint": {"de": "je ca. 12 GB; ältere werden nach jedem geplanten Snapshot entfernt "
+                             "(3 = ein Tag bei 3 pro Tag, 15 ≈ 180 GB)",
+                       "en": "~12 GB each; older ones are removed after each scheduled snapshot "
+                             "(3 = one day at 3 per day, 15 ≈ 180 GB)"},
     "sched.a.saveworld": {"de": "Welt speichern", "en": "Save world"},
     "sched.a.dinowipe": {"de": "Wilde Dinos löschen", "en": "Destroy wild dinos"},
     "sched.a.broadcast": {"de": "Broadcast", "en": "Broadcast"},

@@ -4,6 +4,12 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.64] — 2026-11-08
+
+### Geändert
+- **„Auto-Snapshots behalten" steht jetzt unter dem Knopf** statt darüber, und der Hinweis nennt die
+  Platzrechnung (3 = ein Tag bei 3 pro Tag, 15 ≈ 180 GB).
+
 ## [0.3.63] — 2026-11-08
 
 ### Neu
