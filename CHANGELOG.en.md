@@ -4,6 +4,12 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.54] — 2026-11-08
+
+### Changed
+- **The hit count is clearly visible above the mod list now** (12.5 px, accent colour instead of dim
+  11 px): "30 / 7,290 hits". The suggestion list while typing names its count as well.
+
 ## [0.3.53] — 2026-11-08
 
 ### Fixed

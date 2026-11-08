@@ -168,7 +168,7 @@ background:linear-gradient(180deg,rgba(6,9,14,.30) 0%,rgba(6,9,14,.62) 45%,rgba(
 border-top:1px solid #16302a;border-bottom:1px solid #16302a}
 #modhits .p{padding:6px 0;border-bottom:1px solid #10201b}
 #modhits .p:last-child{border-bottom:0}
-#modhitsum{font-size:11px;color:var(--dim);margin:2px 0 0}
+#modhitsum{font-size:12.5px;color:var(--acc);font-weight:600;margin:8px 0 2px;min-height:1em}
 .thumb{width:44px;height:44px;border-radius:4px;object-fit:cover;border:1px solid #16302a;flex:0 0 44px}
 .mrow{display:flex;gap:10px;align-items:center}
 .mrow .txt{min-width:0}
@@ -1034,6 +1034,8 @@ function suggestMods(){
     try{ data=JSON.parse(await api('/api/mods/suggest?q='+encodeURIComponent(q))); }
     catch(e){ return; }
     const hits=(data.results||[]).slice(0,8);
+    const sum=document.getElementById('modhitsum');
+    if(sum) sum.textContent=hits.length? (hits.length+' '+L['mods.suggestions']) : '';
     if(!hits.length){
       box.innerHTML='<div class="meta">'+L['mods.search_empty']+
         (data.needs_key?(' · <a href="https://console.curseforge.com" target="_blank">'+L['mods.key']+'</a>'):'')+'</div>';
@@ -1051,7 +1053,8 @@ function suggestMods(){
 async function searchMods(){
   const q=document.getElementById('modid').value.trim();
   const box=document.getElementById('modhits');
-  if(!q){ box.innerHTML=''; return; }
+  const _sum=document.getElementById('modhitsum');
+  if(!q){ box.innerHTML=''; if(_sum) _sum.textContent=''; return; }
   box.innerHTML='<div class="meta">'+L['common.loading']+'</div>';
   let data;
   try{ data=JSON.parse(await api('/api/mods/search?q='+encodeURIComponent(q))); }

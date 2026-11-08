@@ -139,6 +139,7 @@ T: dict[str, dict[str, str]] = {
     "mods.add_hit": {"de": "Hinzufügen", "en": "Add"},
     "mods.key": {"de": "CurseForge-API-Key", "en": "CurseForge API key"},
     "mods.hits": {"de": "Treffer", "en": "hits"},
+    "mods.suggestions": {"de": "Vorschläge (Klick fügt hinzu)", "en": "suggestions (click to add)"},
     "mods.key_hint": {"de": "optional — ohne Key ist die Suche unzuverlässig; kostenlosen Key erzeugen auf",
                       "en": "optional — without a key the search is unreliable; create a free key at"},
     "mods.outdated": {"de": "UPDATE", "en": "UPDATE"},

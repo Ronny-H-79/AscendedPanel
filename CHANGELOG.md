@@ -4,6 +4,12 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.54] — 2026-11-08
+
+### Geändert
+- **Trefferzahl steht jetzt deutlich über der Mod-Liste** (12,5 px, Akzentfarbe statt 11 px gedämpft):
+  „30 / 7.290 Treffer". Auch die Vorschlagsliste beim Tippen nennt ihre Anzahl.
+
 ## [0.3.53] — 2026-11-08
 
 ### Behoben
