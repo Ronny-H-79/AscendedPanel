@@ -4,28 +4,14 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
-## [0.3.42] — 2026-11-08
+## [0.3.43] — 2026-11-08
 
 ### Geändert
-- **„Öffnen" ist jetzt ein Menü** statt eines einzelnen Buttons: Übersicht, Einstellungen, Mods oder
-  Verwaltung direkt anwählen, die Detailseite springt in den passenden Reiter.
-
-## [0.3.41] — 2026-11-08
-
-### Geändert
-- **Karten und Log breiter:** Rasterzellen mindestens 560 px statt 460 px, das Log bekommt damit rund
-  300 px Breite und bleibt bei 11 px lesbar. Das Spannen über zwei Spalten ist entfallen, jede Instanz
-  belegt genau eine Zelle — bei mehreren Instanzen bleibt das Raster dadurch gleichmäßig.
-
-## [0.3.40] — 2026-11-08
-
-### Geändert
-- **Das Log steht jetzt auch bei gestoppten Instanzen** in der Karte (letzte Ausgabe vor dem Stopp, bzw.
-  „keine Ausgabe"). Vorher erschien es nur bei laufendem Server — nach einem Absturz war es damit weg.
-- **Log größer:** 11 px statt 9,5 px, bis zu 300 px hoch, 18 Zeilen.
-- **Karten sind breiter** (mindestens 460 px), damit das Log auch bei gestoppten Instanzen daneben passt.
-  Bei mehreren Instanzen fließen sie im Raster weiter nebeneinander; nur laufende nehmen ab 900 px
-  Fensterbreite zwei Spalten ein.
+- **Startseite neu geordnet:** „Neue Instanz" und „Hinweis" stehen jetzt oben, darunter die Instanzen —
+  die Erzeugung bleibt damit immer an derselben Stelle und wandert nicht, wenn Instanzen dazukommen.
+- **„Öffnen" ist ein Menü:** Übersicht, Einstellungen, Mods oder Verwaltung direkt anwählen; die
+  Detailseite springt in den passenden Reiter.
+- Karten- und Log-Größen wieder wie in 0.3.39 (Log nur bei laufenden Instanzen, 9,5 px, Karten ab 300 px).
 
 ## [0.3.39] — 2026-11-08
 

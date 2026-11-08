@@ -4,28 +4,13 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
-## [0.3.42] — 2026-11-08
+## [0.3.43] — 2026-11-08
 
 ### Changed
-- **"Open" is a menu now** instead of a single button: pick Overview, Settings, Mods or Management and the
-  detail page opens on that tab.
-
-## [0.3.41] — 2026-11-08
-
-### Changed
-- **Wider cards and log:** grid cells are at least 560 px instead of 460 px, so the log gets about 300 px
-  and stays readable at 11 px. The two-column span is gone; every instance occupies exactly one cell,
-  which keeps the grid even once more instances are added.
-
-## [0.3.40] — 2026-11-08
-
-### Changed
-- **The log now shows for stopped instances too** (last output before the stop, or "no output"). It used
-  to appear only while the server was running — so after a crash it was gone.
-- **Log is bigger:** 11 px instead of 9.5 px, up to 300 px high, 18 lines.
-- **Cards are wider** (at least 460 px) so the log fits beside the metrics even for stopped instances.
-  With several instances they still flow side by side in the grid; only running ones span two columns
-  from 900 px window width.
+- **Start page reordered:** "New instance" and "Note" sit on top now, the instances follow below — the
+  creation form stays where it is even when instances are added.
+- **"Open" is a menu:** pick Overview, Settings, Mods or Management; the detail page jumps to that tab.
+- Card and log sizing back to 0.3.39 (log only for running instances, 9.5 px, cards from 300 px).
 
 ## [0.3.39] — 2026-11-08
 

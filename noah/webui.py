@@ -133,18 +133,18 @@ padding:6px 0;border-top:1px solid #12241f}
 .setrow input[type=text],.setrow input[type=number]{margin:0}
 .setrow .bool{display:flex;justify-content:flex-end}
 .setrow input[type=checkbox]{width:auto;transform:scale(1.25);margin:0}
-.cards{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(560px,1fr));padding:0 24px 24px}
+.cards{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));padding:24px 24px 24px}
 .cardgrid{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;align-items:start}
 .cardmain{display:flex;flex-direction:column;gap:10px;min-width:0}
-@container (min-width:480px){.cardgrid{grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr)}}
-@container (min-width:700px){.cardlog{max-height:300px}}
+@container (min-width:560px){.cardgrid{grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr)}}
+@media (min-width:900px){.card.running{grid-column:span 2}}
 .openmenu{background:#0e1f1a;color:var(--fg);border:1px solid #1d4a3c;border-radius:4px;
 padding:6px 8px;font:inherit;font-size:12px;cursor:pointer;max-width:130px}
 .openmenu:hover{border-color:var(--acc)}
 .logwrap{background:#070f13;border:1px solid #12241f;border-radius:4px;padding:6px 8px;min-width:0}
-.loghead{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin-bottom:4px}
-.cardlog{margin:0;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;line-height:1.45;
-color:#a8c4ba;white-space:pre-wrap;word-break:break-word;max-height:250px;overflow:hidden}
+.loghead{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin-bottom:4px}
+.cardlog{margin:0;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:9.5px;line-height:1.35;
+color:#9fb8ae;white-space:pre-wrap;word-break:break-word;max-height:132px;overflow:hidden}
 .card{border:1px solid #16302a;border-radius:6px;padding:14px 16px;background:rgba(11,17,22,.92);
 display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden;container-type:inline-size}
 .card .bgimg{position:absolute;inset:0;background-size:cover;background-position:center;
@@ -264,7 +264,6 @@ DASH = """<!doctype html><html lang="__LANG__"><head><meta charset="utf-8">
   <div class="mbox"><button class="close" onclick="closeModal()">×</button>
     <div id="mbody">…</div></div>
 </div>
-<div class="cards" id="cards"></div>
 <main>
   <section><h2 data-t="dash.new_instance">Neue Instanz</h2>
     <input id="nname" data-tp="dash.name_ph" placeholder="Name">
@@ -282,6 +281,7 @@ DASH = """<!doctype html><html lang="__LANG__"><head><meta charset="utf-8">
     </div>
   </section>
 </main>
+<div class="cards" id="cards"></div>
 <script>""" + BG_JS + """
 const L=__LANGJSON__;
 async function toggleLang(){
@@ -351,7 +351,7 @@ async function load(){
              <button class="danger" onclick="delInst('${i.name}',${i.size_gb||0})">${L['common.delete']}</button>`
           : `<button class="primary" onclick="install('${i.name}')">${L['dash.install']}</button>`}
       </div>
-      </div><div class="logwrap"><div class="loghead">${L['dash.log']}</div><pre class="cardlog" data-inst="${i.name}">…</pre></div>
+      </div>${i.running?`<div class="logwrap"><div class="loghead">${L['dash.log']}</div><pre class="cardlog" data-inst="${i.name}">…</pre></div>`:''}
       </div>
     </div>`).join('');
   const canvases=[...document.querySelectorAll('.spark')];
@@ -369,7 +369,7 @@ async function load(){
   clearInterval(LOGTIMER);
   if(logBoxes.length){
     const pull=async()=>{ for(const el of logBoxes){
-        try{ const txt=(await api('/api/logs?name='+encodeURIComponent(el.dataset.inst)+'&n=18')).trim();
+        try{ const txt=(await api('/api/logs?name='+encodeURIComponent(el.dataset.inst)+'&n=10')).trim();
           LOGS[el.dataset.inst]=txt; el.textContent=txt||L['dash.log_empty'];
         }catch(e){}
     } };
