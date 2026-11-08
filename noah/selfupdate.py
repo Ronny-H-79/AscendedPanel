@@ -241,6 +241,30 @@ def notes(version: str = "", timeout: int = 10) -> dict:
     return {"ok": True, "version": version, "text": body}
 
 
+def _fetch_tarball(timeout: int = 60, attempts: int = 3) -> bytes:
+    """Archiv holen - mit Wiederholung und zweiter Quelle (codeload statt API).
+
+    Die API leitet auf codeload.github.com um; wenn ein Zwischennetz dort hakt
+    (504), klappt der zweite Weg oft sofort.
+    """
+    # codeload zuerst: liefert das Archiv direkt, die API leitet nur dorthin um und
+    # antwortet derzeit sporadisch mit 503/504
+    urls = ("https://codeload.github.com/%s/tar.gz/refs/heads/%s" % (REPO, BRANCH),
+            TARBALL)
+    last = None
+    for attempt in range(attempts):
+        for url in urls:
+            try:
+                data = _get(url, timeout)
+                if data:
+                    return data
+            except Exception as exc:  # noqa: BLE001
+                last = exc
+        if attempt + 1 < attempts:
+            time.sleep(2 * (attempt + 1))
+    raise last or OSError("Download fehlgeschlagen")
+
+
 def apply(target: str = "", timeout: int = 60) -> dict:
     """Neue Version herunterladen und das Paketverzeichnis ersetzen."""
     target = target or package_dir()
@@ -248,7 +272,7 @@ def apply(target: str = "", timeout: int = 60) -> dict:
     try:
         archive = os.path.join(work, "src.tar.gz")
         with open(archive, "wb") as fh:
-            fh.write(_get(TARBALL, timeout))
+            fh.write(_fetch_tarball(timeout))
 
         with tarfile.open(archive, "r:gz") as tar:
             tar.extractall(work, filter="data")

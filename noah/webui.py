@@ -469,7 +469,14 @@ async function noahUpdate(){
   if(!confirm(L['self.confirm'].replace('{v}', _noahInfo.available)+notes)) return;
   const b=document.getElementById('verbtn');
   b.textContent='…';
-  try{ await api('/api/selfupdate',{method:'POST'}); }catch(e){}
+  let res=null;
+  try{ res=JSON.parse(await api('/api/selfupdate',{method:'POST'})); }
+  catch(e){ alert(L['self.failed']+' '+(e&&e.message?e.message:'')); await checkNoah(); return; }
+  if(res && res.ok===false){
+    alert(L['self.failed']+' '+(res.error||''));
+    await checkNoah();
+    return;
+  }
   alert(L['self.done']);
   setTimeout(()=>location.reload(), 4000);
 }
@@ -1306,13 +1313,11 @@ class Handler(BaseHTTPRequestHandler):
         if path == "/api/selfupdate":
             from . import selfupdate
 
-            def run_update() -> None:
-                result = selfupdate.apply()
-                if result.get("ok"):
-                    selfupdate.restart_service()
-
-            threading.Thread(target=run_update, daemon=True).start()
-            self._json({"ok": True, "started": True})
+            # synchron einspielen, damit die Oberflaeche Erfolg oder Fehler zeigen kann
+            result = selfupdate.apply()
+            if result.get("ok"):
+                threading.Timer(1.0, selfupdate.restart_service).start()
+            self._json(result)
             return
 
         if path == "/api/instances":

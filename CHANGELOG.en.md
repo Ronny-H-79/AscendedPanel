@@ -4,6 +4,14 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.10] — 2026-11-08
+
+### Fixed
+- **Self-update failed silently.** A single `504 Gateway Timeout` while downloading the archive aborted the
+  run and the UI reported nothing, so the button looked dead. Now: three attempts with backoff and a
+  second source (`codeload.github.com`), plus the UI shows "Update failed: …" instead of silence.
+- The update runs synchronously; the service restart happens a second later so the response still arrives.
+
 ## [0.3.9] — 2026-11-08
 
 ### Added

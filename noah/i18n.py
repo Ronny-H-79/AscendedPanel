@@ -180,6 +180,7 @@ T: dict[str, dict[str, str]] = {
                         "en": "older backups are cleaned up automatically"},
     # ---------------------------------------------------------------- Meldungen
     "msg.restart_needed": {"de": "wirksam nach Neustart", "en": "takes effect after restart"},
+    "self.failed": {"de": "Update fehlgeschlagen:", "en": "Update failed:"},
     "self.new_build": {"de": "neuer Stand", "en": "new build"},
     "self.current_build": {"de": "aktueller Stand", "en": "up to date"},
     "self.build_only": {"de": "gleiche Version, nur ein neuer Build - kein Update nötig",

@@ -4,6 +4,16 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.10] — 2026-11-08
+
+### Behoben
+- **Selbst-Update scheiterte stillschweigend.** Ein einzelner `504 Gateway Timeout` beim Archiv-Download
+  beendete den Vorgang, die Oberfläche meldete trotzdem nichts — der Knopf wirkte wirkungslos. Jetzt:
+  drei Versuche mit Pause und ein zweiter Weg über `codeload.github.com`, und die Oberfläche zeigt
+  „Update fehlgeschlagen: …" statt Stille.
+- Das Einspielen läuft synchron; der Neustart des Dienstes passiert eine Sekunde später, damit die
+  Antwort noch ankommt.
+
 ## [0.3.9] — 2026-11-08
 
 ### Neu
