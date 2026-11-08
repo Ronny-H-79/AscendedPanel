@@ -29,7 +29,7 @@ What noah does: overview, screenshots, mod management and notifications.
 
 | Server log, commands and players | Backups, snapshots and schedule |
 |---|---|
-| ![Overview](screenshot-instance.png) | ![Management](screenshot-manage.png) |
+| ![Overview](screenshot-overview.png) | ![Management](screenshot-manage.png) |
 
 ## Searching for mods
 

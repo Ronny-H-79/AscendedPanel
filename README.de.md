@@ -20,7 +20,7 @@ Serverprozess, RCON für alles, was der Server von außen anbietet.
 | | |
 |:--:|:--:|
 | ![Einstellungen](docs/screenshot-settings-de.png) | ![Mods](docs/screenshot-mods-de.png) |
-| ![Übersicht](docs/screenshot-instance-de.png) | ![Verwaltung](docs/screenshot-manage-de.png) |
+| ![Übersicht](docs/screenshot-overview-de.png) | ![Verwaltung](docs/screenshot-manage-de.png) |
 
 Mehr dazu: [docs/funktionen.md](docs/funktionen.md)
 
