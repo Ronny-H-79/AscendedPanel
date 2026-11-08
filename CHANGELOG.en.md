@@ -4,6 +4,18 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.21] — 2026-11-08
+
+### Added
+- **Cluster settings.** `-clusterid=noah` and a per-instance directory used to be hardcoded, so maps could
+  never share anything. The Settings tab now has a **Cluster** card: cluster ID, shared directory and the
+  "transfers without filter check" option (`-NoTransferFromFiltering`). Without your own values the old
+  behaviour stays.
+- **53 more INI settings** from the full ARK set: transfer locks (download/upload of survivors, items,
+  dinos), offline raid protection, tribe alliances, structure decay and pickup, dino decay, tamed dinos per
+  player, imprinting, hit markers plus food/torpor and harvesting multipliers. The form is now grouped by
+  file **and** section.
+
 ## [0.3.20] — 2026-11-08
 
 ### Fixed

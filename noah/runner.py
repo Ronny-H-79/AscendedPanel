@@ -111,6 +111,10 @@ def start(inst: Instance, wait: int = 0) -> int:
     if not os.path.exists(inst.exe):
         raise RunnerError("Server nicht installiert: %s fehlt" % inst.exe)
     inst.write_ini()
+    try:
+        os.makedirs(inst.cluster_path, exist_ok=True)
+    except OSError:
+        pass
     clear_stopped(inst)
 
     # consoled starten: er haelt die stdin-Pipe und startet die Server-exe.

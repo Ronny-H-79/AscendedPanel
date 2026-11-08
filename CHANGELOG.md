@@ -4,6 +4,18 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.21] — 2026-11-08
+
+### Neu
+- **Cluster-Einstellungen.** Bisher steckten `-clusterid=noah` und ein Verzeichnis pro Instanz fest im Code —
+  Karten konnten also nie etwas teilen. Jetzt gibt es im Reiter Einstellungen eine eigene Karte **Cluster**:
+  Cluster-ID, gemeinsames Verzeichnis und die Option „Übertragungen ohne Filterprüfung"
+  (`-NoTransferFromFiltering`). Ohne eigene Angabe bleibt es beim alten Verhalten.
+- **53 weitere INI-Einstellungen** aus dem vollen ARK-Satz, u. a. Transfer-Sperren (Download/Upload von
+  Spielern, Items, Dinos), Offline-Raid-Schutz, Tribe-Allianzen, Struktur-Verfall und -Aufheben,
+  Dino-Verfall, gezähmte Dinos pro Spieler, Prägung, Treffer-Markierungen sowie Futter-/Torpor- und
+  Ernteschaden-Multiplikatoren. Das Formular ist jetzt nach Datei **und** Abschnitt gruppiert.
+
 ## [0.3.20] — 2026-11-08
 
 ### Behoben

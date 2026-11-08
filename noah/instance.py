@@ -38,6 +38,9 @@ class Instance:
     max_restarts_per_hour: int = 4
     webhook_url: str = ""
     headless: bool = True
+    cluster_id: str = ""                 # leer = Name der Instanz
+    cluster_dir: str = ""                # leer = <instanz>/clusters (gemeinsam nutzbar)
+    cluster_transfer_filtering: bool = True   # True = -NoTransferFromFiltering setzen
 
     # ------------------------------------------------------------------ Pfade
     @property
@@ -144,6 +147,17 @@ class Instance:
         known = {f for f in cls.__dataclass_fields__}  # type: ignore[attr-defined]
         return cls(**{k: v for k, v in data.items() if k in known})
 
+    @property
+    def cluster_name(self) -> str:
+        return (self.cluster_id or self.name).strip()
+
+    @property
+    def cluster_path(self) -> str:
+        raw = (self.cluster_dir or "").strip()
+        if not raw:
+            return os.path.join(self.directory, "clusters")
+        return os.path.expanduser(raw)
+
     # ------------------------------------------------------------------ Start
     def launch_argv(self) -> list[str]:
         argv = [
@@ -154,9 +168,8 @@ class Instance:
             "-NoBattlEye",
             "-servergamelog",
             "-servergamelogincludetribelogs",
-            "-NoTransferFromFiltering",
-            "-ClusterDirOverride=" + os.path.join(self.directory, "clusters"),
-            "-clusterid=noah",
+            "-ClusterDirOverride=" + self.cluster_path,
+            "-clusterid=" + self.cluster_name,
             "-port=%d" % self.port,
             "-QueryPort=%d" % self.query_port,
             "-RCONPort=%d" % self.rcon_port,
@@ -164,6 +177,8 @@ class Instance:
             "-MaxPlayers=%d" % self.max_players,
             "-SessionName=%s" % self.session_name,
         ]
+        if self.cluster_transfer_filtering:
+            argv.append("-NoTransferFromFiltering")
         if self.exclusive_join:
             argv.append("-exclusivejoin")
         if self.mods:

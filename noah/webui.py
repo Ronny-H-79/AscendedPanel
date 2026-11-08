@@ -562,6 +562,28 @@ INST = """<!doctype html><html lang="__LANG__"><head><meta charset="utf-8">
     <pre id="modout" style="margin-top:8px">–</pre>
   </section>
 
+  <section class="tab tab-settings"><h2 data-t="cl.title">Cluster</h2>
+    <div class="meta" data-t="cl.hint">Mehrere Karten teilen sich Spieler, Dinos und Gegenstände, wenn sie dieselbe
+      Cluster-ID und dasselbe Verzeichnis benutzen. Ohne eigene Angabe gilt: ID = Instanzname,
+      Verzeichnis = &lt;instanz&gt;/clusters (also kein Teilen).</div>
+    <div class="setrow" style="margin-top:8px">
+      <label><b data-t="cl.id">Cluster-ID</b><small data-t="cl.id_hint">identisch auf allen Karten, die geteilt werden sollen</small></label>
+      <input id="clid" placeholder="z. B. Drachenbande">
+    </div>
+    <div class="setrow">
+      <label><b data-t="cl.dir">Cluster-Verzeichnis</b><small data-t="cl.dir_hint">gemeinsamer Pfad für alle Karten, leer = nur diese Instanz</small></label>
+      <input id="cldir" placeholder="z. B. /home/ronny/arkcluster">
+    </div>
+    <div class="setrow">
+      <label><b data-t="cl.filter">Übertragungen ohne Filterprüfung</b><small data-t="cl.filter_hint">an = -NoTransferFromFiltering wird gesetzt (übliche Einstellung für Cluster)</small></label>
+      <div class="bool"><input type="checkbox" id="clfilt" checked></div>
+    </div>
+    <div class="row" style="margin-top:6px">
+      <button class="primary" onclick="saveCluster()" data-t="common.save">Speichern</button>
+      <span class="meta" id="clmsg"></span>
+    </div>
+  </section>
+
   <section class="tab tab-settings"><h2 data-t="set.gui">Einstellungen (GUI)</h2>
     <div id="settings">lädt …</div>
     <div class="row" style="margin-top:10px">
@@ -796,13 +818,38 @@ window.addEventListener('hashchange', ()=>{
   }
 });
 let SETTINGS=[];
+async function loadCluster(){
+  try{
+    const c=JSON.parse(await api('/api/cluster'));
+    const id=document.getElementById('clid'), dir=document.getElementById('cldir'), f=document.getElementById('clfilt');
+    if(id) id.value = c.cluster_id_custom ? c.cluster_id : '';
+    if(dir) dir.value = c.cluster_dir_custom ? c.cluster_dir : '';
+    if(f) f.checked = !!c.transfer_filtering;
+    if(id) id.placeholder = c.cluster_id_custom ? '' : c.cluster_id;
+    if(dir) dir.placeholder = c.cluster_dir_custom ? '' : c.cluster_dir;
+  }catch(e){}
+}
+async function saveCluster(){
+  const id=document.getElementById('clid').value.trim();
+  const dir=document.getElementById('cldir').value.trim();
+  const f=document.getElementById('clfilt').checked ? '1' : '0';
+  const msg=document.getElementById('clmsg');
+  try{
+    msg.textContent = await api('/api/cluster?cluster_id='+encodeURIComponent(id)+
+      '&cluster_dir='+encodeURIComponent(dir)+'&transfer_filtering='+f, {method:'POST'});
+    loadCluster();
+  }catch(e){ msg.textContent=String(e); }
+}
 async function loadSettings(){
   SETTINGS=JSON.parse(await api('/api/settings'));
   const groups={};
   SETTINGS.forEach(v=>{ const g=v.file==='gus'?'GameUserSettings.ini':'Game.ini';
     (groups[g]=groups[g]||[]).push(v); });
-  document.getElementById('settings').innerHTML=Object.entries(groups).map(([file,items])=>
-    `<div class="meta" style="margin:12px 0 4px">${file}</div>`+items.map((v,idx)=>{
+  const blocks = Object.entries(groups).map(([file,items])=>{
+    const bySect = {};
+    items.forEach(v=>{ (bySect[v.section]=bySect[v.section]||[]).push(v); });
+    const inner = Object.entries(bySect).map(([sec,list])=>
+      `<div class="meta" style="margin:10px 0 2px;opacity:.75">${sec}</div>` + list.map(v=>{
       const i=SETTINGS.indexOf(v);
       let field;
       if(v.type==='bool'){
@@ -818,6 +865,9 @@ async function loadSettings(){
       }
       return `<div class="setrow"><label><b>${v.label}</b><small>${v.key}${v.hint?(' · '+v.hint):''}</small></label>${field}</div>`;
     }).join('')).join('');
+    return `<div class="meta" style="margin:12px 0 4px;font-weight:600">${file}</div>` + inner;
+  }).join('');
+  document.getElementById('settings').innerHTML = blocks;
 }
 async function saveSettings(){
   const payload=[];
@@ -1084,7 +1134,7 @@ async function pa(sid,action){ if(!confirm(action+' für '+sid+'?'))return;
 async function give(sid){ const bp=prompt('Blueprint','PrimalItemResource_Stone_C'); if(!bp)return;
   const q=prompt('Menge','10')||'10';
   document.getElementById('out').textContent=await api('/api/player/give?steamid='+sid+'&bp='+encodeURIComponent(bp)+'&qty='+q,{method:'POST'}); }
-applyLang(); restoreTab(); setTimeout(restoreTab, 250); refresh(); updCheck(); renderCmds(); loadMods(); loadKeyState(); loadCfg(); loadWl(); loadSettings(); loadSnaps(); loadBackups(); loadSchedule(); loadHooks();
+applyLang(); restoreTab(); setTimeout(restoreTab, 250); refresh(); updCheck(); renderCmds(); loadMods(); loadKeyState(); loadCfg(); loadWl(); loadSettings(); loadCluster(); loadSnaps(); loadBackups(); loadSchedule(); loadHooks();
 setInterval(refresh,5000); setInterval(updCheck,60000);
 </script><footer style="text-align:center;padding:16px 0 10px;font-size:11.5px;color:var(--dim);
 letter-spacing:.04em">noah __VERSION__ · © 2026 Ronny H.</footer>
@@ -1317,6 +1367,14 @@ class Handler(BaseHTTPRequestHandler):
             self._json({"bans": wl.bans(inst)})
         elif path == "/api/snapshots":
             self._json(snap.listing(inst))
+        elif path == "/api/cluster":
+            self._json({
+                "cluster_id": inst.cluster_id or inst.name,
+                "cluster_id_custom": bool(inst.cluster_id),
+                "cluster_dir": inst.cluster_path,
+                "cluster_dir_custom": bool(inst.cluster_dir),
+                "transfer_filtering": bool(inst.cluster_transfer_filtering),
+            })
         elif path == "/api/settings":
             self._json(cfgfile.read_values(inst))
         elif path == "/api/backups":
@@ -1501,6 +1559,13 @@ class Handler(BaseHTTPRequestHandler):
         elif path == "/api/snapshot/delete":
             ok = snap.delete(inst, q.get("file", [""])[0] or q.get("snap", [""])[0])
             self._send(200, (("geloescht" if ok else "nicht gefunden")).encode())
+        elif path == "/api/cluster":
+            inst.cluster_id = (q.get("cluster_id", [""])[0] or "").strip()[:64]
+            inst.cluster_dir = (q.get("cluster_dir", [""])[0] or "").strip()
+            inst.cluster_transfer_filtering = q.get("transfer_filtering", ["1"])[0] not in ("0", "false", "False")
+            registry.save(inst)
+            self._send(200, ("Cluster gespeichert - ID %s, Verzeichnis %s. Neustart noetig."
+                             % (inst.cluster_name, inst.cluster_path)).encode())
         elif path == "/api/settings":
             length = int(self.headers.get("Content-Length") or 0)
             raw = self.rfile.read(length).decode("utf-8", "replace") if length else "[]"
