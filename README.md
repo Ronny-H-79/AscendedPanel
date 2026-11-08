@@ -6,6 +6,12 @@ any time (button in the top right, `noah lang en` on the console).
 [![Donate](https://img.shields.io/badge/Donate-PayPal-00457C?logo=paypal&logoColor=white)](https://www.paypal.com/donate/?business=ronnyhase%40fn.de&item_name=noah%20Servermanager&currency_code=EUR)
 [![Discord](https://img.shields.io/badge/Discord-Ark--ASA--ASE--Hilfe-5865F2?logo=discord&logoColor=white)](https://discord.gg/ark-ase-asa-hilfe)
 
+[![Ubuntu 24.04](https://img.shields.io/badge/Ubuntu_24.04-tested-E95420?logo=ubuntu&logoColor=white)](#installation)
+[![Arch](https://img.shields.io/badge/Arch-tested-1793D1?logo=archlinux&logoColor=white)](#installation)
+[![Debian](https://img.shields.io/badge/Debian-supported-A81D33?logo=debian&logoColor=white)](#installation)
+[![Fedora](https://img.shields.io/badge/Fedora-supported-51A2DA?logo=fedora&logoColor=white)](#installation)
+[![openSUSE](https://img.shields.io/badge/openSUSE-supported-73BA25?logo=opensuse&logoColor=white)](#installation)
+
 **[Installation](#installation)** · [Uninstall](#uninstall) · [Features](docs/funktionen.md) · [Access](docs/zugriff.md)
 
 Your own server manager for ARK ASA dedicated servers: start, stop, updates, mods, backups, settings

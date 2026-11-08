@@ -6,6 +6,12 @@ jederzeit umschalten (Knopf oben rechts, `noah lang en` in der Konsole).
 [![Spenden](https://img.shields.io/badge/Spenden-PayPal-00457C?logo=paypal&logoColor=white)](https://www.paypal.com/donate/?business=ronnyhase%40fn.de&item_name=noah%20Servermanager&currency_code=EUR)
 [![Discord](https://img.shields.io/badge/Discord-Ark--ASA--ASE--Hilfe-5865F2?logo=discord&logoColor=white)](https://discord.gg/ark-ase-asa-hilfe)
 
+[![Ubuntu 24.04](https://img.shields.io/badge/Ubuntu_24.04-getestet-E95420?logo=ubuntu&logoColor=white)](#installation)
+[![Arch](https://img.shields.io/badge/Arch-getestet-1793D1?logo=archlinux&logoColor=white)](#installation)
+[![Debian](https://img.shields.io/badge/Debian-unterst%C3%BCtzt-A81D33?logo=debian&logoColor=white)](#installation)
+[![Fedora](https://img.shields.io/badge/Fedora-unterst%C3%BCtzt-51A2DA?logo=fedora&logoColor=white)](#installation)
+[![openSUSE](https://img.shields.io/badge/openSUSE-unterst%C3%BCtzt-73BA25?logo=opensuse&logoColor=white)](#installation)
+
 **[Installation](#installation)** · [Deinstallation](#deinstallieren) · [Funktionen](docs/funktionen.md) · [Zugriff](docs/zugriff.md) · [Betrieb](docs/betrieb.md) · [Technik](docs/technik.md)
 
 Ein eigener Servermanager für ARK-ASA-Dedicated-Server: Start, Stop, Updates, Mods, Backups,
