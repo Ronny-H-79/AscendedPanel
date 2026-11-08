@@ -4,6 +4,12 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.11] — 2026-11-08
+
+### Fixed
+- **`noah url` printed `127.0.0.1` on a server.** With access mode "ip" it now shows the address the UI is
+  actually reachable at.
+
 ## [0.3.10] — 2026-11-08
 
 ### Fixed

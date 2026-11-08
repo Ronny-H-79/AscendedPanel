@@ -147,7 +147,22 @@ def cmd_url(args: argparse.Namespace) -> None:
     """Fertige Web-Adresse inklusive Token ausgeben."""
     from .i18n import t
     from .webui import TOKEN_PATH, token
-    print("http://%s:%d/?token=%s" % (args.host, args.port, token()))
+
+    host = args.host
+    try:
+        from . import i18n as _i18n
+        if _i18n.get("access", "") == "ip" and host in ("127.0.0.1", "localhost"):
+            # direkter Zugriff: die IP zeigen, unter der der Server erreichbar ist
+            import socket as _socket
+            sock = _socket.socket(_socket.AF_INET, _socket.SOCK_DGRAM)
+            try:
+                sock.connect(("1.1.1.1", 80))
+                host = sock.getsockname()[0]
+            finally:
+                sock.close()
+    except Exception:  # noqa: BLE001
+        pass
+    print("http://%s:%d/?token=%s" % (host, args.port, token()))
     dom = ""
     try:
         from . import i18n as _i18n
