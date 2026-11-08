@@ -23,6 +23,7 @@ from . import mods as modlib
 from . import registry
 from . import runner
 from . import snapshots as snap
+from . import supervisor
 from . import whitelist as wl
 from .rcon import RconClient
 
@@ -168,6 +169,13 @@ background:linear-gradient(180deg,rgba(6,9,14,.30) 0%,rgba(6,9,14,.62) 45%,rgba(
 border-top:1px solid #16302a;border-bottom:1px solid #16302a}
 #modhits .p{padding:6px 0;border-bottom:1px solid #10201b}
 #modhits .p:last-child{border-bottom:0}
+.taskrow{display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding:6px 0;border-bottom:1px solid #10201b}
+.taskrow select{width:auto;min-width:120px}
+.taskrow input[type=time]{width:auto}
+.dayboxes{display:flex;gap:2px}
+.daybox{display:inline-flex;align-items:center;gap:2px;font-size:10.5px;color:var(--dim);
+background:#0b1418;border:1px solid #16302a;border-radius:3px;padding:2px 4px;white-space:nowrap}
+.daybox input{width:auto;transform:scale(.85);margin:0}
 .hint{font-size:11px;color:var(--dim);line-height:1.4;margin:4px 0 2px;max-width:62ch}
 #modhitsum{font-size:12.5px;color:var(--acc);font-weight:600;margin:8px 0 2px;min-height:1em}
 .thumb{width:44px;height:44px;border-radius:4px;object-fit:cover;border:1px solid #16302a;flex:0 0 44px}
@@ -698,8 +706,16 @@ INST = """<!doctype html><html lang="__LANG__"><head><meta charset="utf-8">
     </div>
   </section>
 
-  <section class="tab tab-server"><h2 data-t="sched.title">Zeitplan (Neustart)</h2>
-    <div class="setrow"><label><b data-t="sched.restart_times">Neustart-Uhrzeiten</b>
+  <section class="tab tab-server"><h2 data-t="sched.title">Zeitplan</h2>
+    <div id="tasklist"></div>
+    <div class="row" style="margin:6px 0 12px">
+      <button onclick="addTask()" data-t="sched.add">Aufgabe hinzufügen</button>
+      <button class="primary" onclick="saveTasks()" data-t="common.save">Speichern</button>
+      <span class="meta" id="taskmsg"></span>
+    </div>
+    <div class="meta" data-t="sched.legend" style="margin:0 0 10px">Uhrzeit 05:00, Tage leer = täglich.
+      Aktionen laufen im Supervisor; Neustart nutzt die Vorwarnung unten.</div>
+    <div class="setrow"><label><b data-t="sched.restart_times">Neustart-Uhrzeiten (alt)</b>
       <small data-t="sched.restart_hint">hint</small></label>
       <input id="schedRestart" type="text" placeholder="05:00,17:00"></div>
     <div class="setrow"><label><b data-t="sched.warn">Vorwarnung vor Neustart</b>
@@ -878,6 +894,63 @@ window.addEventListener('hashchange', ()=>{
   }
 });
 let SETTINGS=[];
+let TASKS=[];
+const TASK_ACTS=['restart','start','stop','update','backup','saveworld','dinowipe','broadcast','rcon'];
+const TASK_DAYS=[1,2,3,4,5,6,7];
+function renderTasks(){
+  const box=document.getElementById('tasklist'); if(!box) return;
+  if(!TASKS.length){ box.innerHTML='<div class="meta" data-empty="1">'+(L['sched.empty']||'-')+'</div>'; return; }
+  box.innerHTML=TASKS.map((t,i)=>{
+    const needArg=(t.action==='broadcast'||t.action==='rcon');
+    const days=TASK_DAYS.map(d=>`<label class="daybox" title="${L['sched.day'+d]||d}">
+        <input type="checkbox" data-i="${i}" data-day="${d}" ${(t.days||[]).includes(d)?'checked':''}>${L['sched.d'+d]||d}</label>`).join('');
+    return `<div class="taskrow" data-i="${i}">
+      <select data-i="${i}" data-f="action">${TASK_ACTS.map(a=>
+        `<option value="${a}" ${t.action===a?'selected':''}>${L['sched.a.'+a]||a}</option>`).join('')}</select>
+      <input type="time" data-i="${i}" data-f="time" value="${t.time||'05:00'}">
+      <span class="dayboxes">${days}</span>
+      <input data-i="${i}" data-f="arg" placeholder="${L['sched.arg_ph']||''}"
+             value="${(t.arg||'').replace(/"/g,'&quot;')}" ${needArg?'':'disabled'} style="flex:1;min-width:80px">
+      <label class="daybox"><input type="checkbox" data-i="${i}" data-f="on" ${t.on!==false?'checked':''}>${L['sched.on']||'an'}</label>
+      <button class="danger" onclick="delTask(${i})">×</button>
+    </div>`;
+  }).join('');
+  box.querySelectorAll('[data-f]').forEach(el=>{
+    const ev=(el.type==='checkbox'||el.tagName==='SELECT')?'change':'input';
+    el.addEventListener(ev,()=>collectTasks());
+  });
+  box.querySelectorAll('[data-day]').forEach(el=>el.addEventListener('change',()=>collectTasks()));
+}
+function collectTasks(){
+  const box=document.getElementById('tasklist');
+  box.querySelectorAll('.taskrow').forEach(row=>{
+    const i=Number(row.dataset.i); if(!TASKS[i]) return;
+    row.querySelectorAll('[data-f]').forEach(el=>{
+      const f=el.dataset.f;
+      if(el.type==='checkbox') TASKS[i][f]=el.checked;
+      else TASKS[i][f]=el.value;
+    });
+    TASKS[i].days=[...row.querySelectorAll('[data-day]')].filter(c=>c.checked).map(c=>Number(c.dataset.day));
+  });
+  // Argumentfeld je nach Aktion freischalten
+  box.querySelectorAll('.taskrow').forEach(row=>{
+    const i=Number(row.dataset.i), sel=row.querySelector('[data-f="action"]'), arg=row.querySelector('[data-f="arg"]');
+    if(sel&&arg) arg.disabled=!(sel.value==='broadcast'||sel.value==='rcon');
+  });
+}
+function addTask(){ collectTasks(); TASKS.push({id:'t'+Date.now(),action:'restart',time:'05:00',days:[],arg:'',on:true}); renderTasks(); }
+function delTask(i){ collectTasks(); TASKS.splice(i,1); renderTasks(); }
+async function saveTasks(){
+  collectTasks();
+  const msg=document.getElementById('taskmsg');
+  try{
+    const r=await fetch('/api/tasks?name='+encodeURIComponent(NAME)+'&token='+encodeURIComponent(T),
+      {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tasks:TASKS})});
+    const d=JSON.parse(await r.text());
+    TASKS=d.tasks||TASKS; renderTasks();
+    msg.textContent=L['sched.saved']||'ok';
+  }catch(e){ msg.textContent=String(e); }
+}
 async function loadCluster(){
   try{
     const c=JSON.parse(await api('/api/cluster'));
@@ -1202,6 +1275,8 @@ async function testHook(){
 async function loadSchedule(){
   const s=JSON.parse(await api('/api/schedule'));
   document.getElementById('schedRestart').value=(s.restart_times||[]).join(',');
+  TASKS=(s.tasks||[]).map(t=>Object.assign({days:[]},t));
+  renderTasks();
   document.getElementById('schedBackup').value=(s.backup_times||[]).join(',');
   document.getElementById('schedWarn').value=s.warn_minutes;
   document.getElementById('schedKeep').value=s.backups_keep;
@@ -1471,6 +1546,8 @@ class Handler(BaseHTTPRequestHandler):
                 "backup_times": inst.backup_times,
                 "warn_minutes": inst.warn_minutes,
                 "backups_keep": inst.backups_keep,
+                "tasks": inst.tasks,
+                "actions": list(supervisor.Supervisor.TASK_ACTIONS),
             })
         elif path == "/api/config/known":
             self._json(cfgfile.known_for(q.get("file", ["gus"])[0]))
@@ -1684,6 +1761,40 @@ class Handler(BaseHTTPRequestHandler):
         elif path == "/api/backup/delete":
             ok = bk.delete(inst, q.get("file", [""])[0])
             self._send(200, (("geloescht" if ok else "nicht gefunden")).encode())
+        elif path == "/api/tasks":
+            length = int(self.headers.get("Content-Length") or 0)
+            raw = self.rfile.read(length).decode("utf-8", "replace") if length else "{}"
+            try:
+                payload = json.loads(raw)
+            except ValueError:
+                self._send(400, b"ungueltiges JSON")
+                return
+            tasks = payload.get("tasks") if isinstance(payload, dict) else None
+            if not isinstance(tasks, list):
+                self._send(400, b"tasks fehlt")
+                return
+            clean = []
+            for item in tasks[:50]:
+                if not isinstance(item, dict):
+                    continue
+                action = str(item.get("action") or "").strip()
+                if action not in supervisor.Supervisor.TASK_ACTIONS:
+                    continue
+                tm = str(item.get("time") or "").strip()
+                if not re.match(r"^([01]\d|2[0-3]):[0-5]\d$", tm):
+                    continue
+                days = [int(d) for d in (item.get("days") or []) if str(d).isdigit() and 1 <= int(d) <= 7]
+                clean.append({
+                    "id": str(item.get("id") or "")[:32] or "t%d" % int(time.time() * 1000),
+                    "action": action,
+                    "time": tm,
+                    "days": sorted(set(days)),
+                    "arg": str(item.get("arg") or "")[:300],
+                    "on": bool(item.get("on", True)),
+                })
+            inst.tasks = clean
+            registry.save(inst)
+            self._json({"ok": True, "tasks": clean})
         elif path == "/api/schedule":
             def _times(key: str) -> list[str]:
                 raw = q.get(key, [""])[0]

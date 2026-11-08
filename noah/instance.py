@@ -29,6 +29,8 @@ class Instance:
     max_players: int = 20
     admin_password: str = ""
     restart_times: list[str] = field(default_factory=list)
+    # Zeitplan-Aufgaben: {"id","action","time":"HH:MM","days":[1..7] (leer = taeglich),"arg","on"}
+    tasks: list[dict] = field(default_factory=list)
     backup_times: list[str] = field(default_factory=list)
     warn_minutes: int = 5
     backups_keep: int = 10

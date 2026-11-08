@@ -4,6 +4,17 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.58] — 2026-11-08
+
+### Neu
+- **Zeitplan mit Aufgaben** (Verwaltung → Zeitplan), ähnlich den Scheduled Tasks in AMP: je Aufgabe
+  **Aktion, Uhrzeit, Wochentage** (leer = täglich) und ein Freitextfeld für Broadcast oder RCON-Befehl.
+  Aktionen: Neustart, Start, Stop, Update + Neustart, Backup, Welt speichern, wilde Dinos löschen,
+  Broadcast, freier RCON-Befehl.
+- Neustart-Aufgaben nutzen die Vorwarnung (Countdown im Spiel), die übrigen laufen sofort; jede
+  Ausführung geht an den Discord-Webhook, Fehler als Fehlermeldung.
+- Die alten „Neustart-Uhrzeiten" bleiben als Rückfallebene erhalten.
+
 ## [0.3.57] — 2026-11-08
 
 ### Geändert

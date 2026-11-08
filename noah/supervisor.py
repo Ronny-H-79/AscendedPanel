@@ -125,6 +125,66 @@ class Supervisor:
     def backup_due(self) -> str | None:
         return self._due(self.inst.backup_times, "last_backup")
 
+    TASK_ACTIONS = ("restart", "start", "stop", "update", "backup",
+                    "saveworld", "dinowipe", "broadcast", "rcon")
+
+    def tasks_due(self) -> list[dict]:
+        """Faellige Aufgaben: Uhrzeit passt, Wochentag passt, heute noch nicht gelaufen."""
+        now = datetime.now()
+        hhmm = now.strftime("%H:%M")
+        dow = now.isoweekday()
+        stamp = now.strftime("%Y-%m-%d %H:%M")
+        due = []
+        for task in self.inst.tasks or []:
+            if not isinstance(task, dict) or not task.get("on", True):
+                continue
+            if (task.get("time") or "").strip() != hhmm:
+                continue
+            days = [int(d) for d in (task.get("days") or []) if str(d).isdigit()]
+            if days and dow not in days:
+                continue
+            key = "task_%s" % (task.get("id") or task.get("time"))
+            if self.state.get(key) == stamp:
+                continue
+            self.state[key] = stamp
+            _save_state(self.inst, self.state)
+            due.append(task)
+        return due
+
+    def _rcon(self, command: str) -> str:
+        from .rcon import RconClient
+        with RconClient("127.0.0.1", self.inst.rcon_port, self.inst.rcon_password, timeout=10) as rc:
+            return rc.command(command, timeout=15)
+
+    def run_task(self, task: dict) -> str:
+        """Eine Zeitplan-Aufgabe ausfuehren; Rueckgabe ist die Meldung fuers Log."""
+        action = (task.get("action") or "").strip()
+        arg = (task.get("arg") or "").strip()
+        if action == "backup":
+            self._do_backup()
+            return "Backup erstellt"
+        if action == "start":
+            if runner.is_running(self.inst):
+                return "laeuft bereits"
+            pid = runner.start(self.inst)
+            return "gestartet (PID %d)" % pid
+        if action == "stop":
+            runner.mark_stopped(self.inst)
+            return runner.stop(self.inst, timeout=90)
+        if action == "update":
+            runner.update_installed(self.inst, restart_after=True)
+            return "Update + Neustart angestossen"
+        if action == "saveworld":
+            return self._rcon("SaveWorld") or "Welt gespeichert"
+        if action == "dinowipe":
+            return self._rcon("DestroyWildDinos") or "wilde Dinos entfernt"
+        if action == "broadcast":
+            self._rcon("Broadcast %s" % arg)
+            return "Broadcast: %s" % arg
+        if action == "rcon":
+            return self._rcon(arg) or "RCON-Befehl abgesetzt"
+        return "unbekannte Aktion: %s" % action
+
     def _broadcast(self, text: str) -> None:
         try:
             from .rcon import RconClient
@@ -167,6 +227,33 @@ class Supervisor:
     def tick(self) -> None:
         if os.path.exists(runner.maintenance_lock(self.inst)):
             return          # laufende Wartung (Restore/Update) nicht stoeren
+
+        # Zeitplan (Aufgabenliste)
+        for task in self.tasks_due():
+            action = (task.get("action") or "").strip()
+            label = task.get("label") or action
+            if action == "restart":
+                wait = max(0, int(self.inst.warn_minutes)) * 60
+                self.state["restart_at"] = time.time() + wait
+                self.state["warned5"] = self.state["warned1"] = False
+                _save_state(self.inst, self.state)
+                if wait:
+                    self._broadcast("Server restartet in %d Minuten" % self.inst.warn_minutes)
+                    self.state["warned5"] = True
+                else:
+                    self.state.pop("restart_at", None)
+                    self.restart("Zeitplan %s" % label)
+                    notify_event(self.inst, "Neustart ausgefuehrt",
+                                 "Zeitplan-Aufgabe %s ist durch." % label, "info")
+            else:
+                try:
+                    result = self.run_task(task)
+                    notify_event(self.inst, "Zeitplan: %s" % label, str(result)[:500], "info",
+                                 {"Instanz": self.inst.name})
+                except Exception as exc:  # noqa: BLE001
+                    notify_event(self.inst, "Zeitplan fehlgeschlagen: %s" % label,
+                                 "%s: %s" % (exc.__class__.__name__, exc), "error",
+                                 {"Instanz": self.inst.name})
 
         # geplantes Backup
         bdue = self.backup_due()

@@ -4,6 +4,17 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.58] — 2026-11-08
+
+### Added
+- **Schedule with tasks** (Management → Schedule), similar to AMP's scheduled tasks: each task has an
+  **action, time, weekdays** (empty = daily) and a free-text field for broadcast or RCON command.
+  Actions: restart, start, stop, update + restart, backup, save world, destroy wild dinos, broadcast,
+  free RCON command.
+- Restart tasks use the warning countdown in game, the others run immediately; every run is reported to
+  the Discord webhook, failures as errors.
+- The old "restart times" stay as a fallback.
+
 ## [0.3.57] — 2026-11-08
 
 ### Changed
