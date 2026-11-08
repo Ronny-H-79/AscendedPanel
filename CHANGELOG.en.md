@@ -4,6 +4,12 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.39] — 2026-11-08
+
+### Changed
+- **Running instances span two grid columns** on the dashboard (window width 900 px and up). Otherwise the
+  card was too narrow and the log dropped below the metrics instead of sitting next to them.
+
 ## [0.3.38] — 2026-11-08
 
 ### Added

@@ -4,6 +4,12 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.39] — 2026-11-08
+
+### Geändert
+- **Laufende Instanzen nehmen im Dashboard zwei Spalten ein** (ab 900 px Fensterbreite). Sonst war die
+  Karte so schmal, dass das Log unter die Kennzahlen rutschte statt daneben zu stehen.
+
 ## [0.3.38] — 2026-11-08
 
 ### Neu

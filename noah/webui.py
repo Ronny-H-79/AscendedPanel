@@ -137,6 +137,7 @@ padding:6px 0;border-top:1px solid #12241f}
 .cardgrid{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;align-items:start}
 .cardmain{display:flex;flex-direction:column;gap:10px;min-width:0}
 @container (min-width:560px){.cardgrid{grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr)}}
+@media (min-width:900px){.card.running{grid-column:span 2}}
 .logwrap{background:#070f13;border:1px solid #12241f;border-radius:4px;padding:6px 8px;min-width:0}
 .loghead{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin-bottom:4px}
 .cardlog{margin:0;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:9.5px;line-height:1.35;
@@ -316,7 +317,7 @@ async function load(){
   DATA=list;
   document.getElementById('cnt').textContent=list.length+' '+L['dash.instances'];
   document.getElementById('cards').innerHTML=list.map(i=>`
-    <div class="card">
+    <div class="card${i.running?' running':''}">
       ${i.map_image?`<div class="bgimg" style="background-image:url('${i.map_image}?token=${encodeURIComponent(T)}')"></div>`:''}
       <div class="cardgrid"><div class="cardmain">
       <div class="row" style="justify-content:space-between">
