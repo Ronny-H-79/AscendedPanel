@@ -690,10 +690,28 @@ async function updCheck(){
     }
   }catch(e){}
 }
+let UPDATE_POLL=null;
+async function updateProgress(){
+  try{
+    const s=JSON.parse(await api('/api/update/progress'));
+    const out=document.getElementById('out');
+    if(out && s.log && s.log.length){ out.textContent=s.log.join('\n'); }
+    if(!s.active){
+      if(UPDATE_POLL){ clearInterval(UPDATE_POLL); UPDATE_POLL=null; setTimeout(refresh,1500); }
+    }
+  }catch(e){}
+}
 async function doUpdate(){
   if(!confirm(L['msg.confirm_update']))return;
-  document.getElementById('out').textContent=await api('/api/update',{method:'POST'});
-  setTimeout(refresh,5000);
+  const out=document.getElementById('out');
+  if(out) out.textContent=L['msg.update_started'];
+  if(!UPDATE_POLL) UPDATE_POLL=setInterval(updateProgress, 2000);
+  let res;
+  try{ res=await api('/api/update',{method:'POST'}); }
+  catch(e){ if(out) out.textContent=L['msg.update_failed']+' '+(e&&e.message?e.message:''); }
+  if(typeof res==='string' && out) out.textContent=res;
+  updateProgress();
+  setTimeout(refresh, 3000);
 }
 async function rcon(){ const c=document.getElementById('cmd').value.trim(); if(!c)return;
   document.getElementById('out').textContent=await api('/api/rcon?cmd='+encodeURIComponent(c),{method:'POST'}); }
@@ -1234,6 +1252,16 @@ class Handler(BaseHTTPRequestHandler):
         if path == "/api/mods/suggest":
             self._json(modlib.suggest(q.get("q", [""])[0]))
             return
+        if path == "/api/update/progress":
+            inst_p = self._inst(q)
+            state = dict(runner.UPDATE_STATE)
+            log = runner.update_log_path(inst_p) if inst_p else ""
+            lines = runner.tail(log, 40) if log and os.path.exists(log) else []
+            state["log"] = lines
+            state["active"] = bool(state.get("running"))
+            self._json(state)
+            return
+
         if path == "/api/mods/key":
             key = modlib._api_key()
             self._json({"has_key": bool(key),

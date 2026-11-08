@@ -1,2 +1,2 @@
 """noah - eigener ARK-ASA-Servermanager."""
-__version__ = "0.3.12"
+__version__ = "0.3.13"

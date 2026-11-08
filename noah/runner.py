@@ -278,13 +278,31 @@ def status(inst: Instance) -> dict[str, object]:
     return info
 
 
+UPDATE_STATE: dict[str, object] = {"name": "", "running": False, "started": 0.0}
+
+
+def update_log_path(inst: Instance) -> str:
+    return os.path.join(inst.directory, ".update.log")
+
+
 def update(inst: Instance, validate: bool = True) -> int:
+    """SteamCMD-Update. Die Ausgabe landet in .update.log, damit die Oberflaeche mitlesen kann."""
     argv = [STEAMCMD, "+force_install_dir", inst.directory, "+login", "anonymous",
             "+app_update", "2430930"]
     if validate:
         argv.append("validate")
     argv.append("+quit")
-    return subprocess.call(argv, cwd=os.path.expanduser("~/steamcmd"))
+    log = update_log_path(inst)
+    UPDATE_STATE.update({"name": inst.name, "running": True, "started": time.time()})
+    try:
+        with open(log, "w", encoding="utf-8", errors="replace") as fh:
+            fh.write("steamcmd %s\n" % " ".join(argv[3:]))
+            fh.flush()
+            proc = subprocess.Popen(argv, cwd=os.path.expanduser("~/steamcmd"),
+                                    stdout=fh, stderr=subprocess.STDOUT)
+            return proc.wait()
+    finally:
+        UPDATE_STATE["running"] = False
 
 
 # ------------------------------------------------------------------ Updates

@@ -4,6 +4,13 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.13] — 2026-11-08
+
+### Added
+- **Update progress is visible.** SteamCMD output used to go to the service journal, so the server log
+  showed nothing during an update. noah now writes it to `.update.log` and the UI streams it while the
+  update runs (`/api/update/progress`, polled every 2 s).
+
 ## [0.3.12] — 2026-11-08
 
 ### Fixed
