@@ -606,8 +606,8 @@ INST = """<!doctype html><html lang="__LANG__"><head><meta charset="utf-8">
       <button onclick="addMod()" data-t="common.add">Hinzufügen</button>
     </div>
     <div class="row"><span class="meta" id="keystate"></span></div>
-    <div class="hint" data-t="mods.search_hint">Suche zeigt maximal 50 Treffer. Für mehr den Begriff eingrenzen,
-      z. B. „spyglass" statt „go" (die CurseForge-Suche liefert nicht mehr pro Abfrage).</div>
+    <div class="hint" data-t="mods.search_hint">Die CurseForge-API liefert höchstens 50 Treffer pro Abfrage.
+      Für mehr Ergebnisse den Begriff eingrenzen.</div>
     <div id="modhitsum"></div>
     <div id="modhits"></div>
     <div class="row"><span class="meta" id="modsize"></span></div>

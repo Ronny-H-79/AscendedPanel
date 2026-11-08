@@ -4,6 +4,13 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.57] — 2026-11-08
+
+### Geändert
+- **Der Hinweis nennt jetzt den Grund:** „Die CurseForge-API liefert höchstens 50 Treffer pro Abfrage —
+  mehr lässt sich technisch nicht abrufen." An der Trefferzeile entsprechend
+  „CurseForge-API: maximal 50 pro Abfrage".
+
 ## [0.3.56] — 2026-11-08
 
 ### Neu

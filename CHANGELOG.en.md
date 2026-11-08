@@ -4,6 +4,12 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.57] — 2026-11-08
+
+### Changed
+- **The note now states the reason:** "The CurseForge API returns at most 50 hits per request — more
+  cannot be fetched." The hit line reads "CurseForge API: at most 50 per request".
+
 ## [0.3.56] — 2026-11-08
 
 ### Added
