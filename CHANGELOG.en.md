@@ -4,6 +4,12 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.51] — 2026-11-08
+
+### Changed
+- **`console.curseforge.com` in the "CurseForge API key" field is a link now** (opens in a new tab)
+  instead of plain text.
+
 ## [0.3.50] — 2026-11-08
 
 ### Changed

@@ -604,7 +604,8 @@ INST = """<!doctype html><html lang="__LANG__"><head><meta charset="utf-8">
     <div class="row"><span class="meta" id="modsize"></span></div>
     <div class="setrow" style="margin-top:10px">
       <label><b data-t="mods.key">CurseForge-API-Key</b>
-        <small data-t="mods.key_hint">optional - ohne Key ist die Suche unzuverlaessig; Key gibt es kostenlos auf console.curseforge.com</small></label>
+        <small><span data-t="mods.key_hint">optional - ohne Key ist die Suche unzuverlaessig</span>
+          <a href="https://console.curseforge.com" target="_blank" rel="noopener">console.curseforge.com</a></small></label>
       <input id="cfkey" type="password" placeholder="…">
     </div>
     <div class="row"><button onclick="saveKey()" data-t="common.save">Speichern</button>
