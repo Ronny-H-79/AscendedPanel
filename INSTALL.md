@@ -71,6 +71,18 @@ Im LAN/VPN: `noah web --host 0.0.0.0`. Aus dem Internet per nginx mit HTTPS:
 laedt nginx neu und holt das Zertifikat). Ohne nginx geht auch HTTPS direkt:
 `noah web --tls-cert cert.pem --tls-key key.pem`. Details im README.
 
+## Sicherheit (kurz)
+
+Die Oberflaeche ist eine Administrationskonsole: **wer den Token hat, kann alles steuern** - Server
+starten, stoppen, loeschen, Mods eintragen, Konsolenbefehle absetzen. Deshalb:
+
+- Standard (`127.0.0.1`) ist sicher - von aussen nicht erreichbar.
+- **Nicht unverschluesselt ins Internet stellen.** Bei `--host 0.0.0.0` ohne TLS wandert der Token im
+  Klartext ueber jede Zwischenstation. Fuer oeffentlichen Zugriff HTTPS per `noah proxy` oder TLS direkt.
+- Der Installer warnt bei Modus `[3]` (IP und Port) und fragt vorher nach.
+
+Ausfuehrlich, inklusive was noah selbst absichert: `docs/zugriff.md`, Abschnitt „Sicherheit".
+
 ## Der Token
 
 Nach der Installation zeigt `noah url` die Adresse mit Token an, z. B.
