@@ -4,6 +4,13 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.65] — 2026-11-08
+
+### Geändert
+- **Snapshots haben eigene Uhrzeiten** („Snapshot-Uhrzeiten" in der Snapshot-Box, kommagetrennt wie bei
+  den Backups) statt einer Aktion im Zeitplan. Der Zeitplan bleibt für die übrigen Aktionen.
+- „Auto-Snapshots behalten" bleibt unverändert und greift weiter für die automatischen Sicherungen.
+
 ## [0.3.64] — 2026-11-08
 
 ### Geändert

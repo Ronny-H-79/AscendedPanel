@@ -4,6 +4,13 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.65] — 2026-11-08
+
+### Changed
+- **Snapshots have their own time list** ("Snapshot times" in the snapshot box, comma separated like the
+  backups) instead of being an action in the schedule. The schedule stays for the other actions.
+- "Keep auto snapshots" is unchanged and still applies to the automatic snapshots.
+
 ## [0.3.64] — 2026-11-08
 
 ### Changed

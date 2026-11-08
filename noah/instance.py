@@ -34,7 +34,8 @@ class Instance:
     backup_times: list[str] = field(default_factory=list)
     warn_minutes: int = 5
     backups_keep: int = 10
-    snapshot_keep: int = 3               # Auto-Snapshots (Zeitplan), aeltere werden entfernt
+    snapshot_keep: int = 3               # Auto-Snapshots behalten, aeltere werden entfernt
+    snapshot_times: list[str] = field(default_factory=list)   # Uhrzeiten fuer Auto-Snapshots
     exclusive_join: bool = False
     banned: list[str] = field(default_factory=list)
     hang_seconds: int = 300

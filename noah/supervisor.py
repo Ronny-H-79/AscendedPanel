@@ -126,7 +126,10 @@ class Supervisor:
     def backup_due(self) -> str | None:
         return self._due(self.inst.backup_times, "last_backup")
 
-    TASK_ACTIONS = ("restart", "start", "stop", "update", "backup", "snapshot",
+    def snapshot_due(self) -> str | None:
+        return self._due(self.inst.snapshot_times, "last_snapshot")
+
+    TASK_ACTIONS = ("restart", "start", "stop", "update", "backup",
                     "saveworld", "dinowipe", "broadcast", "rcon")
 
     def tasks_due(self) -> list[dict]:
@@ -164,8 +167,6 @@ class Supervisor:
         if action == "backup":
             self._do_backup()
             return "Backup erstellt"
-        if action == "snapshot":
-            return self._do_snapshot()
         if action == "start":
             if runner.is_running(self.inst):
                 return "laeuft bereits"
@@ -275,6 +276,8 @@ class Supervisor:
         self.inst.tasks = fresh.tasks
         self.inst.restart_times = fresh.restart_times
         self.inst.backup_times = fresh.backup_times
+        self.inst.snapshot_times = fresh.snapshot_times
+        self.inst.snapshot_keep = fresh.snapshot_keep
         self.inst.warn_minutes = fresh.warn_minutes
         self.inst.backups_keep = fresh.backups_keep
 
@@ -315,6 +318,15 @@ class Supervisor:
         bdue = self.backup_due()
         if bdue:
             self._do_backup()
+
+        # geplanter Snapshot (eigene Uhrzeiten, unabhaengig vom Zeitplan)
+        sd = self.snapshot_due()
+        if sd:
+            try:
+                self._do_snapshot()
+            except Exception as exc:  # noqa: BLE001
+                notify_event(self.inst, "Snapshot fehlgeschlagen", str(exc)[:500], "error",
+                             {"Instanz": self.inst.name})
 
         # geplanter Neustart: Countdown ankuendigen, dann ausfuehren
         due = self.scheduled_due()

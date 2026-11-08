@@ -227,6 +227,9 @@ T: dict[str, dict[str, str]] = {
     "sched.a.backup": {"de": "Backup", "en": "Backup"},
     "sched.a.snapshot": {"de": "Snapshot", "en": "Snapshot"},
     "snap.keep": {"de": "Auto-Snapshots behalten", "en": "Keep auto snapshots"},
+    "snap.times": {"de": "Snapshot-Uhrzeiten", "en": "Snapshot times"},
+    "snap.times_hint": {"de": "kommagetrennt, z. B. 04:00,16:00 — leer = kein automatischer Snapshot",
+                        "en": "comma separated, e.g. 04:00,16:00 — empty = no automatic snapshot"},
     "snap.keep_hint": {"de": "je ca. 12 GB; ältere werden nach jedem geplanten Snapshot entfernt "
                              "(3 = ein Tag bei 3 pro Tag, 15 ≈ 180 GB)",
                        "en": "~12 GB each; older ones are removed after each scheduled snapshot "
