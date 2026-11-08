@@ -149,6 +149,13 @@ def start(inst: Instance, wait: int = 0) -> int:
     if os.environ.get("NOAH_NO_SCOPE") != "1" and shutil.which("systemd-run"):
         launcher = ["systemd-run", "--scope", "--collect", "--quiet",
                     "--unit", scope_unit] + argv
+        if os.geteuid() != 0:
+            # als normaler Benutzer laeuft die Scope ueber den User-Manager (loginctl enable-linger)
+            launcher.insert(1, "--user")
+            runtime = "/run/user/%d" % os.getuid()
+            if os.path.isdir(runtime):
+                os.environ.setdefault("XDG_RUNTIME_DIR", runtime)
+                os.environ.setdefault("DBUS_SESSION_BUS_ADDRESS", "unix:path=%s/bus" % runtime)
 
     def _spawn(cmd: list[str]) -> None:
         subprocess.Popen(cmd, cwd=base, stdout=subprocess.DEVNULL,

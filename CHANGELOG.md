@@ -4,6 +4,15 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.28] — 2026-11-08
+
+### Behoben
+- **Spielserver starb beim Neustart der Oberfläche, wenn noah als normaler Benutzer läuft.** Die eigene
+  systemd-Scope wurde nur auf dem System-Bus versucht, was ohne root scheitert — der Start fiel still auf
+  einen normalen Kindprozess zurück. Jetzt läuft sie als `systemd-run --user --scope` über den
+  Benutzer-Manager (dafür einmalig `loginctl enable-linger <benutzer>`), damit der Server einen
+  Web-Neustart überlebt.
+
 ## [0.3.27] — 2026-11-08
 
 ### Neu
