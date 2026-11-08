@@ -4,6 +4,12 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.50] — 2026-11-08
+
+### Changed
+- **Discord and PayPal icons are bigger and use the brand colours** (34 px box, 22 px glyph; Discord
+  #5865F2, PayPal #003087) instead of small and monochrome.
+
 ## [0.3.49] — 2026-11-08
 
 ### Added

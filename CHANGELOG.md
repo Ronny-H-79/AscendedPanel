@@ -4,6 +4,12 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.50] — 2026-11-08
+
+### Geändert
+- **Discord- und PayPal-Symbol größer und in den Markenfarben** (34 px Feld, 22 px Symbol; Discord
+  #5865F2, PayPal #003087) statt einfarbig klein.
+
 ## [0.3.49] — 2026-11-08
 
 ### Neu
