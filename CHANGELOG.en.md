@@ -4,6 +4,16 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.33] — 2026-11-08
+
+### Fixed
+- **The CPU graph clipped everything above 100 %.** The dashboard sparkline was pinned to 100 %, so an
+  ARK server at 700 % load showed as a flat line at the top. It now scales to the observed maximum
+  (at least 100 %).
+- **The CPU figure needed an explanation.** It sums all threads (like `top`/`htop`) and can therefore
+  exceed 100 %. The tile's tooltip now names cores and share of the server, e.g. "7.5 of 64 cores busy
+  (11.8 % of the server)".
+
 ## [0.3.32] — 2026-11-08
 
 ### Fixed

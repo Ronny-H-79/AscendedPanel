@@ -14,6 +14,8 @@ HISTORY: dict[str, dict[str, deque]] = {}
 _PREV: dict[int, tuple[int, float]] = {}
 _PLAYERS: dict[str, tuple[float, list[str]]] = {}
 PLAYER_TTL = 15.0
+CORES = os.cpu_count() or 1          # CPU-Werte sind Kern-Prozente (wie top)
+
 
 
 def _boot_time() -> float:

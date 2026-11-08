@@ -178,6 +178,7 @@ def info(inst: Instance) -> dict:
                       if os.path.exists(os.path.expanduser("~/.config/noah/static/maps/%s.jpg" % inst.map))
                       else ""),
         "cpu": data["cpu"],
+        "cores": metrics.CORES,
         "ram_gb": data["ram_gb"],
         "ram_mb": data["ram_mb"],
         "ram_peak_gb": data.get("ram_peak_gb", 0.0),

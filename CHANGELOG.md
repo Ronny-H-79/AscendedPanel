@@ -4,6 +4,16 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.33] — 2026-11-08
+
+### Behoben
+- **CPU-Graph schnitt alles über 100 % ab.** Die Sparkline im Dashboard war fest auf 100 % skaliert,
+  ein ARK-Server mit 700 % Last erschien als flache Linie am oberen Rand. Sie skaliert jetzt auf den
+  tatsächlichen Höchstwert (mindestens 100 %).
+- **CPU-Zahl war erklärungsbedürftig.** Der Wert ist der Summenwert über alle Threads (wie `top`/`htop`),
+  kann also deutlich über 100 % liegen. Die Kachel nennt im Tooltip jetzt Kerne und Anteil am Server,
+  z. B. „7,5 von 64 Kernen ausgelastet (11,8 % des Servers)".
+
 ## [0.3.32] — 2026-11-08
 
 ### Behoben
