@@ -124,8 +124,9 @@ Installationsdetails: [INSTALL.md](INSTALL.md)
 
 ## Lizenz
 
-**Alle Rechte vorbehalten.** Der Quellcode darf gelesen und für den eigenen Betrieb
-heruntergeladen werden; Weitergabe, Veränderung und kommerzielle Nutzung brauchen eine
-schriftliche Zustimmung. Details: [LICENSE](LICENSE).
+**Kostenlos nutzbar, alle Rechte beim Autor.** Herunterladen, installieren und auf eigenen
+Servern betreiben ist frei — auch für eine Community. Weitergabe, Veränderung, Verkauf oder
+das Anbieten als Download/Dienst brauchen eine schriftliche Zustimmung.
+Details: [LICENSE](LICENSE).
 
 © 2026 Ronny H.
