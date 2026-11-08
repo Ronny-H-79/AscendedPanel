@@ -4,6 +4,13 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.49] — 2026-11-08
+
+### Neu
+- **Discord und PayPal als Symbole oben rechts** — auf jeder Seite (Dashboard, Instanzseite, Mods,
+  Verwaltung). Die Symbole sind eingebettet, es geht keine Anfrage an fremde Server, solange niemand
+  klickt.
+
 ## [0.3.48] — 2026-11-08
 
 ### Neu

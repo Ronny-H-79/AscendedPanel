@@ -4,6 +4,12 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.49] — 2026-11-08
+
+### Added
+- **Discord and PayPal icons in the top right** — on every page (dashboard, instance page, mods,
+  management). The icons are embedded, so no request goes to an external server unless someone clicks.
+
 ## [0.3.48] — 2026-11-08
 
 ### Added

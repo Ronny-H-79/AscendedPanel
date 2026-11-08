@@ -138,6 +138,10 @@ padding:6px 0;border-top:1px solid #12241f}
 .cardmain{display:flex;flex-direction:column;gap:10px;min-width:0}
 @container (min-width:560px){.cardgrid{grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr)}}
 @media (min-width:900px){.card.running{grid-column:span 2}}
+.iconlink{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;
+border:1px solid #1d3a32;border-radius:4px;color:var(--dim);opacity:.85}
+.iconlink:hover{opacity:1;border-color:var(--acc);color:var(--acc)}
+.iconlink svg{width:15px;height:15px;fill:currentColor;display:block}
 .settabs{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px;border-bottom:1px solid #16302a;padding-bottom:8px}
 .settabs button small{opacity:.55;font-size:10px;margin-left:4px}
 .settabs button.on{border-color:var(--acc);color:var(--acc)}
@@ -249,6 +253,15 @@ if(cv){
 }
 """
 
+HEADER_ICONS = """
+<a class="iconlink" href="https://discord.gg/ark-ase-asa-hilfe" target="_blank" rel="noopener"
+   data-tp="ui.discord" data-ttitle="ui.discord" title="Discord: Ark-ASA-ASE-Hilfe" aria-label="Discord">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg></a>
+<a class="iconlink" href="https://www.paypal.com/donate/?business=ronnyhase%40fn.de&item_name=noah%20Servermanager&currency_code=EUR"
+   target="_blank" rel="noopener" data-ttitle="ui.donate" title="Spenden via PayPal" aria-label="PayPal">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.607 4.653H8.941L6.645 19.251H1.82L4.862 0h7.995c3.754 0 6.375 2.294 6.473 5.513-.648-.478-2.105-.86-3.722-.86m6.57 5.546c0 3.41-3.01 6.853-6.958 6.853h-2.493L11.595 24H6.74l1.845-11.538h3.592c4.208 0 7.346-3.634 7.153-6.949a5.24 5.24 0 0 1 2.848 4.686M9.653 5.546h6.408c.907 0 1.942.222 2.363.541-.195 2.741-2.655 5.483-6.441 5.483H8.714Z"/></svg></a>
+"""
+
 DASH = """<!doctype html><html lang="__LANG__"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>noah</title>
 <style>""" + SHARED_CSS + """</style></head><body>
@@ -261,7 +274,7 @@ DASH = """<!doctype html><html lang="__LANG__"><head><meta charset="utf-8">
     data-t="self.changelog" title="Changelog">Changelog</button>
       <button onclick="window.open('https://github.com/Ronny-H-79/Noah/blob/main/README.md','_blank','noopener')"
               data-t="ui.docs_en" title="English description">English</button>
-  <button onclick="toggleLang()" id="langbtn" style="padding:2px 8px">EN</button></span></header>
+  <button onclick="toggleLang()" id="langbtn" style="padding:2px 8px">EN</button>""" + HEADER_ICONS + """</span></header>
 <div class="modal" id="modal" onclick="if(event.target.id==='modal')closeModal()">
   <div class="mbox"><button class="close" onclick="closeModal()">×</button>
     <div id="mbody">…</div></div>
@@ -534,7 +547,7 @@ INST = """<!doctype html><html lang="__LANG__"><head><meta charset="utf-8">
   <a href="/?token=__TOK__" style="margin-left:6px"><button data-t="common.back_dashboard">← Dashboard</button></a>
   <span class="badge" id="st">…</span><span class="badge" id="rd">…</span>
   <span class="badge">__NAME__</span><span class="badge" id="upd" role="button" tabindex="0">UPDATE ?</span>
-  <button onclick="toggleLang()" id="langbtn" style="padding:2px 8px">EN</button>
+  <button onclick="toggleLang()" id="langbtn" style="padding:2px 8px">EN</button>""" + HEADER_ICONS + """
 </header>
 <div class="tabs">
   <button class="on" data-tab="overview" onclick="showTab('overview',this)" data-t="tabs.overview">Übersicht</button>
