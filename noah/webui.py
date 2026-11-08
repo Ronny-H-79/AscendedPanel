@@ -333,7 +333,7 @@ async function load(){
         <div><b>${fmtUp(i.uptime)}</b><small>${L['dash.uptime']}</small></div>
       </div><canvas class="spark" width="300" height="38"></canvas>`:''}
       <div class="row">
-        <button onclick="instMenu('${i.name}')">${L['common.menu']}</button>
+        <a href="/i/${i.name}?token=${encodeURIComponent(T)}"><button>${L['common.open']}</button></a>
         ${i.installed
           ? `<button onclick="act('${i.name}','start')">${L['common.start']}</button>
              <button onclick="act('${i.name}','restart')">${L['common.restart']}</button>
@@ -373,15 +373,6 @@ async function loadHost(){
     document.getElementById('hostcpu').textContent='CPU '+h.cpu.toFixed(1)+'%';
     document.getElementById('hostram').textContent='RAM '+h.ram_used_gb+'/'+h.ram_total_gb+' GB ('+h.ram_pct+'%)';
   }catch(e){}
-}
-function instMenu(name){
-  const base='/i/'+encodeURIComponent(name)+'?token='+encodeURIComponent(T);
-  const items=[['overview',L['tabs.overview']],['settings',L['tabs.settings']],
-               ['mods',L['tabs.mods']],['server',L['tabs.manage']]];
-  document.getElementById('mbody').innerHTML='<h3>'+name+'</h3>'+
-    '<div class="row" style="margin-top:12px">'+
-    items.map(it=>'<a href="'+base+'#'+it[0]+'"><button>'+it[1]+'</button></a>').join('')+'</div>';
-  document.getElementById('modal').classList.add('on');
 }
 async function act(name,what){ await api('/api/'+what+'?name='+name,{method:'POST'}); setTimeout(load,1500); }
 

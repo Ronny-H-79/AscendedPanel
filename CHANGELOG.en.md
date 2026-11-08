@@ -4,6 +4,12 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.46] — 2026-11-08
+
+### Changed
+- **Back to the direct route:** "Open" leads straight into the instance again; the menu button and dialog
+  are gone.
+
 ## [0.3.45] — 2026-11-08
 
 ### Changed

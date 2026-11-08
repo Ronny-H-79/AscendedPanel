@@ -4,6 +4,12 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.46] — 2026-11-08
+
+### Geändert
+- **Zurück zum direkten Weg:** „Öffnen" führt wieder ohne Zwischenschritt in die Instanz; Menü-Knopf und
+  Dialog sind entfernt.
+
 ## [0.3.45] — 2026-11-08
 
 ### Geändert
