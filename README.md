@@ -4,6 +4,7 @@ English · [Deutsch](README.de.md) — the installer asks for the language up fr
 any time (button in the top right, `noah lang en` on the console).
 
 [![Donate](https://img.shields.io/badge/Donate-PayPal-00457C?logo=paypal&logoColor=white)](https://www.paypal.com/donate/?business=ronnyhase%40fn.de&item_name=noah%20Servermanager&currency_code=EUR)
+[![Discord](https://img.shields.io/badge/Discord-Ark--ASA--ASE--Hilfe-5865F2?logo=discord&logoColor=white)](https://discord.gg/ark-ase-asa-hilfe)
 
 **[Installation](#installation)** · [Uninstall](#uninstall) · [Features](docs/funktionen.md) · [Access](docs/zugriff.md)
 
@@ -111,6 +112,12 @@ restore everything later.
 
 What changed between versions: [CHANGELOG.en.md](CHANGELOG.en.md) ·
 Install details: [INSTALL.md](INSTALL.md)
+
+## Help
+
+Questions, problems or just other server admins: the
+**[Ark-ASA-ASE-Hilfe](https://discord.gg/ark-ase-asa-hilfe)** community on Discord helps with settings,
+mods and start-up problems. That is also the place for feedback on noah.
 
 ## Licence
 

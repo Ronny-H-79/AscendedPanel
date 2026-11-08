@@ -4,6 +4,7 @@
 jederzeit umschalten (Knopf oben rechts, `noah lang en` in der Konsole).
 
 [![Spenden](https://img.shields.io/badge/Spenden-PayPal-00457C?logo=paypal&logoColor=white)](https://www.paypal.com/donate/?business=ronnyhase%40fn.de&item_name=noah%20Servermanager&currency_code=EUR)
+[![Discord](https://img.shields.io/badge/Discord-Ark--ASA--ASE--Hilfe-5865F2?logo=discord&logoColor=white)](https://discord.gg/ark-ase-asa-hilfe)
 
 **[Installation](#installation)** · [Deinstallation](#deinstallieren) · [Funktionen](docs/funktionen.md) · [Zugriff](docs/zugriff.md) · [Betrieb](docs/betrieb.md) · [Technik](docs/technik.md)
 
@@ -121,6 +122,12 @@ Der letzte Schritt ist der einzige, der wirklich unwiederbringlich ist: Welt und
 
 Was sich zwischen Versionen geändert hat: [CHANGELOG.md](CHANGELOG.md) ·
 Installationsdetails: [INSTALL.md](INSTALL.de.md)
+
+## Hilfe
+
+Fragen, Probleme oder einfach andere Serverbetreiber: die Community
+**[Ark-ASA-ASE-Hilfe](https://discord.gg/ark-ase-asa-hilfe)** auf Discord hilft bei Einstellungen,
+Mods und Startproblemen. Dort bekommst du auch Rueckmeldung zu noah.
 
 ## Lizenz
 
