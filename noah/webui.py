@@ -169,7 +169,7 @@ background:linear-gradient(180deg,rgba(6,9,14,.30) 0%,rgba(6,9,14,.62) 45%,rgba(
 border-top:1px solid #16302a;border-bottom:1px solid #16302a}
 #modhits .p{padding:6px 0;border-bottom:1px solid #10201b}
 #modhits .p:last-child{border-bottom:0}
-.taskrow{display:flex;gap:5px;align-items:center;flex-wrap:wrap;padding:3px 0;border-bottom:1px solid #10201b}
+.taskrow{display:flex;gap:5px;row-gap:2px;align-items:center;flex-wrap:wrap;padding:2px 0;border-bottom:1px solid #10201b}
 .taskrow select{width:auto;min-width:120px}
 .taskrow input[type=time]{width:auto}
 .dayboxes{display:flex;gap:3px}
