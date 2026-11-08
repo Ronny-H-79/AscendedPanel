@@ -38,18 +38,19 @@ noah wizard              # Instanz anlegen, Server laden, Dienst einrichten
 und installiert sie auf Wunsch (`pacman`, `apt`, `dnf`, `zypper`). SteamCMD lädt er selbst nach,
 root-Rechte braucht nur das Nachinstallieren von Wine.
 
-Der Installer fragt vier Dinge:
+Der Installer stellt nacheinander:
 
-1. **Sprache** (Deutsch/Englisch)
-2. ob fehlende Pakete (**Wine**, iproute2) nachinstalliert werden sollen
-3. **wie die Oberfläche erreichbar sein soll** — `[1]` **nur client-seitig** per SSH-Tunnel,
-   `[2]` **öffentlich** über eine Domain mit HTTPS (wird gleich mitgespeichert),
-   `[3]` **direkt über IP und Port** (HTTP, Port in der Firewall freigeben)
-4. **nur bei `[2]`**: ob die Web-Oberfläche dauerhaft laufen soll (`noah-web.service`) — als root ein
-   **Systemdienst** in `/etc/systemd/system` (startet beim Booten, kein Login und kein `linger` nötig),
-   als normaler Benutzer ein User-Dienst in `~/.config/systemd/user`
+- **Sprache** (Deutsch/Englisch)
+- ob fehlende Pakete (**Wine**, iproute2) nachinstalliert werden sollen
+- **wie die Oberfläche erreichbar sein soll:**
+  **Tunnel** — nur client-seitig über SSH,
+  **Domain** — öffentlich mit HTTPS (wird gleich mitgespeichert),
+  **IP** — direkt über IP und Port (HTTP, Port in der Firewall freigeben)
+- **nur bei „Domain"**: ob die Web-Oberfläche dauerhaft laufen soll (`noah-web.service`) — als root ein
+  **Systemdienst** in `/etc/systemd/system` (startet beim Booten, kein Login und kein `linger` nötig),
+  als normaler Benutzer ein User-Dienst in `~/.config/systemd/user`
 
-Bei `[1]` entfällt die letzte Frage: für den Tunnel braucht es keinen Dauerdienst, die Oberfläche wird
+Bei **„Tunnel"** entfällt die letzte Frage: dafür braucht es keinen Dauerdienst, die Oberfläche wird
 mit `noah web` gestartet, wenn du sie brauchst.
 
 Am Ende steht genau der Befehl, der zu deiner Wahl passt: der SSH-Tunnel mit deinem Benutzer und der
