@@ -4,6 +4,11 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.23] — 2026-11-08
+
+### Geändert
+- Beispiel für das Cluster-Verzeichnis im Hinweis: `/home/Noah/arkcluster` statt `/home/benutzer/arkcluster`.
+
 ## [0.3.22] — 2026-11-08
 
 ### Geändert
