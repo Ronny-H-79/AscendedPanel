@@ -282,10 +282,10 @@ HEADER_ICONS = """
 """
 
 DASH = """<!doctype html><html lang="__LANG__"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1"><title>noah · Web-UI</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>noah</title>
 <style>""" + SHARED_CSS + """</style></head><body>
 <canvas id="bg"></canvas>
-<header><h1>noah</h1><span class="badge" id="ui">Web-UI</span><span class="badge" id="cnt">…</span>
+<header><h1>noah</h1><span class="badge" id="cnt">…</span>
 <span class="badge" data-t="dash.dashboard">Dashboard</span>
 <span class="hostbar"><span id="hostcpu">CPU –</span><span id="hostram">RAM –</span>
   <button onclick="noahUpdate()" id="verbtn" style="padding:2px 8px">noah</button>
@@ -552,7 +552,7 @@ letter-spacing:.04em">noah __VERSION__ · © 2026 Ronny H.</footer>
 </body></html>"""
 
 INST = """<!doctype html><html lang="__LANG__"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1"><title>noah · Web-UI · __NAME__</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>noah · __NAME__</title>
 <style>""" + SHARED_CSS + """</style></head><body>
 <canvas id="bg"></canvas>
 <div class="modal" id="modal" onclick="if(event.target.id==='modal')closeModal()">

@@ -4,13 +4,6 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
-## [0.3.69] — 2026-11-08
-
-### Changed
-- **The interface identifies itself as a web UI:** page titles now read "noah · Web-UI" and
-  "noah · Web-UI · <instance>", and the header carries a Web-UI tag next to "noah" — so it is
-  obvious at first glance that noah runs in a browser and is not an app.
-
 ## [0.3.68] — 2026-11-08
 
 ### Changed
