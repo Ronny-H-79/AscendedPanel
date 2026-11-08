@@ -277,7 +277,8 @@ def cmd_version(args: argparse.Namespace) -> None:
 def cmd_self_update(args: argparse.Namespace) -> None:
     """noah selbst aktualisieren (Paket von GitHub ersetzen, Dienst neu starten)."""
     from . import selfupdate
-    info = selfupdate.check()
+    # ohne Cache pruefen: wer "self-update" tippt, will den echten Stand
+    info = selfupdate.check(force=True)
     if not args.force and info.get("ok") and not info.get("update"):
         print("noah %s ist aktuell" % info.get("installed", "?"))
         return
