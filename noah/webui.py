@@ -171,6 +171,7 @@ border-top:1px solid #16302a;border-bottom:1px solid #16302a}
 #modhits .p:last-child{border-bottom:0}
 .taskrow{display:flex;gap:5px;row-gap:2px;align-items:center;flex-wrap:wrap;padding:2px 0;border-bottom:1px solid #10201b}
 .taskrow select{width:auto;min-width:120px}
+.taskrow select,.taskrow input{width:auto;padding:3px 6px;font-size:12px}
 .taskrow input[type=time]{width:auto}
 .dayboxes{display:flex;gap:3px}
 .daybox{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--dim);
