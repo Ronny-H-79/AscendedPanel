@@ -2,7 +2,7 @@
 
 Aufbau, Benutzung auf der Konsole, Stop-Reihenfolge und Hinweise für Entwickler.
 
-[← zurück zum README](../README.md)
+[← zurück zum README](../README.md) · [English](technik.en.md)
 
 ## Benutzung
 

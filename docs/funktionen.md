@@ -2,7 +2,7 @@
 
 Was noah kann: Überblick, Screenshots, Mod-Verwaltung und Benachrichtigungen.
 
-[← zurück zum README](../README.md)
+[← zurück zum README](../README.md) · [English](funktionen.en.md)
 
 ## Was es kann
 

@@ -2,7 +2,7 @@
 
 noah aktuell halten, Sprache umstellen.
 
-[← zurück zum README](../README.md)
+[← zurück zum README](../README.md) · [English](betrieb.en.md)
 
 ## noah aktuell halten
 

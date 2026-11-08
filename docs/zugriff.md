@@ -2,7 +2,7 @@
 
 Wie du die Weboberfläche erreichst — lokal, über SSH-Tunnel, im Netz oder öffentlich per HTTPS.
 
-[← zurück zum README](../README.md)
+[← zurück zum README](../README.md) · [English](zugriff.en.md)
 
 ## Zugriff auf die Oberfläche (auch von woanders)
 

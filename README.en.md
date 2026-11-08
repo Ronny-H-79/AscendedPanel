@@ -5,7 +5,7 @@ any time (button in the top right, `noah lang en` on the console).
 
 [![Donate](https://img.shields.io/badge/Donate-PayPal-00457C?logo=paypal&logoColor=white)](https://www.paypal.com/donate/?business=ronnyhase%40fn.de&item_name=noah%20Servermanager&currency_code=EUR)
 
-**[Installation](#installation)** · [Uninstall](#uninstall) · [Features](docs/funktionen.md) · [Access](docs/zugriff.md)
+**[Installation](#installation)** · [Uninstall](#uninstall) · [Features](docs/funktionen.en.md) · [Access](docs/zugriff.en.md)
 
 Your own server manager for ARK ASA dedicated servers: start, stop, updates, mods, backups, settings
 and player management through a web interface.
@@ -58,7 +58,7 @@ At the end you get the command that matches your choice: the SSH tunnel with you
 
 > **Security:** the UI is an admin console — whoever has the token controls everything. Mode `[3]`
 > (direct via IP) is **unencrypted** and the token can be read on the wire. Use `[1]` (SSH tunnel) or
-> `[2]` (HTTPS). Details: [docs/zugriff.md](docs/zugriff.md).
+> `[2]` (HTTPS). Details: [docs/zugriff.en.md](docs/zugriff.en.md).
 
 ### When the install gets stuck
 
@@ -68,7 +68,7 @@ At the end you get the command that matches your choice: the SSH tunnel with you
 | `./install.sh: No such file or directory` **after** `cd noah` | you are in the package folder `noah/noah` — only `.py` files live there | `cd ..` — `install.sh` is one level up |
 | `noah: command not found` | `~/.local/bin` is not in `PATH` | as root the installer links `/usr/local/bin/noah`; otherwise `export PATH="$HOME/.local/bin:$PATH"` and open a new shell |
 
-Details, requirements and uninstall: [INSTALL.md](INSTALL.md)
+Details, requirements and uninstall: [INSTALL.en.md](INSTALL.en.md)
 
 ## Uninstall
 
@@ -104,13 +104,13 @@ restore everything later.
 
 | Topic | File |
 |---|---|
-| **Features** — overview, screenshots, mod search, Discord notifications | [docs/funktionen.md](docs/funktionen.md) |
-| **Access** — SSH tunnel, LAN, HTTPS via nginx, token | [docs/zugriff.md](docs/zugriff.md) |
-| **Operation** — self-update, changelog, language | [docs/betrieb.md](docs/betrieb.md) |
-| **Internals** — structure, console, stop order | [docs/technik.md](docs/technik.md) |
+| **Features** — overview, screenshots, mod search, Discord notifications | [docs/funktionen.en.md](docs/funktionen.en.md) |
+| **Access** — SSH tunnel, LAN, HTTPS via nginx, token | [docs/zugriff.en.md](docs/zugriff.en.md) |
+| **Operation** — self-update, changelog, language | [docs/betrieb.en.md](docs/betrieb.en.md) |
+| **Internals** — structure, console, stop order | [docs/technik.en.md](docs/technik.en.md) |
 
 What changed between versions: [CHANGELOG.en.md](CHANGELOG.en.md) ·
-Install details: [INSTALL.md](INSTALL.md)
+Install details: [INSTALL.en.md](INSTALL.en.md)
 
 ## Licence
 
