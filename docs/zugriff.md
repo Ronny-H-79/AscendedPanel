@@ -100,7 +100,9 @@ Server-Befehle absetzen. Behandle den Link wie ein Passwort.
 Daraus folgen drei Regeln:
 
 - **`127.0.0.1` genügt überall dort, wo etwas davorsteht.** Bei einer Client-Installation (Modus `[1]`)
-  erreichst du die Oberfläche über den SSH-Tunnel — der Server selbst muss nichts nach außen öffnen.
+  läuft noah auf dem Server und hört nur lokal; die **Serveradresse** brauchst du im Tunnelbefehl
+  (`ssh -N -L 8790:127.0.0.1:8790 nutzer@server`) — offen sein muss dafür nur SSH, noah selbst öffnet
+  keinen Port.
   Bei einer Server-Installation mit Domain (Modus `[2]`) bleibt noah ebenfalls auf `127.0.0.1`, und
   nginx reicht die Anfragen verschlüsselt weiter. Nur Modus `[3]` bindet direkt an alle Adressen
   (`--host 0.0.0.0`) — und genau dafür gilt der nächste Punkt.
