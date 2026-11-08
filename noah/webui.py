@@ -138,6 +138,11 @@ padding:6px 0;border-top:1px solid #12241f}
 .cardmain{display:flex;flex-direction:column;gap:10px;min-width:0}
 @container (min-width:560px){.cardgrid{grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr)}}
 @media (min-width:900px){.card.running{grid-column:span 2}}
+.settabs{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px;border-bottom:1px solid #16302a;padding-bottom:8px}
+.settabs button small{opacity:.55;font-size:10px;margin-left:4px}
+.settabs button.on{border-color:var(--acc);color:var(--acc)}
+.setgroup{display:none}
+.setgroup.on{display:block}
 .logwrap{background:#070f13;border:1px solid #12241f;border-radius:4px;padding:6px 8px;min-width:0}
 .loghead{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin-bottom:4px}
 .cardlog{margin:0;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:9.5px;line-height:1.35;
@@ -866,34 +871,51 @@ async function saveCluster(){
     loadCluster();
   }catch(e){ msg.textContent=String(e); }
 }
+const SETGROUP_ORDER=['srv','play','pvp','struct','dino','transfer','hud','motd','game'];
+function _setField(v){
+  const i=SETTINGS.indexOf(v);
+  let field;
+  if(v.type==='bool'){
+    const on=(v.value||'').toLowerCase()==='true';
+    field=`<div class="bool"><input type="checkbox" data-i="${i}" ${on?'checked':''}></div>`;
+  } else if(v.type==='longtext'){
+    field=`<textarea data-i="${i}" rows="4" style="width:100%;resize:vertical"
+             >${(v.value||'').replace(/\\n/g,String.fromCharCode(10)).replace(/</g,'&lt;')}</textarea>`;
+  } else {
+    const t=(v.type==='int'||v.type==='float')?'number':'text';
+    field=`<input type="${t}" data-i="${i}" value="${(v.value||'').replace(/"/g,'&quot;')}"
+             placeholder="${v.type==='bool'?'True/False':''}">`;
+  }
+  return `<div class="setrow"><label><b>${v.label}</b><small>${v.key}${v.hint?(' · '+v.hint):''}</small></label>${field}</div>`;
+}
+function showSetGroup(g){
+  document.querySelectorAll('#settings .setgroup').forEach(el=>el.classList.toggle('on', el.dataset.g===g));
+  document.querySelectorAll('#settabs button').forEach(b=>b.classList.toggle('on', b.dataset.g===g));
+  try{ localStorage.setItem('noah.setgroup', g); }catch(e){}
+}
 async function loadSettings(){
   SETTINGS=JSON.parse(await api('/api/settings'));
-  const groups={};
-  SETTINGS.forEach(v=>{ const g=v.file==='gus'?'GameUserSettings.ini':'Game.ini';
-    (groups[g]=groups[g]||[]).push(v); });
-  const blocks = Object.entries(groups).map(([file,items])=>{
-    const bySect = {};
-    items.forEach(v=>{ (bySect[v.section]=bySect[v.section]||[]).push(v); });
-    const inner = Object.entries(bySect).map(([sec,list])=>
-      `<div class="meta" style="margin:10px 0 2px;opacity:.75">${sec}</div>` + list.map(v=>{
-      const i=SETTINGS.indexOf(v);
-      let field;
-      if(v.type==='bool'){
-        const on=(v.value||'').toLowerCase()==='true';
-        field=`<div class="bool"><input type="checkbox" data-i="${i}" ${on?'checked':''}></div>`;
-      } else if(v.type==='longtext'){
-        field=`<textarea data-i="${i}" rows="4" style="width:100%;resize:vertical"
-                 >${(v.value||'').replace(/\\n/g,String.fromCharCode(10)).replace(/</g,'&lt;')}</textarea>`;
-      } else {
-        const t=(v.type==='int'||v.type==='float')?'number':'text';
-        field=`<input type="${t}" data-i="${i}" value="${(v.value||'').replace(/"/g,'&quot;')}"
-                 placeholder="${v.type==='bool'?'True/False':''}">`;
-      }
-      return `<div class="setrow"><label><b>${v.label}</b><small>${v.key}${v.hint?(' · '+v.hint):''}</small></label>${field}</div>`;
-    }).join('')).join('');
-    return `<div class="meta" style="margin:12px 0 4px;font-weight:600">${file}</div>` + inner;
+  const byGroup={};
+  SETTINGS.forEach(v=>{ const g=v.group||'play'; (byGroup[g]=byGroup[g]||[]).push(v); });
+  const present=SETGROUP_ORDER.filter(g=>byGroup[g]);
+  const tabs=present.map(g=>{
+    const n=byGroup[g].length;
+    return `<button data-g="${g}" onclick="showSetGroup('${g}')">${L['setg.'+g]||g} <small>${n}</small></button>`;
   }).join('');
-  document.getElementById('settings').innerHTML = blocks;
+  const blocks=present.map(g=>{
+    const bySect={};
+    byGroup[g].forEach(v=>{ (bySect[v.file+'|'+v.section]=bySect[v.file+'|'+v.section]||[]).push(v); });
+    const inner=Object.entries(bySect).map(([k,list])=>{
+      const p=k.split('|'), file=p[0]==='gus'?'GameUserSettings.ini':'Game.ini';
+      return `<div class="meta" style="margin:10px 0 2px;opacity:.75">${file} · ${p[1]}</div>`+
+        list.map(_setField).join('');
+    }).join('');
+    return `<div class="setgroup" data-g="${g}">${inner}</div>`;
+  }).join('');
+  document.getElementById('settings').innerHTML=`<div class="settabs" id="settabs">${tabs}</div>`+blocks;
+  let g=''; try{ g=localStorage.getItem('noah.setgroup')||''; }catch(e){}
+  if(!byGroup[g]) g=present[0]||'play';
+  showSetGroup(g);
 }
 async function saveSettings(){
   const payload=[];

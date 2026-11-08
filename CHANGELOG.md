@@ -4,6 +4,14 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.48] — 2026-11-08
+
+### Neu
+- **Reiter im Einstellungs-Formular:** die 90 bekannten INI-Werte sind in neun Gruppen sortiert —
+  Server & Zugang, Spiel & Tempo, PvP & Regeln, Strukturen & Verfall, Dinos & Zucht, Transfer & Cluster,
+  Anzeige, MOTD und Game.ini. Jeder Reiter nennt seine Anzahl; die Auswahl merkt sich der Browser.
+- Gespeichert wird weiterhin alles auf einmal — die Felder der anderen Reiter bleiben erhalten.
+
 ## [0.3.47] — 2026-11-08
 
 ### Geändert

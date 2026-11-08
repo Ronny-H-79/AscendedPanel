@@ -164,6 +164,44 @@ def _parse_ini(text: str) -> dict[tuple[str, str], str]:
     return values
 
 
+# Reiter im Einstellungs-Formular: Schluessel -> Gruppe. Bewusst hier gepflegt,
+# damit die Gruppierung zentral steht und nicht im JavaScript steckt.
+_SRV = {"ServerPassword", "ServerAdminPassword", "MaxPlayers", "RCONEnabled", "RCONPort",
+        "AutoSavePeriodMinutes", "KickIdlePlayersPeriod", "AdminLogging"}
+_PVP = {"ServerPVE", "ServerHardcore", "AllowFlyerCarryPvP", "AllowRaidDinoFeeding",
+        "AllowMultipleAttachedC4", "PreventOfflinePvP", "PreventOfflinePvPInterval",
+        "PreventTribeAlliances", "MaxNumberOfPlayersInTribe", "TribeNameChangeCooldown"}
+_DINO = {"MaxTamedDinos", "MaxPersonalTamedDinos", "AllowAnyoneBabyImprintCuddle",
+         "DisableImprintDinoBuff", "RaidDinoCharacterFoodDrainMultiplier",
+         "DinoCharacterFoodDrainMultiplier", "DinoCountMultiplier"}
+_HUD = {"AllowThirdPersonPlayer", "ShowMapPlayerLocation", "ShowFloatingDamageText", "AllowHitMarkers"}
+_STRUCT_EXTRA = {"AllowCaveBuildingPvE", "AutoDestroyDecayedDinos", "DisableDinoDecayPvE",
+                 "PvEDinoDecayPeriodMultiplier", "bDisableStructurePlacementCollision"}
+_TRANSFER_IN = {"NoTributeDownloads", "CrossARKAllowForeignDinoDownloads"}
+GROUPS = ("srv", "play", "pvp", "struct", "dino", "transfer", "hud", "motd", "game")
+
+
+def group_of(which: str, section: str, key: str) -> str:
+    """Einstellung einem Reiter zuordnen (Reihenfolge der Pruefungen ist wichtig)."""
+    if which == "game":
+        return "game"
+    if section == "MessageOfTheDay":
+        return "motd"
+    if key in _SRV or section == "SessionSettings":
+        return "srv"
+    if key.startswith(("PreventDownload", "PreventUpload")) or key in _TRANSFER_IN:
+        return "transfer"
+    if key in _PVP:
+        return "pvp"
+    if "Structure" in key or key in _STRUCT_EXTRA:
+        return "struct"
+    if key in _DINO:
+        return "dino"
+    if key in _HUD:
+        return "hud"
+    return "play"
+
+
 def read_values(inst: Instance) -> list[dict]:
     """Alle bekannten Einstellungen mit aktuellem Wert (GUI-Formular)."""
     from .i18n import setting
@@ -175,7 +213,8 @@ def read_values(inst: Instance) -> list[dict]:
             cache[which] = _parse_ini(read(inst, which))
         value = cache[which].get((section.lower(), key.lower()), "")
         out.append({"file": which, "section": section, "key": key, "label": label,
-                    "hint": hint, "type": typ, "value": value})
+                    "hint": hint, "type": typ, "value": value,
+                    "group": group_of(which, section, key)})
     return out
 
 

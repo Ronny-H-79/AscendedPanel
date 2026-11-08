@@ -4,6 +4,14 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.48] — 2026-11-08
+
+### Added
+- **Tabs in the settings form:** the 90 known INI values are sorted into nine groups — Server & access,
+  Gameplay & rates, PvP & rules, Structures & decay, Dinos & breeding, Transfer & cluster, Display, MOTD
+  and Game.ini. Each tab shows its count; the browser remembers the last choice.
+- Saving still writes everything at once — fields on the other tabs are kept.
+
 ## [0.3.47] — 2026-11-08
 
 ### Changed
