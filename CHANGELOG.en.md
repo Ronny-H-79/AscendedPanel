@@ -4,6 +4,13 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.12] — 2026-11-08
+
+### Fixed
+- **The changelog button showed the initial install.** Self-update replaced only the package directory, so
+  the `CHANGELOG*.md` files next to it stayed stale. The update now carries both files along, and the UI
+  re-fetches the text when its own version is missing.
+
 ## [0.3.11] — 2026-11-08
 
 ### Fixed

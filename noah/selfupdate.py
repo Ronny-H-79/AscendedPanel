@@ -194,6 +194,16 @@ def changelog(lang: str = "de", timeout: int = 10) -> dict:
     import base64
     name = "CHANGELOG.en.md" if (lang or "").lower().startswith("en") else "CHANGELOG.md"
     local = _local_changelog(name) or _changelog_cache(name)
+    # Veraltet? Wenn die installierte Version im Text fehlt, neu holen.
+    if local and installed_version() and ("[%s]" % installed_version()) not in local:
+        try:
+            fresh = _get("https://raw.githubusercontent.com/%s/%s/%s" % (REPO, BRANCH, name),
+                         timeout).decode("utf-8", "replace")
+            if fresh:
+                _store_changelog(name, fresh)
+                local = fresh
+        except Exception:  # noqa: BLE001
+            pass
     if local:
         return {"ok": True, "lang": lang, "file": name, "text": local,
                 "url": "https://github.com/%s/blob/%s/%s" % (REPO, BRANCH, name)}
@@ -283,6 +293,16 @@ def apply(target: str = "", timeout: int = 60) -> dict:
         new_pkg = os.path.join(work, roots[0], "noah")
         if not os.path.isdir(new_pkg):
             return {"ok": False, "error": "Paketordner noah/ fehlt im Archiv"}
+
+        # Changelog mitziehen, sonst zeigt die Oberflaeche den Stand der Erstinstallation
+        root = os.path.join(work, roots[0])
+        for extra in ("CHANGELOG.md", "CHANGELOG.en.md"):
+            src = os.path.join(root, extra)
+            if os.path.isfile(src):
+                try:
+                    shutil.copy2(src, os.path.join(os.path.dirname(target.rstrip("/")), extra))
+                except OSError:
+                    pass
 
         old_version = installed_version()
         stamp = time.strftime("%Y%m%d-%H%M%S")

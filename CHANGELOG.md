@@ -4,6 +4,13 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.12] — 2026-11-08
+
+### Behoben
+- **Der Changelog-Knopf zeigte den Stand der Erstinstallation.** Das Selbst-Update ersetzt nur das
+  Paketverzeichnis, die `CHANGELOG*.md` daneben blieben liegen. Jetzt zieht das Update beide Dateien mit,
+  und die Oberfläche holt den Text frisch, wenn die eigene Version darin fehlt.
+
 ## [0.3.11] — 2026-11-08
 
 ### Behoben
