@@ -11,6 +11,10 @@ jederzeit umschalten (Knopf oben rechts, `noah lang en` in der Konsole).
 Ein eigener Servermanager für ARK-ASA-Dedicated-Server: Start, Stop, Updates, Mods, Backups,
 Einstellungen und Spielerverwaltung über eine Weboberfläche.
 
+> **Keine App, kein Installer für Windows oder macOS.** noah läuft als Dienst auf dem Linux-Server,
+> bedient wird es im **Browser** — vom PC, Notebook, Tablet oder Handy, im Heimnetz oder über VPN.
+> Es gibt nichts herunterzuladen und keine Datei zum Starten: nur eine Adresse mit Token.
+
 Reines Python (nur Standardbibliothek), SteamCMD für Installation und Updates, Wine für den
 Serverprozess, RCON für alles, was der Server von außen anbietet.
 

@@ -11,6 +11,10 @@ any time (button in the top right, `noah lang en` on the console).
 Your own server manager for ARK ASA dedicated servers: start, stop, updates, mods, backups, settings
 and player management through a web interface.
 
+> **Not an app — no installer for Windows or macOS.** noah runs as a service on the Linux server and
+> is used in a **browser**: from your PC, laptop, tablet or phone, on your LAN or over VPN. There is
+> nothing to download and no file to launch — just an address with a token.
+
 Plain Python (standard library only), SteamCMD for install and updates, Wine for the server process,
 RCON for everything the server exposes.
 
