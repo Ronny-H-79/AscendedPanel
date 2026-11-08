@@ -1,157 +1,148 @@
-# Zugriff auf die Oberfläche
+# Reaching the interface
 
-Wie du die Weboberfläche erreichst — lokal, über SSH-Tunnel, im Netz oder öffentlich per HTTPS.
+How to get to the web UI — locally, over an SSH tunnel, in your network or publicly via HTTPS.
 
-[← zurück zum README](../README.md) · [English](zugriff.en.md)
+[← back to the README](../README.md) · [Deutsch](zugriff.de.md)
 
-## Zugriff auf die Oberfläche (auch von woanders)
+## Reaching the interface (also from somewhere else)
 
-Standardmäßig hört noah nur auf `127.0.0.1` — die Oberfläche ist damit ausschließlich auf dem
-Rechner selbst erreichbar. Das ist Absicht. Drei Wege, von woanders dranzukommen:
+By default noah listens on `127.0.0.1` only — the UI is then reachable on that machine alone. That is
+intentional. Three ways to get to it from elsewhere:
 
-**1. SSH-Tunnel (empfohlen, nichts zu konfigurieren)**
+**1. SSH tunnel (recommended, nothing to configure)**
 
-Läuft noah auf einem Server, baust du von deinem Rechner aus einen Tunnel:
+If noah runs on a server, build a tunnel from your machine:
 
 ```bash
-ssh -N -L 8790:127.0.0.1:8790 nutzer@server
+ssh -N -L 8790:127.0.0.1:8790 user@server
 ```
 
-Den Token holst du dir in einem zweiten Terminal vom Server:
+Get the token in a second terminal on the server:
 
 ```bash
 ssh root@server noah url
 ```
 
-Die Ausgabe ist die komplette Adresse inklusive Token — die öffnest du in deinem Browser
-(`http://127.0.0.1:8790/?token=…`), der Tunnel leitet sie auf den Server. Der Verkehr ist
-Ende-zu-Ende durch SSH verschlüsselt, nach außen ist nichts offen.
+The output is the full address including the token — open it in your browser
+(`http://127.0.0.1:8790/?token=…`), the tunnel forwards it to the server. Traffic is encrypted end to end
+by SSH and nothing is exposed.
 
-Wo der Token liegt, falls du ihn lieber direkt liest: `~/.config/noah/token` auf dem Server
-(Rechte `0600`, also nur für den Benutzer lesbar, der noah installiert hat — bei einer
-root-Installation `/root/.config/noah/token`). `noah url` zeigt beides an: die Adresse und den Pfad
-zur Datei.
+Where the token lives, if you prefer reading it: `~/.config/noah/token` on the server (mode `0600`, so
+only the user who installed noah can read it — for a root install `/root/.config/noah/token`).
+`noah url` shows both the address and the path to the file.
 
-**2. Im eigenen Netz (LAN, VPN, Tailscale)**
+**2. In your own network (LAN, VPN, Tailscale)**
 
 ```bash
-noah web --host 0.0.0.0        # oder die VPN-Adresse, z. B. --host 100.x.y.z
+noah web --host 0.0.0.0        # or the VPN address, e.g. --host 100.x.y.z
 ```
 
-Dann ist die Oberfläche unter `http://<ip-des-servers>:8790/?token=…` erreichbar — der Token bleibt
-Pflicht. noah warnt beim Start, dass die Verbindung unverschlüsselt ist; im LAN oder im Tailscale-Netz
-ist das vertretbar. Für den Dauerbetrieb `--host` in `ExecStart` von `noah-web.service` ergänzen und
-`systemctl --user daemon-reload && systemctl --user restart noah-web` ausführen.
+The UI is then reachable at `http://<server-ip>:8790/?token=…` — the token is still required. noah warns
+at startup that the connection is unencrypted; inside a LAN or a Tailscale network that is acceptable.
+For permanent operation add `--host` to `ExecStart` of `noah-web.service` and run
+`systemctl --user daemon-reload && systemctl --user restart noah-web`.
 
-**2b. Direkt über IP und Port (ohne HTTPS)**
+**2b. Directly via IP and port (without HTTPS)**
 
 ```bash
 noah web --host 0.0.0.0
 ```
 
-Dann `http://<server-ip>:8790/?token=…`. Der Installer wählt das mit `[3]` und legt den Dienst
-gleich mit `--host 0.0.0.0` an. Achtung: unverschlüsselt — im LAN oder bei eigenem Firewall-Zugriff
-vertretbar, offen im Internet nicht.
+Then `http://<server-ip>:8790/?token=…`. The installer picks this with `[3]` and creates the service with
+`--host 0.0.0.0` right away. Careful: unencrypted — acceptable in a LAN or behind your own firewall, not
+openly on the internet.
 
-**3. Aus dem Internet: `noah proxy` richtet nginx ein**
+**3. From the internet: `noah proxy` sets up nginx**
 
-Für ein Zertifikat braucht es einen Namen, der auf den Server zeigt (z. B. `noah.example.de`).
-Dann übernimmt noah die nginx-Konfiguration — mit HTTPS, Weiterleitung von HTTP, langen Timeouts
-für Snapshots und ohne Token in den Logs:
+A certificate needs a name pointing at the server (e.g. `noah.example.de`). noah then writes the nginx
+configuration — with HTTPS, HTTP redirect, long timeouts for snapshots and no token in the logs:
 
 ```bash
-noah proxy --domain noah.example.de                       # Konfiguration nur anzeigen
-noah proxy --domain noah.example.de > noah.conf           # in eine Datei schreiben
+noah proxy --domain noah.example.de                       # just print the configuration
+noah proxy --domain noah.example.de > noah.conf           # write it to a file
 
-sudo noah proxy --domain noah.example.de --write --cert   # schreiben, prüfen, nginx laden, Zertifikat holen
+sudo noah proxy --domain noah.example.de --write --cert   # write, test, reload nginx, get a certificate
 ```
 
-`--write` legt `/etc/nginx/sites-available/noah-<domain>.conf` an, verlinkt sie nach `sites-enabled`,
-lässt `nginx -t` laufen und lädt nginx neu. Schlägt der Test fehl, wird alles wieder entfernt —
-kein kaputter nginx bleibt zurück. `--cert` ruft anschließend certbot auf
-(`--email du@example.de` optional, sonst ohne Adresse).
+`--write` creates `/etc/nginx/sites-available/noah-<domain>.conf`, links it into `sites-enabled`, runs
+`nginx -t` and reloads nginx. If the test fails everything is removed again — no broken nginx is left
+behind. `--cert` then calls certbot (`--email you@example.de` optional, otherwise without an address).
 
-Zusätzliche Anmeldung vor dem Token:
+Extra login in front of the token:
 
 ```bash
-sudo htpasswd -c /etc/nginx/.htpasswd-noah deinname
+sudo htpasswd -c /etc/nginx/.htpasswd-noah yourname
 sudo noah proxy --domain noah.example.de --write --cert --auth-file /etc/nginx/.htpasswd-noah
 ```
 
-**4. Ohne nginx: HTTPS direkt in noah**
+**4. Without nginx: HTTPS inside noah**
 
-Kleiner Aufbau, z. B. im LAN mit eigenem Zertifikat:
+Small setup, e.g. in a LAN with your own certificate:
 
 ```bash
-noah web --host 0.0.0.0 --tls-cert /pfad/cert.pem --tls-key /pfad/key.pem
+noah web --host 0.0.0.0 --tls-cert /path/cert.pem --tls-key /path/key.pem
 ```
 
-Dann spricht die Oberfläche selbst HTTPS (getestet: `HTTP 200` mit Token, `401` ohne).
+The UI then speaks HTTPS itself (tested: `HTTP 200` with token, `401` without).
 
-**In allen Fällen gilt:** ohne Token antwortet die Oberfläche mit `HTTP 401`. Der Token ist kein
-Passwort, sondern der Zugangsschlüssel — wer ihn hat und den Port erreicht, kann den Server steuern.
+**In every case:** without a token the UI answers `HTTP 401`. The token is not a password but the access
+key — whoever has it and can reach the port controls the server.
 
-## Sicherheit — was der Token bedeutet
+## Security — what the token means
 
-Die Oberfläche ist eine **Administrationskonsole**, kein Schaufenster: wer den Token hat, kann Server
-starten, stoppen und löschen, Mods eintragen, Backups anlegen und über die Konsole beliebige
-Server-Befehle absetzen. Behandle den Link wie ein Passwort.
+The UI is an **admin console**, not a shop window: whoever has the token can start, stop and delete
+servers, add mods, create backups and send arbitrary console commands. Treat the link like a password.
 
-Daraus folgen drei Regeln:
+Three rules follow:
 
-- **`127.0.0.1` genügt überall dort, wo etwas davorsteht.** Bei einer Client-Installation (Modus `[1]`)
-  läuft noah auf dem Server und hört nur lokal; die **Serveradresse** brauchst du im Tunnelbefehl
-  (`ssh -N -L 8790:127.0.0.1:8790 nutzer@server`) — offen sein muss dafür nur SSH, noah selbst öffnet
-  keinen Port.
-  Bei einer Server-Installation mit Domain (Modus `[2]`) bleibt noah ebenfalls auf `127.0.0.1`, und
-  nginx reicht die Anfragen verschlüsselt weiter. Nur Modus `[3]` bindet direkt an alle Adressen
-  (`--host 0.0.0.0`) — und genau dafür gilt der nächste Punkt.
-- **Unverschlüsseltes HTTP im Internet ist keine Option.** Im Modus `[3]` (direkt über IP und Port)
-  wandert der Token im Klartext über jede Zwischenstation — WLAN, Proxy, Anbieter, Firmennetz. Wer ihn
-  dort mitliest, hat Vollzugriff. Wenn es öffentlich sein muss: Modus `[2]` mit HTTPS.
-- **Der Token steht in der Adresse**, also auch im Browser-Verlauf und in Lesezeichen. noah setzt
-  `Referrer-Policy: no-referrer`, damit er nicht über Klicks auf fremde Seiten abfließt; beim Weitergeben
-  eines Links geht er trotzdem mit. Neuen Token erzeugen: `rm ~/.config/noah/token` und Dienst neu
-  starten (`systemctl --user restart noah-web` bzw. `systemctl restart noah-web`).
+- **`127.0.0.1` is enough wherever something sits in front.** With a client install (mode `[1]`) noah runs
+  on the server and listens locally; you need the **server address** in the tunnel command
+  (`ssh -N -L 8790:127.0.0.1:8790 user@server`) — only SSH has to be open, noah itself opens no port.
+  With a server install behind a domain (mode `[2]`) noah also stays on `127.0.0.1` and nginx forwards the
+  requests encrypted. Only mode `[3]` binds to all addresses (`--host 0.0.0.0`) — and that is what the next
+  point is about.
+- **Unencrypted HTTP on the internet is not an option.** In mode `[3]` the token travels in clear text
+  through every hop — Wi-Fi, proxy, hosting provider, corporate network. Whoever reads it has full access.
+  If it must be public: mode `[2]` with HTTPS.
+- **The token sits in the URL**, so it also lands in browser history and bookmarks. noah sets
+  `Referrer-Policy: no-referrer` so it does not leak when clicking external links, but sharing the link
+  passes it on. Create a new token: `rm ~/.config/noah/token` and restart the service
+  (`systemctl --user restart noah-web` or `systemctl restart noah-web`).
 
-Was noah selbst absichert: jeder Aufruf ohne gültigen Token endet mit `401`, der Token wird in
-konstanter Zeit verglichen, Antworten tragen `nosniff`, `X-Frame-Options: DENY` und eine restriktive
-CSP, Mod- und Spieler-IDs werden validiert, und die Bild-Auslieferung kann das Verzeichnis nicht
-verlassen. Was noah **nicht** kann: deinen Server absichern, auf dem es läuft — Firewall, Updates und
-ein starker SSH-Zugang bleiben deine Aufgabe.
+What noah itself protects: every request without a valid token returns `401`, the token is compared in
+constant time, responses carry `nosniff`, `X-Frame-Options: DENY` and a restrictive CSP, mod and player
+IDs are validated, and image delivery cannot leave its directory. What noah **cannot** do: secure the
+machine it runs on — firewall, updates and a strong SSH setup remain your job.
 
-## Der Token — wozu der gut ist
+## The token — what it is for
 
-Beim ersten Start erzeugt noah einen zufälligen Schlüssel und legt ihn in
-`~/.config/noah/token` ab (Rechte `0600`, also nur für deinen Benutzer lesbar).
-Die Adresse sieht damit so aus:
+On first start noah creates a random key and stores it in `~/.config/noah/token` (mode `0600`, readable by
+your user only). The address then looks like this:
 
 ```
-http://127.0.0.1:8790/?token=<dein-schluessel>
+http://127.0.0.1:8790/?token=<your-key>
 ```
 
-Anzeigen kannst du sie jederzeit mit `noah url`; `noah open` öffnet sie direkt im Browser. Die
-Adresse erscheint auch beim Start von `noah web` und am Ende der Installation.
+Show it any time with `noah url`; `noah open` opens it in the browser. It also appears when `noah web`
+starts and at the end of the installation.
 
-**Warum überhaupt, wo die Oberfläche doch nur lokal läuft?**
-Der Webserver hört ausschließlich auf `127.0.0.1` — aus dem Internet ist er nicht erreichbar.
-Trotzdem reicht der Token nicht zum Selbstzweck:
+**Why at all, if the UI only runs locally?**
+The web server listens on `127.0.0.1` exclusively — it cannot be reached from the internet. The token is
+still not pointless:
 
-1. **Jede Webseite in deinem Browser darf `http://127.0.0.1:…` aufrufen.** Das ist kein Angriff
-   über das Netzwerk, sondern läuft aus deinem eigenen Browser heraus. Ohne Token könnte eine
-   beliebige offene Seite im Hintergrund `POST /api/stop` schicken und deinen Server herunterfahren,
-   oder Befehle per `/api/command` absetzen. Mit Token nicht — sie kennt ihn nicht.
-2. **Andere Benutzer und Programme auf demselben Rechner.** Der Token ist die einzige Zugangskontrolle;
-   ohne ihn darf jeder lokale Prozess deine Server steuern.
+1. **Any website in your browser may call `http://127.0.0.1:…`.** That is not a network attack but runs
+   from inside your own browser. Without a token, any open page could send `POST /api/stop` in the
+   background and shut your server down, or issue commands via `/api/command`. With a token it cannot — it
+   does not know it.
+2. **Other users and programs on the same machine.** The token is the only access control; without it any
+   local process could control your servers.
 
-**Was der Token nicht ist:** kein Benutzerkonto, kein Passwort, keine Verschlüsselung.
-Wer die Datei lesen kann, hat vollen Zugriff — deshalb `0600` und deshalb gehört der Token
-**nicht** in Screenshots, ins README oder ins Repository.
+**What the token is not:** no user account, no password, no encryption. Whoever can read the file has full
+access — hence `0600`, and hence the token does **not** belong in screenshots, the README or the
+repository.
 
-**Ohne oder mit falschem Token antwortet die Oberfläche mit `HTTP 401`.** Der Token lässt sich
-alternativ als Header senden (`X-Token: <schlüssel>`), praktisch ist aber der Query-Parameter.
+**Without or with a wrong token the UI answers `HTTP 401`.** The token can also be sent as a header
+(`X-Token: <key>`), but the query parameter is the practical route.
 
-**Token zurücksetzen:** `~/.config/noah/token` löschen — beim nächsten Start entsteht ein neuer.
-Achtung: danach sind alte Lesezeichen und geteilte Links tot. Backups und Instanzen sind davon
-nicht betroffen, die liegen woanders.
-
+**Reset the token:** delete `~/.config/noah/token` — a new one is created on the next start. Note that old
+bookmarks and shared links stop working. Backups and instances are unaffected.

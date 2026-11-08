@@ -1,48 +1,38 @@
-# Betrieb
+# Operation
 
-noah aktuell halten, Sprache umstellen.
+Keeping noah up to date, switching the language.
 
-[← zurück zum README](../README.md) · [English](betrieb.en.md)
+[← back to the README](../README.md) · [Deutsch](betrieb.de.md)
 
-## noah aktuell halten
+## Keeping noah up to date
 
-Was sich zwischen den Versionen geändert hat, steht in [CHANGELOG.md](CHANGELOG.md) — und beim
-Update-Klick zeigt der Dialog die Änderungen der neuen Version direkt an.
+What changed between versions is in [CHANGELOG.en.md](../CHANGELOG.en.md) — and when you click update the
+dialog shows the changes of the new version right there.
 
+The top right shows the version. If GitHub has a newer one, the button turns coloured and shows both
+states: **`v0.3.16 → 0.3.17`**. One click downloads the new package, replaces only the program directory
+and restarts the web service — instances, backups and settings stay untouched. The previous state remains
+next to it as `noah.bak-<timestamp>`.
 
-Oben rechts steht die Version (`v0.2.3`). Liegt auf GitHub eine neuere, wird der Knopf farbig und
-zeigt beide Stände: **`v0.2.2 → 0.2.3`**. Ein Klick lädt das neue Paket, ersetzt nur das
-Programmverzeichnis und startet den Web-Dienst neu — Instanzen, Backups und Einstellungen bleiben
-unberührt. Der vorherige Stand bleibt als `noah.bak-<zeitstempel>` daneben liegen.
-
-Auf der Konsole:
-
-```bash
-noah version        # installiert + verfügbar
-noah self-update    # einspielen (Dienst wird neu gestartet)
-```
-
-Geprüft wird über die GitHub-API (Version aus `noah/__init__.py`). Kein git nötig, auch eine
-Installation aus einem Archiv lässt sich so aktualisieren.
-
-**Ältere Installationen** (vor 0.2.1) kennen `self-update` noch nicht — dort einmalig von Hand:
+On the console:
 
 ```bash
-cd ~/noah && git pull && ./install.sh
+noah version        # installed + available
+noah self-update    # apply (service is restarted)
 ```
 
-Danach steht `noah self-update` zur Verfügung.
+The check goes through the GitHub API (version from `noah/__init__.py`). No git needed, so an installation
+from an archive can update itself too.
 
-## Sprache
+## Language
 
 | | |
 |---|---|
-| **Beim Installieren** | `./install.sh` fragt „Sprache / Language" — oder direkt `./install.sh --lang en` |
-| **Später wechseln** | `noah lang en` / `noah lang de` (schreibt `~/.config/noah/settings.json`) |
-| **In der Weboberfläche** | Knopf `EN` / `DE` oben rechts, Seite lädt neu |
+| **At install time** | `./install.sh` asks "Sprache / Language" — or directly `./install.sh --lang en` |
+| **Later** | `noah lang en` / `noah lang de` (writes `~/.config/noah/settings.json`) |
+| **In the UI** | button `EN` / `DE` in the top right, the page reloads |
 
-Alle Beschriftungen, Formularfelder, Befehlsschaltflächen, Rückfragen und Meldungen liegen in
-`noah/i18n.py` (Deutsch und Englisch). Neue Texte brauchen nur einen weiteren Eintrag im Katalog.
+Every label, form field, command button, prompt and message lives in `noah/i18n.py` (German and English).
+New text only needs one more entry in the catalogue.
 
-![Dashboard englisch](screenshot-dashboard-en.png)
-
+![Dashboard English](screenshot-dashboard-en.png)

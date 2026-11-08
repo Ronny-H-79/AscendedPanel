@@ -1,103 +1,100 @@
-# Funktionen
+# Features
 
-Was noah kann: Überblick, Screenshots, Mod-Verwaltung und Benachrichtigungen.
+What noah does: overview, screenshots, mod management and notifications.
 
-[← zurück zum README](../README.md) · [English](funktionen.en.md)
+[← back to the README](../README.md) · [Deutsch](funktionen.de.md)
 
-## Was es kann
+## What it does
 
-| Bereich | Funktion |
+| Area | Feature |
 |---|---|
-| **Instanzen** | beliebig viele Server, eigenes Verzeichnis, automatische Portvergabe, anlegen und löschen |
-| **Steuerung** | Start · Stop · Restart · Update (inkl. Build-Prüfung) und Löschen direkt auf der Dashboard-Karte; die Instanzseite zeigt Server-Log, Befehle und Spieler |
-| **Konsole** | RCON-Befehle als Klick-Buttons (Save, Broadcast, Dino-Wipe, Zeit, MOTD …) + freies Feld |
-| **Spieler** | Liste mit SteamID, Kick, Ban, Unban, Whitelist, Items geben |
-| **Mods** | hinzufügen/entfernen, aktiv/inaktiv, Bilder und Beschreibung von CurseForge |
-| **Sprache** | Deutsch und Englisch, Wahl beim Installieren oder jederzeit umschaltbar |
-| **Einstellungen** | INI-Werte als Formular (Schwierigkeit, Zähm-, XP-, Ernte-Multiplikatoren …) oder roh |
-| **Backups** | Welt sichern, einspielen, planen, aufräumen — mit SaveWorld vor dem Packen |
-| **Snapshots** | vollständige Instanz-Kopie für Rollback nach einem kaputten Update |
-| **Zeitplan** | Neustarts mit Countdown-Broadcast, automatische Backups |
-| **Überwachung** | CPU, RAM (Ist-Wert und Spitze), Spieler, Laufzeit pro Instanz, Auto-Restart nach Absturz |
-| **Betrieb** | systemd-Dienst, mehrere Instanzen in einem Prozess; der Überwachungsdienst wird beim Installieren einer Instanz automatisch eingerichtet (als root ein Systemdienst) |
+| **Instances** | any number of servers, own directory, automatic port picking, create and delete |
+| **Control** | start · stop · restart · update (with build check) and delete right on the dashboard card; the instance page shows server log, commands and players |
+| **Console** | RCON commands as one-click buttons (save, broadcast, dino wipe, time, MOTD …) plus a free input |
+| **Players** | list with SteamID, kick, ban, unban, whitelist, give items |
+| **Mods** | add/remove, active/inactive, images and descriptions from CurseForge |
+| **Language** | German and English, chosen at install time or switched any time |
+| **Settings** | INI values as a form (difficulty, taming, XP, harvest multipliers …) or raw |
+| **Backups** | save the world, restore, schedule, prune — with SaveWorld before packing |
+| **Snapshots** | full instance copy for a rollback after a broken update |
+| **Schedule** | restarts with countdown broadcast, automatic backups |
+| **Monitoring** | CPU, RAM (current and peak), players, uptime per instance, auto-restart after a crash |
+| **Operation** | systemd service, several instances in one process; the supervisor is set up automatically when you install an instance (a system service as root) |
 
-## Einblicke
+## Screenshots
 
-| Einstellungen als Formular | Mod-Verwaltung mit Bildern |
+| Settings as a form | Mod management with images |
 |---|---|
-| ![Einstellungen](screenshot-settings.png) | ![Mods](screenshot-mods.png) |
+| ![Settings](screenshot-settings.png) | ![Mods](screenshot-mods.png) |
 
-| Server-Log, Befehle und Spieler | Backups, Snapshots und Zeitplan |
+| Server log, commands and players | Backups, snapshots and schedule |
 |---|---|
-| ![Übersicht](screenshot-instance.png) | ![Verwaltung](screenshot-manage.png) |
+| ![Overview](screenshot-instance.png) | ![Management](screenshot-manage.png) |
 
-## Mods suchen
+## Searching for mods
 
-Im Reiter **Mods** gibt es ein Suchfeld. Drei Eingaben funktionieren:
+The **Mods** tab has a search field. Three kinds of input work:
 
-| Eingabe | Beispiel | Was passiert |
+| Input | Example | What happens |
 |---|---|---|
-| **Mod-ID** | `947033` | wird direkt übernommen |
-| **CurseForge-Link** | `https://www.curseforge.com/ark-survival-ascended/mods/spyglass` | Mod wird aufgelöst, mit Titel und Bild angezeigt |
-| **Suchbegriff** | `spy` | **Vorschläge erscheinen beim Tippen** — Bild, ID, Downloads; Klick übernimmt die Mod |
+| **Mod ID** | `947033` | taken over directly |
+| **CurseForge link** | `https://www.curseforge.com/ark-survival-ascended/mods/spyglass` | the mod is resolved, shown with title and image |
+| **Search term** | `spy` | **suggestions appear while you type** — image, ID, downloads; click to add |
 
-Für die **Namenssuche** braucht noah einen kostenlosen CurseForge-API-Key (Feld darunter,
-[console.curseforge.com](https://console.curseforge.com) → API Keys). Ohne Key ist die Suche
-unzuverlässig, weil CurseForge automatisierte Anfragen blockt — ID und Link funktionieren aber immer.
+For **searching by name** noah needs a free CurseForge API key (field below,
+[console.curseforge.com](https://console.curseforge.com) → API keys). Without a key the search is
+unreliable because CurseForge blocks automated requests — IDs and links always work.
 
-## Mod-Updates im Blick
+## Mod updates at a glance
 
-Im Reiter **Mods** steht bei jedem Mod, ob die installierte Datei noch die neueste ist. noah
-vergleicht den installierten Ordner (`<modid>_<fileid>`) mit der aktuellsten Datei auf CurseForge
-und zeigt bei Abweichung ein **UPDATE**-Kennzeichen samt „neu seit X Tagen". Damit sieht man sofort,
-welcher Modder noch nicht nachgeliefert hat — ohne jede Mod-Seite einzeln zu öffnen.
+The **Mods** tab shows for every mod whether the installed file is still the newest. noah compares the
+installed folder (`<modid>_<fileid>`) with the latest file on CurseForge and shows an **UPDATE** marker
+plus "new for X days" when they differ. You see at once which modder has not shipped yet — without
+opening every mod page.
 
-## Benachrichtigungen (Discord)
+## Notifications (Discord)
 
-Im Reiter **Verwaltung** trägt man eine Webhook-Adresse aus Discord ein
-(Servereinstellungen → Integrationen → Webhooks). Dann meldet sich noah im Channel, wenn etwas
-passiert, das man wissen muss:
+In the **Management** tab you paste a Discord webhook URL (server settings → integrations → webhooks).
+noah then reports to that channel when something happens that you need to know:
 
-| Ereignis | Wann |
+| Event | When |
 |---|---|
-| **Server abgestürzt** | Prozess ist ohne Abschied verschwunden — mit den letzten Logzeilen |
-| **Server hängt** | Prozess läuft, Spielport bleibt aber länger als `hang_seconds` zu |
-| **Server-Update verfügbar** | alle 6 Stunden Prüfung, einmal pro neuem Build |
-| **Backup fehlgeschlagen** | statt still zu scheitern |
-| **Neustart ausgeführt** | nach einem geplanten Neustart |
-| **Server gestoppt** | wenn du ihn selbst gestoppt hast (der Supervisor lässt ihn dann aus) |
+| **Server crashed** | the process vanished without saying goodbye — with the last log lines |
+| **Server hanging** | process runs, but the game port stays closed longer than `hang_seconds` |
+| **Server update available** | checked every 6 hours, once per new build |
+| **Backup failed** | instead of failing silently |
+| **Restart executed** | after a scheduled restart |
+| **Server stopped** | when you stopped it yourself (the supervisor then leaves it off) |
 
-Routine wie „Server gestartet" landet nur im Log (`<instanz>/.noah-notify.log`), damit der Channel
-nicht zumüllt. **Test senden** prüft den Webhook sofort.
+Routine like "server started" only goes to the log (`<instance>/.noah-notify.log`) so the channel does
+not fill up. **Send test** checks the webhook immediately.
 
-Wichtig: ein **manueller Stop** wird respektiert — der Supervisor startet den Server danach nicht
-wieder hoch, bis du ihn von Hand oder per Zeitplan startest.
+Important: a **manual stop** is respected — the supervisor will not start the server again until you
+start it by hand or via the schedule.
 
-## Instanz entfernen
+## Removing an instance
 
-Auf der Dashboard-Karte steht **Löschen**. Der Ablauf fragt zweimal:
+The dashboard card has **Delete**. The flow asks twice:
 
-1. „Instanz entfernen?" — der Eintrag wandert nach `~/.config/noah/.trash/`, die Serverdateien bleiben liegen.
-2. „Auch die Serverdateien löschen (X GB)?" — nur wenn du das bestätigst, wird das Serververzeichnis
-   entfernt. Abbrechen lässt die 12 GB unangetastet.
+1. "Remove the instance?" — the entry moves to `~/.config/noah/.trash/`, the server files stay.
+2. "Delete the server files too (X GB)?" — only if you confirm is the server directory removed.
+   Cancelling leaves the 12 GB untouched.
 
-Läuft der Server noch, wird er vorher sauber gestoppt (SaveWorld → DoExit). Gelöscht wird nur ein
-Verzeichnis, das wie ein Serverordner heißt (`arkserver…`) — ein falsch gesetzter Pfad kann so nicht
-deine Daten treffen.
+If the server is still running it is stopped first (SaveWorld → DoExit). Only a directory named like a
+server folder (`arkserver…`) is ever deleted — a wrong path cannot hit your data.
 
-## Was noah für dich übernimmt
+## What noah handles for you
 
-ARK-Server sind eigentlich Windows-Programme. Damit sie unter Linux zuverlässig laufen, sind ein
-paar Kniffe nötig — noah macht das automatisch, du musst davon nichts wissen:
+ARK servers are Windows programs. To run them reliably on Linux a few tricks are needed — noah does that
+automatically, you do not have to know about it:
 
-- **Der Server wird immer sauber beendet.** Vor jedem Stopp wird die Welt gespeichert. Einfach
-  „abwürgen" würde den Fortschritt seit dem letzten Autosave kosten — das passiert hier nicht.
-- **Kein zusätzliches Fenster.** Normalerweise öffnet sich beim Start ein schwarzes
-  Windows-Fenster mit Technik-Meldungen. Der Server läuft bei noah komplett im Hintergrund.
-- **Einstellungen bleiben erhalten.** Das Admin-Passwort und die Admin-Schnittstelle überleben
-  einen Neustart — bei einem manuell gestarteten Server überschreibt ARK diese Werte sonst.
-- **Befehle kommen an.** Alles, was du in der Weboberfläche schickst (Nachrichten, Dino-Wipe,
-  Spieler kicken), läuft über die offizielle Admin-Schnittstelle des Spiels.
-- **Der Anti-Cheat-Dienst bleibt aus.** Er blockiert unter Linux den Start; noah startet den
-  Server deshalb ohne ihn — auf einem eigenen Server ist das der übliche Weg.
-
+- **The server is always shut down cleanly.** The world is saved before every stop. Just cutting power
+  would cost everything since the last autosave — that does not happen here.
+- **No extra window.** Normally a black Windows console pops up with technical messages. Under noah the
+  server runs fully in the background.
+- **Settings survive.** The admin password and the admin interface survive a restart — with a manually
+  started server ARK overwrites those values.
+- **Commands arrive.** Everything you send from the UI (messages, dino wipe, kicking players) goes through
+  the game's official admin interface.
+- **The anti-cheat service stays off.** It blocks startup on Linux, so noah starts the server without it —
+  the usual way on your own server.

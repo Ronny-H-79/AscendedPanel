@@ -1,42 +1,40 @@
-# Technik
+# Internals
 
-Aufbau, Benutzung auf der Konsole, Stop-Reihenfolge und Hinweise für Entwickler.
+Structure, console usage, stop order and notes for developers.
 
-[← zurück zum README](../README.md) · [English](technik.en.md)
+[← back to the README](../README.md) · [Deutsch](technik.de.md)
 
-## Benutzung
+## Usage
 
 ```bash
-noah web               # Weboberfläche auf http://127.0.0.1:8790
-noah url               # fertige Adresse inklusive Token
-noah status            # Prozess, RCON, letzte Logzeile
+noah web               # web UI on http://127.0.0.1:8790
+noah url               # ready-made address including the token
+noah status            # process, RCON, last log line
 noah start --wait 240
 noah stop              # SaveWorld → DoExit → SIGTERM → SIGKILL
-noah update --check    # ist ein neuer Steam-Build verfügbar?
-noah supervise --all   # Auto-Restart, Zeitplan, Backups
+noah update --check    # is a new Steam build available?
+noah supervise --all   # auto-restart, schedule, backups
 ```
 
-## Aufbau
+## Structure
 
-| Datei | Aufgabe |
+| File | Purpose |
 |---|---|
-| `noah/instance.py` | Instanz-Konfiguration (JSON), Pfade, INI-Schreiben, Startparameter |
-| `noah/runner.py` | Start/Stop/Status/Update, RCON-Shutdown, Wartungssperre |
-| `noah/consoled.py` | startet den Server am PTY, damit Wine kein Fenster öffnet |
-| `noah/rcon.py` | eigener Source-RCON-Client |
-| `noah/supervisor.py` | Health-Check, Auto-Restart, Zeitplan, Countdown |
-| `noah/registry.py` | mehrere Instanzen, Portvergabe, Kennzahlen |
-| `noah/mods.py` · `whitelist.py` · `config.py` · `backups.py` · `snapshots.py` | Fachmodule |
-| `noah/webui.py` | Dashboard, Instanzseiten, JSON-API (stdlib `http.server`) |
-| `noah/cli.py` | Kommandozeile inkl. `wizard` |
+| `noah/instance.py` | instance configuration (JSON), paths, writing INI files, start parameters |
+| `noah/runner.py` | start/stop/status/update, RCON shutdown, maintenance lock |
+| `noah/consoled.py` | starts the server on a PTY so Wine opens no window |
+| `noah/rcon.py` | own Source RCON client |
+| `noah/supervisor.py` | health check, auto-restart, schedule, countdown |
+| `noah/registry.py` | several instances, port picking, metrics |
+| `noah/mods.py` · `whitelist.py` · `config.py` · `backups.py` · `snapshots.py` | feature modules |
+| `noah/webui.py` | dashboard, instance pages, JSON API (stdlib `http.server`) |
+| `noah/cli.py` | command line including `wizard` |
 
-## Stop-Reihenfolge (bewusst so)
+## Stop order (deliberate)
 
-1. RCON `SaveWorld` — Spielstand sichern
-2. RCON `DoExit` — reguläres Beenden
-3. `SIGTERM` an die Prozessgruppe
+1. RCON `SaveWorld` — save the game state
+2. RCON `DoExit` — regular shutdown
+3. `SIGTERM` to the process group
 4. `SIGKILL`
 
-Ein `kill` ohne Schritt 1 kostet den Fortschritt seit dem letzten Autosave.
-
-Hinweise für Mitentwickler: [entwicklung.md](entwicklung.md)
+A `kill` without step 1 costs everything since the last autosave.
