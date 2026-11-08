@@ -4,6 +4,12 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.55] — 2026-11-08
+
+### Changed
+- **Mod search fetches 50 hits** instead of 30 (the CurseForge search API does not allow more per request).
+  Enough for targeted searching; otherwise narrow the term.
+
 ## [0.3.54] — 2026-11-08
 
 ### Changed

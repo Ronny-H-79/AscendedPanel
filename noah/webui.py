@@ -1380,7 +1380,7 @@ class Handler(BaseHTTPRequestHandler):
         if path == "/api/mods/search":
             term = q.get("q", [""])[0]
             key = modlib._api_key()
-            results = modlib.search(term, limit=30)
+            results = modlib.search(term, limit=50)
             self._json({"results": results, "total": modlib.api_total(),
                         "needs_key": not bool(key), "has_key": bool(key)})
             return
