@@ -333,7 +333,7 @@ async function load(){
         <div><b>${fmtUp(i.uptime)}</b><small>${L['dash.uptime']}</small></div>
       </div><canvas class="spark" width="300" height="38"></canvas>`:''}
       <div class="row">
-        <a href="/i/${i.name}?token=${encodeURIComponent(T)}"><button>${L['common.open']}</button></a>
+        <a href="/i/${i.name}?token=${encodeURIComponent(T)}"><button>${L['common.menu']}</button></a>
         ${i.installed
           ? `<button onclick="act('${i.name}','start')">${L['common.start']}</button>
              <button onclick="act('${i.name}','restart')">${L['common.restart']}</button>

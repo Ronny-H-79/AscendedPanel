@@ -4,6 +4,12 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.47] — 2026-11-08
+
+### Changed
+- **The button reads "Menu" and opens the instance directly** — label as requested, no intermediate step
+  or dropdown.
+
 ## [0.3.46] — 2026-11-08
 
 ### Changed

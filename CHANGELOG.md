@@ -4,6 +4,12 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.47] — 2026-11-08
+
+### Geändert
+- **Der Knopf heißt „Menü" und führt direkt in die Instanz** — Beschriftung wie gewünscht, ohne
+  Zwischenschritt oder Aufklappliste.
+
 ## [0.3.46] — 2026-11-08
 
 ### Geändert
