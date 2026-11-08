@@ -4,6 +4,13 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.30] — 2026-11-08
+
+### Behoben
+- **Selbst-Update konnte stillschweigend denselben Stand einspielen.** Das Archiv wurde über den Branch
+  `main` geladen; codeload liefert dafür minutenlang eine zwischengespeicherte Fassung. Jetzt wird das
+  Archiv **zum geprüften Commit** geladen (`/tar.gz/<sha>`) — was die Prüfung meldet, wird auch installiert.
+
 ## [0.3.29] — 2026-11-08
 
 ### Neu

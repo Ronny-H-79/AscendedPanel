@@ -259,8 +259,14 @@ def _fetch_tarball(timeout: int = 60, attempts: int = 3) -> bytes:
     """
     # codeload zuerst: liefert das Archiv direkt, die API leitet nur dorthin um und
     # antwortet derzeit sporadisch mit 503/504
-    urls = ("https://codeload.github.com/%s/tar.gz/refs/heads/%s" % (REPO, BRANCH),
-            TARBALL)
+    # nach Commit laden, nicht nach Branch: codeload liefert fuer "main" minutenlang einen
+    # veralteten Stand aus dem Cache - dann wuerde ein Update stillschweigend nichts aendern
+    sha = remote_commit(timeout)
+    urls = []
+    if sha:
+        urls.append("https://codeload.github.com/%s/tar.gz/%s" % (REPO, sha))
+    urls.append("https://codeload.github.com/%s/tar.gz/refs/heads/%s" % (REPO, BRANCH))
+    urls.append(TARBALL)
     last = None
     for attempt in range(attempts):
         for url in urls:

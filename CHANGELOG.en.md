@@ -4,6 +4,13 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.30] — 2026-11-08
+
+### Fixed
+- **Self-update could silently install the same state.** The archive was fetched via the `main` branch, which
+  codeload serves from cache for minutes. It now downloads the archive **for the verified commit**
+  (`/tar.gz/<sha>`), so what the check reports is what gets installed.
+
 ## [0.3.29] — 2026-11-08
 
 ### Added
