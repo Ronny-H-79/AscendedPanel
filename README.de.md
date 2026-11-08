@@ -1,4 +1,4 @@
-# noah — ARK: Survival Ascended Servermanager für Linux
+# noah — ARK: Survival Ascended Servermanager für Linux · Web-UI im Browser
 
 [Deutsch](README.de.md) · [English](README.md) — der Installer fragt beim Start nach der Sprache, die Oberfläche lässt sich
 jederzeit umschalten (Knopf oben rechts, `noah lang en` in der Konsole).
