@@ -4,6 +4,14 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.35] — 2026-11-08
+
+### Behoben
+- **Selbst-Update startete den Benutzerdienst nicht neu.** Ohne angemeldete Sitzung (per `su`, `ssh`
+  oder aus einem Skript) fehlten `XDG_RUNTIME_DIR` und `DBUS_SESSION_BUS_ADDRESS`, `systemctl --user`
+  scheiterte und die Oberfläche lief weiter mit dem alten Code. Beide Variablen werden jetzt gesetzt,
+  der Dienststart klappt damit auch aus einer Nicht-Login-Sitzung.
+
 ## [0.3.34] — 2026-11-08
 
 ### Behoben

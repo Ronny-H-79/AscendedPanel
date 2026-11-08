@@ -366,6 +366,18 @@ def prune_backups(target: str, keep: int = 2) -> list[str]:
     return removed
 
 
+def _session_env() -> dict:
+    """Umgebung fuer `systemctl --user` - auch ohne angemeldete Sitzung (su, ssh, cron)."""
+    env = dict(os.environ)
+    runtime = env.get("XDG_RUNTIME_DIR") or "/run/user/%d" % os.getuid()
+    if os.path.isdir(runtime):
+        env["XDG_RUNTIME_DIR"] = runtime
+        bus = os.path.join(runtime, "bus")
+        if not env.get("DBUS_SESSION_BUS_ADDRESS") and os.path.exists(bus):
+            env["DBUS_SESSION_BUS_ADDRESS"] = "unix:path=%s" % bus
+    return env
+
+
 def restart_service() -> dict:
     """Web-Dienst neu starten, damit der neue Code laeuft."""
     candidates = [
@@ -374,7 +386,7 @@ def restart_service() -> dict:
     ]
     for cmd, kind in candidates:
         try:
-            done = subprocess.run(cmd, capture_output=True, timeout=30)
+            done = subprocess.run(cmd, capture_output=True, timeout=30, env=_session_env())
             if done.returncode == 0:
                 return {"ok": True, "scope": kind}
         except (OSError, subprocess.SubprocessError):
