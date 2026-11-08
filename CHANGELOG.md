@@ -4,6 +4,13 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.41] — 2026-11-08
+
+### Geändert
+- **Karten und Log breiter:** Rasterzellen mindestens 560 px statt 460 px, das Log bekommt damit rund
+  300 px Breite und bleibt bei 11 px lesbar. Das Spannen über zwei Spalten ist entfallen, jede Instanz
+  belegt genau eine Zelle — bei mehreren Instanzen bleibt das Raster dadurch gleichmäßig.
+
 ## [0.3.40] — 2026-11-08
 
 ### Geändert

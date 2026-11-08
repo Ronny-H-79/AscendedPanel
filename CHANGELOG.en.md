@@ -4,6 +4,13 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.41] — 2026-11-08
+
+### Changed
+- **Wider cards and log:** grid cells are at least 560 px instead of 460 px, so the log gets about 300 px
+  and stays readable at 11 px. The two-column span is gone; every instance occupies exactly one cell,
+  which keeps the grid even once more instances are added.
+
 ## [0.3.40] — 2026-11-08
 
 ### Changed
