@@ -105,8 +105,19 @@ the README, section "The token". Reset: delete the file, a new one is created on
 noah wizard
 ```
 
+This runs in the **terminal on the server** — over SSH (`ssh user@server`) or on the console itself.
+The wizard asks questions, so it needs an interactive session. The web interface cannot create an
+instance; it only shows and manages existing ones.
+
 The wizard asks for name, map, port and session name, creates the instance and offers to download the
 server files (~12.4 GB, 10–30 minutes) and to set up a systemd service.
+
+Without prompts, e.g. for scripts:
+
+```bash
+noah init --name test --dir ~/arkserver-test --map Ragnarok_WP --port 7790 --rcon-port 27025
+noah update      # download the server files, then noah start
+```
 
 ## Using it
 
