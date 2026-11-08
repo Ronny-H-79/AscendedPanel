@@ -38,6 +38,14 @@ Gespeichert wird das in `~/.config/noah/settings.json`. Spaeter jederzeit umstel
 
 ## Installation
 
+Auf einem **Server** empfohlen: eigener Dienst-Benutzer, damit nichts als root läuft.
+
+```bash
+sudo ./install.sh --user noah      # legt den Benutzer an, installiert nach /home/noah, User-Dienst + linger
+```
+
+Normale Installation (im eigenen Benutzerkonto):
+
 ```bash
 git clone https://github.com/Ronny-H-79/Noah.git noah   # oder Ordner kopieren
 cd noah          # dieser Ordner enthaelt install.sh - NICHT noah/noah (das ist das Python-Paket)

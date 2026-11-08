@@ -4,6 +4,14 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.29] — 2026-11-08
+
+### Neu
+- **`sudo ./install.sh --user noah`** — Installation unter einem eigenen Dienst-Benutzer. Der Installer legt
+  den Benutzer samt Home an, kopiert nach `/home/noah/…`, setzt die Rechte, richtet die Oberfläche als
+  **User-Dienst** ein und aktiviert `loginctl enable-linger`, damit sie ohne Login startet. Damit läuft
+  kein Teil mehr als root (empfohlen für Server).
+
 ## [0.3.28] — 2026-11-08
 
 ### Behoben

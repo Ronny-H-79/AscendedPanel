@@ -6,6 +6,7 @@
 #   ./install.sh --check         nur pruefen, was fehlt (aendert nichts)
 #   ./install.sh --auto          fehlende Pakete ohne Rueckfrage installieren (sudo)
 #   ./install.sh --wizard        danach den Einrichtungsassistenten starten
+#   ./install.sh --user noah     als eigener Dienst-Benutzer installieren (root, empfohlen)
 #   ./install.sh --uninstall     wieder entfernen (Instanzen bleiben erhalten)
 #
 # Umgebungsvariablen: NOAH_HOME (Zielordner), NOAH_BIN (Launcher-Ordner),
@@ -22,6 +23,7 @@ CHECK_ONLY=0
 AUTO=0
 LANG_SEL="${NOAH_LANG:-}"
 WANT_WEB=""
+SERVICE_USER=""
 
 for arg in "$@"; do
   case "$arg" in
@@ -31,6 +33,8 @@ for arg in "$@"; do
     --auto|-y|--yes) AUTO=1 ;;
     --web) WANT_WEB=1 ;;
     --no-web) WANT_WEB=0 ;;
+    --user=*) SERVICE_USER="${arg#*=}" ;;
+    --user) shift || true; SERVICE_USER="${1:-}" ;;
     --lang=*) LANG_SEL="${arg#*=}" ;;
     --lang) shift || true; LANG_SEL="${1:-}" ;;
     -h|--help) sed -n '2,12p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
@@ -38,6 +42,26 @@ for arg in "$@"; do
     *) echo "Unbekannte Option: $arg"; exit 1 ;;
   esac
 done
+
+# ---------------------------------------------------------------- Dienst-Benutzer
+if [ -n "$SERVICE_USER" ]; then
+  if [ "$(id -u)" != "0" ]; then
+    echo "--user braucht root (Benutzer anlegen, Rechte setzen): sudo ./install.sh --user $SERVICE_USER"
+    exit 1
+  fi
+  case "$SERVICE_USER" in
+    *[!a-z0-9_-]*|"") echo "Ungueltiger Benutzername: $SERVICE_USER"; exit 1 ;;
+  esac
+  if ! id "$SERVICE_USER" >/dev/null 2>&1; then
+    useradd -m -s /bin/bash "$SERVICE_USER"
+    echo "Benutzer $SERVICE_USER angelegt."
+  fi
+  SERVICE_UID="$(id -u "$SERVICE_USER")"
+  HOME="$(getent passwd "$SERVICE_USER" | cut -d: -f6)"
+  export HOME
+  [ -n "${NOAH_HOME:-}" ] || DEST="$HOME/.local/share/noah"
+  [ -n "${NOAH_BIN:-}" ]  || BIN="$HOME/.local/bin"
+fi
 
 # ---------------------------------------------------------------- Sprache
 if [ -z "$LANG_SEL" ]; then
@@ -141,6 +165,8 @@ t() {
     de:web_q)              echo "Web-Oberflaeche automatisch starten (systemd-Dienst)? [j/N] " ;;
     en:web_installed_system) echo "Web interface runs as systemd system service (starts at boot): systemctl status noah-web" ;;
     de:web_installed_system) echo "Web-Oberflaeche laeuft als Systemdienst (startet beim Booten): systemctl status noah-web" ;;
+    en:web_installed_user) echo "Web interface runs as $2 - user service noah-web; check: su - $2 -c 'systemctl --user status noah-web'" ;;
+    de:web_installed_user) echo "Web-Oberflaeche laeuft als Benutzer $2 - User-Dienst noah-web; pruefen: su - $2 -c 'systemctl --user status noah-web'" ;;
     en:web_installed)      echo "Web interface runs as noah-web.service - check: systemctl --user status noah-web" ;;
     de:web_installed)      echo "Web-Oberflaeche laeuft als noah-web.service - pruefen: systemctl --user status noah-web" ;;
     en:web_failed)         echo "Could not enable the service - start manually with: noah web" ;;
@@ -394,7 +420,7 @@ say "$(t command "$BIN/noah")"
 case ":$PATH:" in
   *":$BIN:"*) ;;
   *)
-    if [ "$(id -u)" = "0" ] && [ -d /usr/local/bin ]; then
+    if [ "$(id -u)" = "0" ] && [ -d /usr/local/bin ] && [ -z "$SERVICE_USER" ]; then
       if ln -sf "$BIN/noah" /usr/local/bin/noah 2>/dev/null; then
         say "$(t linked_usr_local)"
       else
@@ -434,7 +460,33 @@ fi
 WEBHOST=""
 [ "$ACCESS" = "ip" ] && WEBHOST="--host 0.0.0.0"
 if [ "$WANT_WEB" = "1" ]; then
-  if [ "$(id -u)" = "0" ]; then
+  if [ -n "$SERVICE_USER" ]; then
+    UNIT_DIR="$HOME/.config/systemd/user"
+    install -d -o "$SERVICE_USER" -g "$SERVICE_USER" "$UNIT_DIR"
+    cat > "$UNIT_DIR/noah-web.service" <<EOF
+[Unit]
+Description=noah web interface
+After=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=$DEST
+Environment=PYTHONPATH=$DEST
+ExecStart=/usr/bin/python3 -m noah web $WEBHOST --port 8790
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target
+EOF
+    chown -R "$SERVICE_USER":"$SERVICE_USER" "$DEST" "$HOME/.config/noah" "$BIN/noah" "$UNIT_DIR" 2>/dev/null || true
+    loginctl enable-linger "$SERVICE_USER" >/dev/null 2>&1 || true
+    if su - "$SERVICE_USER" -c "XDG_RUNTIME_DIR=/run/user/$SERVICE_UID systemctl --user daemon-reload && XDG_RUNTIME_DIR=/run/user/$SERVICE_UID systemctl --user enable --now noah-web.service" >/dev/null 2>&1; then
+      say "$(t web_installed_user "$SERVICE_USER")"
+    else
+      warn "$(t web_failed)"
+    fi
+  elif [ "$(id -u)" = "0" ]; then
     # Systemdienst: startet beim Booten, kein Login und kein linger noetig
     UNIT="/etc/systemd/system/noah-web.service"
     cat > "$UNIT" <<EOF

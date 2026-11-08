@@ -40,6 +40,14 @@ It is stored in `~/.config/noah/settings.json`. Changeable later at any time:
 
 ## Installation
 
+On a **server**, use a dedicated service user so nothing runs as root:
+
+```bash
+sudo ./install.sh --user noah      # creates the user, installs to /home/noah, user service + linger
+```
+
+Normal install (inside your own account):
+
 ```bash
 git clone https://github.com/Ronny-H-79/Noah.git noah   # or copy the folder
 cd noah          # this folder contains install.sh - NOT noah/noah (that is the Python package)
