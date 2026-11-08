@@ -4,6 +4,12 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.52] — 2026-11-08
+
+### Geändert
+- **Mod-Suche zeigt bis zu 30 Treffer** statt 10, mit Trefferzahl darüber („30 / 1.412 Treffer",
+  Gesamtzahl aus der CurseForge-Antwort). Die Liste ist scrollbar, statt die Seite zu verlängern.
+
 ## [0.3.51] — 2026-11-08
 
 ### Geändert

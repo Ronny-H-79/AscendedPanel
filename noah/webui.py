@@ -164,6 +164,11 @@ background:linear-gradient(180deg,rgba(6,9,14,.30) 0%,rgba(6,9,14,.62) 45%,rgba(
 .card h3{margin:0;font-size:14px;letter-spacing:.06em}
 .card .meta{color:var(--dim);font-size:11.5px}
 #mods{max-height:430px;overflow-y:auto;padding-right:4px}
+#modhits{max-height:420px;overflow-y:auto;padding-right:6px;margin:6px 0;
+border-top:1px solid #16302a;border-bottom:1px solid #16302a}
+#modhits .p{padding:6px 0;border-bottom:1px solid #10201b}
+#modhits .p:last-child{border-bottom:0}
+#modhitsum{font-size:11px;color:var(--dim);margin:2px 0 0}
 .thumb{width:44px;height:44px;border-radius:4px;object-fit:cover;border:1px solid #16302a;flex:0 0 44px}
 .mrow{display:flex;gap:10px;align-items:center}
 .mrow .txt{min-width:0}
@@ -600,6 +605,7 @@ INST = """<!doctype html><html lang="__LANG__"><head><meta charset="utf-8">
       <button onclick="addMod()" data-t="common.add">Hinzufügen</button>
     </div>
     <div class="row"><span class="meta" id="keystate"></span></div>
+    <div id="modhitsum"></div>
     <div id="modhits"></div>
     <div class="row"><span class="meta" id="modsize"></span></div>
     <div class="setrow" style="margin-top:10px">
@@ -1056,6 +1062,11 @@ async function searchMods(){
       (data.needs_key?(' · <a href="https://console.curseforge.com" target="_blank">'+L['mods.key']+'</a>'):'')+'</div>';
     return;
   }
+  const sum=document.getElementById('modhitsum');
+  if(sum){ const tot=data.total||hits.length;
+    sum.textContent=(tot>hits.length)
+      ? (hits.length+' / '+tot.toLocaleString('de-DE')+' '+L['mods.hits'])
+      : (tot.toLocaleString('de-DE')+' '+L['mods.hits']); }
   box.innerHTML=hits.map(m=>`<div class="p"><span class="mrow">
       ${m.thumbnail?`<img class="thumb" src="${m.thumbnail}" alt="" loading="lazy">`:'<div class="thumb"></div>'}
       <span class="txt"><b>${m.title||('Mod '+m.id)}</b>
@@ -1366,7 +1377,8 @@ class Handler(BaseHTTPRequestHandler):
         if path == "/api/mods/search":
             term = q.get("q", [""])[0]
             key = modlib._api_key()
-            self._json({"results": modlib.search(term, limit=10),
+            results = modlib.search(term, limit=30)
+            self._json({"results": results, "total": modlib.api_total(),
                         "needs_key": not bool(key), "has_key": bool(key)})
             return
         if path == "/api/mods/suggest":

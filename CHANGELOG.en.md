@@ -4,6 +4,12 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.52] — 2026-11-08
+
+### Changed
+- **Mod search lists up to 30 hits** instead of 10, with the hit count above it ("30 / 1,412 hits",
+  total taken from the CurseForge response). The list scrolls instead of stretching the page.
+
 ## [0.3.51] — 2026-11-08
 
 ### Changed

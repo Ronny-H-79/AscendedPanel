@@ -364,6 +364,14 @@ def _api_key() -> str:
         return ""
 
 
+_API_STATE = {"total": 0}
+
+
+def api_total() -> int:
+    """Gesamttreffer der letzten API-Suche (0, wenn ohne Key gesucht wurde)."""
+    return int(_API_STATE.get("total") or 0)
+
+
 def _search_api(term: str, limit: int = 12) -> list[dict]:
     """Offizielle CurseForge-Suche - braucht einen API-Key, dafuer zuverlaessig."""
     import json as _json
@@ -386,6 +394,10 @@ def _search_api(term: str, limit: int = 12) -> list[dict]:
             data = _json.loads(resp.read().decode("utf-8"))
     except Exception:  # noqa: BLE001
         return []
+    try:
+        _API_STATE["total"] = int((data.get("pagination") or {}).get("totalCount") or 0)
+    except (TypeError, ValueError):
+        _API_STATE["total"] = 0
     out = []
     for m in data.get("data", []):
         logo = (m.get("logo") or {}).get("thumbnailUrl") or ""
