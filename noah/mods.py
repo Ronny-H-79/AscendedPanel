@@ -298,10 +298,17 @@ def refresh_meta(ids: list[str], workers: int = 6) -> dict:
 SEARCH_DIR = os.path.join(os.path.dirname(META_DIR), "search")
 
 
-def _search_cache_path(term: str) -> str:
+def _search_cache_path(term: str, limit: int = 0) -> str:
+    """Cache-Datei je Suchbegriff, Trefferzahl und Modus (mit/ohne API-Key).
+
+    Ohne den Modus im Namen wuerde ein Ergebnis vom Notbehelf (wenige Treffer, kein Key)
+    eine spaetere Suche mit Key eine Stunde lang bedienen.
+    """
     import hashlib
-    key = hashlib.sha1(term.lower().strip().encode()).hexdigest()[:16]
-    return os.path.join(SEARCH_DIR, key + ".json")
+    mode = "k" if _api_key() else "n"
+    raw = "%s|%s|%s" % (term.lower().strip(), limit, mode)
+    key = hashlib.sha1(raw.encode()).hexdigest()[:16]
+    return os.path.join(SEARCH_DIR, "%s-%s-%s.json" % (key, mode, limit or 0))
 
 
 def _ddg_slugs(term: str, limit: int = 18) -> list[str]:
@@ -421,13 +428,15 @@ def search(term: str, limit: int = 12, force: bool = False) -> list[dict]:
     if not term:
         return []
 
-    path = _search_cache_path(term)
+    path = _search_cache_path(term, limit)
     if not force:
         try:
             with open(path, encoding="utf-8") as fh:
                 data = _json.load(fh)
-            if _time.time() - data.get("_fetched", 0) < 3600:
-                return data.get("results", [])
+            cached = data.get("results", [])
+            if _time.time() - data.get("_fetched", 0) < 3600 and cached:
+                _API_STATE["total"] = int(data.get("_total") or 0)
+                return cached
         except (OSError, ValueError):
             pass
 
@@ -436,7 +445,8 @@ def search(term: str, limit: int = 12, force: bool = False) -> list[dict]:
         try:
             os.makedirs(SEARCH_DIR, exist_ok=True)
             with open(path, "w", encoding="utf-8") as fh:
-                _json.dump({"term": term, "results": results, "_fetched": _time.time()},
+                _json.dump({"term": term, "results": results, "_fetched": _time.time(),
+                            "_total": _API_STATE.get("total", 0)},
                            fh, ensure_ascii=False)
         except OSError:
             pass
@@ -478,7 +488,8 @@ def search(term: str, limit: int = 12, force: bool = False) -> list[dict]:
         try:
             os.makedirs(SEARCH_DIR, exist_ok=True)
             with open(path, "w", encoding="utf-8") as fh:
-                _json.dump({"term": term, "results": results, "_fetched": _time.time()},
+                _json.dump({"term": term, "results": results, "_fetched": _time.time(),
+                            "_total": _API_STATE.get("total", 0)},
                            fh, ensure_ascii=False)
         except OSError:
             pass

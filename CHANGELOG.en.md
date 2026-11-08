@@ -4,6 +4,13 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.53] — 2026-11-08
+
+### Fixed
+- **Cached search results could hide the API results.** A fallback result (few hits, no key) was served
+  for an hour even after a key had been set — the search kept showing 8 instead of 30 hits. The cache now
+  separates keyed/unkeyed searches and the hit limit, and stores the total count.
+
 ## [0.3.52] — 2026-11-08
 
 ### Changed

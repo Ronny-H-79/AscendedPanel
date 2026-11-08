@@ -4,6 +4,14 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.53] — 2026-11-08
+
+### Behoben
+- **Zwischengespeicherte Suchergebnisse konnten die API-Suche verdecken.** Ein Ergebnis vom Notbehelf
+  (wenige Treffer, ohne Key) wurde eine Stunde lang auch dann ausgeliefert, wenn inzwischen ein Key
+  gesetzt war — die Suche zeigte weiter 8 statt 30 Treffer. Der Cache unterscheidet jetzt Key/ohne Key
+  und die Trefferzahl; die Gesamtzahl wird mitgespeichert. Alte Cache-Dateien werden ignoriert.
+
 ## [0.3.52] — 2026-11-08
 
 ### Geändert
