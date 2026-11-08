@@ -4,6 +4,17 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.34] — 2026-11-08
+
+### Behoben
+- **Selbst-Update konnte die Installation zerstören.** `apply()` löschte das laufende Paketverzeichnis
+  und kopierte erst danach das neue hinein — brach der Kopiervorgang ab (oder existierte das Ziel noch),
+  blieb ein halbes Verzeichnis zurück und `noah` war nicht mehr startbar. Das neue Paket wird jetzt
+  vollständig daneben aufgebaut und per `rename` getauscht; schlägt der Tausch fehl, wird der alte
+  Stand zurückgerollt.
+- **Sicherungen sammelten sich unbegrenzt.** Bei jedem Update entstand ein `noah.bak-<Zeitstempel>`.
+  Es bleiben jetzt die letzten zwei.
+
 ## [0.3.33] — 2026-11-08
 
 ### Behoben

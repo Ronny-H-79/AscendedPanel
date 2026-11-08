@@ -313,14 +313,26 @@ def apply(target: str = "", timeout: int = 60) -> dict:
         old_version = installed_version()
         stamp = time.strftime("%Y%m%d-%H%M%S")
         backup = "%s.bak-%s" % (target.rstrip("/"), stamp)
-        if os.path.isdir(target):
-            shutil.copytree(target, backup, dirs_exist_ok=True)
-        shutil.rmtree(target, ignore_errors=True)
-        shutil.copytree(new_pkg, target)
 
-        for name in os.listdir(target):
-            if name == "__pycache__":
-                shutil.rmtree(os.path.join(target, name), ignore_errors=True)
+        # Erst vollstaendig daneben aufbauen, dann per rename tauschen: das laufende
+        # Verzeichnis verschwindet nie, und ein Abbruch laesst den alten Stand stehen.
+        parent = os.path.dirname(target.rstrip("/"))
+        staging = os.path.join(parent, ".noah-neu-%d" % os.getpid())
+        shutil.rmtree(staging, ignore_errors=True)
+        shutil.copytree(new_pkg, staging)
+        shutil.rmtree(os.path.join(staging, "__pycache__"), ignore_errors=True)
+
+        moved_old = False
+        if os.path.isdir(target):
+            os.replace(target, backup)
+            moved_old = True
+        try:
+            os.replace(staging, target)
+        except OSError:
+            if moved_old and not os.path.isdir(target):
+                os.replace(backup, target)      # zurueckrollen
+            raise
+        prune_backups(target, keep=2)
 
         new_version = ""
         try:
@@ -334,6 +346,24 @@ def apply(target: str = "", timeout: int = 60) -> dict:
         return {"ok": False, "error": "%s: %s" % (exc.__class__.__name__, exc)}
     finally:
         shutil.rmtree(work, ignore_errors=True)
+
+
+def prune_backups(target: str, keep: int = 2) -> list[str]:
+    """Alte Sicherungen des Paketverzeichnisses entfernen, die letzten `keep` bleiben."""
+    target = target.rstrip("/")
+    parent, base = os.path.dirname(target), os.path.basename(target)
+    prefix = base + ".bak-"
+    try:
+        names = sorted(n for n in os.listdir(parent) if n.startswith(prefix))
+    except OSError:
+        return []
+    removed = []
+    for name in names[:-keep] if keep else names:
+        path = os.path.join(parent, name)
+        if os.path.isdir(path):
+            shutil.rmtree(path, ignore_errors=True)
+            removed.append(path)
+    return removed
 
 
 def restart_service() -> dict:

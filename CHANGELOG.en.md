@@ -4,6 +4,16 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.34] — 2026-11-08
+
+### Fixed
+- **Self-update could destroy the installation.** `apply()` deleted the live package directory and only
+  then copied the new one in — if the copy aborted (or the target still existed), a half-written
+  directory was left behind and `noah` would no longer start. The new package is now built completely
+  next to the target and swapped in with `rename`; if the swap fails, the previous state is restored.
+- **Backups accumulated without limit.** Every update created a `noah.bak-<timestamp>`. Now the last two
+  are kept.
+
 ## [0.3.33] — 2026-11-08
 
 ### Fixed
