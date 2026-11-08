@@ -4,6 +4,13 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.69] — 2026-11-08
+
+### Geändert
+- **Die Oberfläche weist sich als Web-UI aus:** Seitentitel heißen „noah · Web-UI" bzw.
+  „noah · Web-UI · <Instanz>", und im Kopf steht neben „noah" ein Web-UI-Kennzeichen. Damit ist
+  beim ersten Blick klar, dass noah im Browser läuft und keine App ist.
+
 ## [0.3.68] — 2026-11-08
 
 ### Geändert
