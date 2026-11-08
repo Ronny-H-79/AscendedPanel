@@ -4,6 +4,12 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.45] — 2026-11-08
+
+### Geändert
+- **Kein Dropdown mehr in der Karte:** ein einfacher Knopf **„Menü"** öffnet eine Auswahl mit Übersicht,
+  Einstellungen, Mods und Verwaltung.
+
 ## [0.3.44] — 2026-11-08
 
 ### Geändert

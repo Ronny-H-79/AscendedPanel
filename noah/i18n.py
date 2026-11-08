@@ -17,7 +17,7 @@ T: dict[str, dict[str, str]] = {
     "common.restart": {"de": "Restart", "en": "Restart"},
     "common.update": {"de": "Update", "en": "Update"},
     "common.open": {"de": "Öffnen", "en": "Open"},
-    "common.menu": {"de": "Menü …", "en": "Menu …"},
+    "common.menu": {"de": "Menü", "en": "Menu"},
     "common.save": {"de": "Speichern", "en": "Save"},
     "common.delete": {"de": "Löschen", "en": "Delete"},
     "common.remove": {"de": "Entfernen", "en": "Remove"},

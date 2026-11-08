@@ -138,9 +138,6 @@ padding:6px 0;border-top:1px solid #12241f}
 .cardmain{display:flex;flex-direction:column;gap:10px;min-width:0}
 @container (min-width:560px){.cardgrid{grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr)}}
 @media (min-width:900px){.card.running{grid-column:span 2}}
-.openmenu{background:#0e1f1a;color:var(--fg);border:1px solid #1d4a3c;border-radius:4px;
-padding:6px 8px;font:inherit;font-size:12px;cursor:pointer;max-width:130px}
-.openmenu:hover{border-color:var(--acc)}
 .logwrap{background:#070f13;border:1px solid #12241f;border-radius:4px;padding:6px 8px;min-width:0}
 .loghead{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin-bottom:4px}
 .cardlog{margin:0;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:9.5px;line-height:1.35;
@@ -336,13 +333,7 @@ async function load(){
         <div><b>${fmtUp(i.uptime)}</b><small>${L['dash.uptime']}</small></div>
       </div><canvas class="spark" width="300" height="38"></canvas>`:''}
       <div class="row">
-        <select class="openmenu" title="${L['common.open']}" onchange="if(this.value)location.href=this.value">
-          <option value="">${L['common.menu']}</option>
-          <option value="/i/${i.name}?token=${encodeURIComponent(T)}#overview">${L['tabs.overview']}</option>
-          <option value="/i/${i.name}?token=${encodeURIComponent(T)}#settings">${L['tabs.settings']}</option>
-          <option value="/i/${i.name}?token=${encodeURIComponent(T)}#mods">${L['tabs.mods']}</option>
-          <option value="/i/${i.name}?token=${encodeURIComponent(T)}#server">${L['tabs.manage']}</option>
-        </select>
+        <button onclick="instMenu('${i.name}')">${L['common.menu']}</button>
         ${i.installed
           ? `<button onclick="act('${i.name}','start')">${L['common.start']}</button>
              <button onclick="act('${i.name}','restart')">${L['common.restart']}</button>
@@ -382,6 +373,15 @@ async function loadHost(){
     document.getElementById('hostcpu').textContent='CPU '+h.cpu.toFixed(1)+'%';
     document.getElementById('hostram').textContent='RAM '+h.ram_used_gb+'/'+h.ram_total_gb+' GB ('+h.ram_pct+'%)';
   }catch(e){}
+}
+function instMenu(name){
+  const base='/i/'+encodeURIComponent(name)+'?token='+encodeURIComponent(T);
+  const items=[['overview',L['tabs.overview']],['settings',L['tabs.settings']],
+               ['mods',L['tabs.mods']],['server',L['tabs.manage']]];
+  document.getElementById('mbody').innerHTML='<h3>'+name+'</h3>'+
+    '<div class="row" style="margin-top:12px">'+
+    items.map(it=>'<a href="'+base+'#'+it[0]+'"><button>'+it[1]+'</button></a>').join('')+'</div>';
+  document.getElementById('modal').classList.add('on');
 }
 async function act(name,what){ await api('/api/'+what+'?name='+name,{method:'POST'}); setTimeout(load,1500); }
 
