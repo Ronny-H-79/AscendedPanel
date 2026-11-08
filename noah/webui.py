@@ -337,7 +337,7 @@ async function load(){
       </div><canvas class="spark" width="300" height="38"></canvas>`:''}
       <div class="row">
         <select class="openmenu" title="${L['common.open']}" onchange="if(this.value)location.href=this.value">
-          <option value="">${L['common.open']} …</option>
+          <option value="">${L['common.menu']}</option>
           <option value="/i/${i.name}?token=${encodeURIComponent(T)}#overview">${L['tabs.overview']}</option>
           <option value="/i/${i.name}?token=${encodeURIComponent(T)}#settings">${L['tabs.settings']}</option>
           <option value="/i/${i.name}?token=${encodeURIComponent(T)}#mods">${L['tabs.mods']}</option>

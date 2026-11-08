@@ -4,6 +4,11 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.44] — 2026-11-08
+
+### Changed
+- **The selector in the card is labelled "Menu …"** instead of "Open …" — it is a choice, not a button.
+
 ## [0.3.43] — 2026-11-08
 
 ### Changed

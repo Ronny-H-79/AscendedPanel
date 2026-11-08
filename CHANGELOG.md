@@ -4,6 +4,11 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.44] — 2026-11-08
+
+### Geändert
+- **Das Auswahlfeld in der Karte heißt „Menü …"** statt „Öffnen …" — es ist ja eine Auswahl, kein Knopf.
+
 ## [0.3.43] — 2026-11-08
 
 ### Geändert
