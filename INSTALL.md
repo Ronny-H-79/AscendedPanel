@@ -11,7 +11,7 @@ Alles läuft lokal, Python-Standardbibliothek plus SteamCMD und Wine.
 | Python ≥ 3.10 | Programm läuft damit | `python3 -V` |
 | Wine ≥ 8 | führt die Windows-Serverdateien aus | `wine --version` |
 | ~30 GB Platz pro Instanz | 12,4 GB Download + Sicherungen | `df -h ~` |
-| ~12 GB RAM pro laufendem Server | ARK braucht das | `free -g` |
+| ~4 GB RAM leer ohne Mods, 11–12 GB mit Mods/Welt/Spielern (nach oben offen) | ARK braucht das | `free -g` |
 
 Fehlt Wine:
 

@@ -18,7 +18,7 @@ Was noah kann: Überblick, Screenshots, Mod-Verwaltung und Benachrichtigungen.
 | **Backups** | Welt sichern, einspielen, planen, aufräumen — mit SaveWorld vor dem Packen |
 | **Snapshots** | vollständige Instanz-Kopie für Rollback nach einem kaputten Update |
 | **Zeitplan** | Neustarts mit Countdown-Broadcast, automatische Backups |
-| **Überwachung** | CPU, RAM, Spieler, Laufzeit pro Instanz, Auto-Restart nach Absturz |
+| **Überwachung** | CPU, RAM (Ist-Wert und Spitze), Spieler, Laufzeit pro Instanz, Auto-Restart nach Absturz |
 | **Betrieb** | systemd-Dienst, mehrere Instanzen in einem Prozess; der Überwachungsdienst wird beim Installieren einer Instanz automatisch eingerichtet (als root ein Systemdienst) |
 
 ## Einblicke

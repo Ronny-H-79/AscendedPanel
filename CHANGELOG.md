@@ -4,6 +4,13 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.14] — 2026-11-08
+
+### Geändert
+- **RAM-Hinweis im Dashboard war irreführend** („ca. 11,5 GB pro laufendem Server"). Der Wert hängt an
+  Mods, Weltgröße und Spielerzahl: leer und ohne Mods sind es rund 4 GB, mit Mods und Welt 11–12 GB,
+  nach oben offen. Text in Oberfläche und `INSTALL.md` entsprechend korrigiert.
+
 ## [0.3.13] — 2026-11-08
 
 ### Neu
