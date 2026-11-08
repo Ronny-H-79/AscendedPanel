@@ -4,6 +4,15 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.40] — 2026-11-08
+
+### Changed
+- **The log now shows for stopped instances too** (last output before the stop, or "no output"). It used
+  to appear only while the server was running — so after a crash it was gone.
+- **Log is bigger:** 11 px instead of 9.5 px, up to 300 px high, 18 lines. A card keeps one grid cell
+  (only *running* instances span two columns from 900 px window width) so several instances still sit
+  neatly side by side.
+
 ## [0.3.39] — 2026-11-08
 
 ### Changed

@@ -4,6 +4,15 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.40] — 2026-11-08
+
+### Geändert
+- **Das Log steht jetzt auch bei gestoppten Instanzen** in der Karte (letzte Ausgabe vor dem Stopp, bzw.
+  „keine Ausgabe"). Vorher erschien es nur bei laufendem Server — nach einem Absturz war es damit weg.
+- **Log größer:** 11 px statt 9,5 px, bis zu 300 px hoch, 18 Zeilen. Die Karte bleibt eine Rasterzelle
+  (nur *laufende* Instanzen nehmen ab 900 px Fensterbreite zwei Spalten ein), damit mehrere Instanzen
+  weiter sauber nebeneinander stehen.
+
 ## [0.3.39] — 2026-11-08
 
 ### Geändert
