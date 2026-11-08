@@ -27,6 +27,12 @@ def create(inst: Instance, label: str = "snapshot") -> dict:
     stamp = time.strftime("%Y%m%d-%H%M%S")
     name = "%s_%s" % (label, stamp)
     target = os.path.join(_dir(inst), name)
+    # gleiche Sekunde (zwei Aufgaben gleichzeitig) darf nicht kollidieren
+    suffix = 2
+    while os.path.exists(target):
+        name = "%s_%s-%d" % (label, stamp, suffix)
+        target = os.path.join(_dir(inst), name)
+        suffix += 1
     src = inst.directory
     if not os.path.isdir(src):
         raise RuntimeError("Instanzverzeichnis fehlt: %s" % src)

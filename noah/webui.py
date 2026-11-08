@@ -675,6 +675,9 @@ INST = """<!doctype html><html lang="__LANG__"><head><meta charset="utf-8">
       die Installation zerschießt. Ein Welt-Backup hilft dort nicht, weil SteamCMD immer die neue
       Programmversion liefert. Platzbedarf: ca. 12 GB pro Snapshot.</div>
     <div id="snaps" style="margin-top:10px">…</div>
+    <div class="setrow"><label><b data-t="snap.keep">Auto-Snapshots behalten</b>
+      <small data-t="snap.keep_hint">hint</small></label>
+      <input id="snapKeep" type="number" min="1" max="20" placeholder="3"></div>
     <div class="row" style="margin-top:8px">
       <button class="primary" onclick="makeSnap()" data-t="snap.create">Snapshot erstellen</button>
       <span class="meta" id="snapmsg"></span>
@@ -896,7 +899,7 @@ window.addEventListener('hashchange', ()=>{
 });
 let SETTINGS=[];
 let TASKS=[];
-const TASK_ACTS=['restart','start','stop','update','backup','saveworld','dinowipe','broadcast','rcon'];
+const TASK_ACTS=['restart','start','stop','update','backup','snapshot','saveworld','dinowipe','broadcast','rcon'];
 const TASK_DAYS=[1,2,3,4,5,6,7];
 function renderTasks(){
   const box=document.getElementById('tasklist'); if(!box) return;
@@ -1281,12 +1284,14 @@ async function loadSchedule(){
   document.getElementById('schedBackup').value=(s.backup_times||[]).join(',');
   document.getElementById('schedWarn').value=s.warn_minutes;
   document.getElementById('schedKeep').value=s.backups_keep;
+  const sk=document.getElementById('snapKeep'); if(sk) sk.value=(s.snapshot_keep!==undefined?s.snapshot_keep:3);
 }
 async function saveSchedule(){
   const p=new URLSearchParams({restart:document.getElementById('schedRestart').value,
     backup:document.getElementById('schedBackup').value,
     warn:document.getElementById('schedWarn').value,
-    keep:document.getElementById('schedKeep').value});
+    keep:document.getElementById('schedKeep').value,
+    snapkeep:(document.getElementById('snapKeep')||{}).value||''});
   document.getElementById('schedmsg').textContent=await api('/api/schedule?'+p.toString(),{method:'POST'});
 }
 async function pa(sid,action){ if(!confirm(action+' für '+sid+'?'))return;
@@ -1547,6 +1552,7 @@ class Handler(BaseHTTPRequestHandler):
                 "backup_times": inst.backup_times,
                 "warn_minutes": inst.warn_minutes,
                 "backups_keep": inst.backups_keep,
+                "snapshot_keep": inst.snapshot_keep,
                 "tasks": inst.tasks,
                 "actions": list(supervisor.Supervisor.TASK_ACTIONS),
             })
@@ -1808,6 +1814,8 @@ class Handler(BaseHTTPRequestHandler):
                 inst.warn_minutes = int(q["warn"][0])
             if "keep" in q and q["keep"][0].isdigit():
                 inst.backups_keep = int(q["keep"][0])
+            if "snapkeep" in q and q["snapkeep"][0].isdigit():
+                inst.snapshot_keep = max(1, min(20, int(q["snapkeep"][0])))
             registry.save(inst)
             self._send(200, ("Zeitplan gespeichert: Neustart %s | Backup %s | Vorwarnung %d min"
                              % (", ".join(inst.restart_times) or "-",

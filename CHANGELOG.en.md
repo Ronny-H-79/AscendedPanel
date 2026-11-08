@@ -4,6 +4,16 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.63] — 2026-11-08
+
+### Added
+- **Snapshots can be created by the schedule too** (action "Snapshot"), e.g. Sundays 04:00. So the 12 GB
+  copies do not pile up, only the last three auto snapshots are kept; the number is available as
+  "Keep auto snapshots" next to the snapshot box.
+- Manual snapshots are never touched — only `auto_*` ones are pruned, sorted by change time.
+- **Two snapshots within the same second** would have collided (`FileExistsError`); the name now gets a
+  counter.
+
 ## [0.3.62] — 2026-11-08
 
 ### Changed

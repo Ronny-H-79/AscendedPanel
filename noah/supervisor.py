@@ -126,7 +126,7 @@ class Supervisor:
     def backup_due(self) -> str | None:
         return self._due(self.inst.backup_times, "last_backup")
 
-    TASK_ACTIONS = ("restart", "start", "stop", "update", "backup",
+    TASK_ACTIONS = ("restart", "start", "stop", "update", "backup", "snapshot",
                     "saveworld", "dinowipe", "broadcast", "rcon")
 
     def tasks_due(self) -> list[dict]:
@@ -164,6 +164,8 @@ class Supervisor:
         if action == "backup":
             self._do_backup()
             return "Backup erstellt"
+        if action == "snapshot":
+            return self._do_snapshot()
         if action == "start":
             if runner.is_running(self.inst):
                 return "laeuft bereits"
@@ -195,6 +197,33 @@ class Supervisor:
             notify(self.inst, "Broadcast: %s" % text)
         except Exception as exc:  # noqa: BLE001
             notify(self.inst, "Broadcast fehlgeschlagen: %s" % exc.__class__.__name__)
+
+    def _do_snapshot(self) -> str:
+        """Auto-Snapshot anlegen und nur die letzten `snapshot_keep` behalten (jeder ~12 GB)."""
+        from . import snapshots as snap
+        info = snap.create(self.inst, label="auto")
+        keep = max(1, int(getattr(self.inst, "snapshot_keep", 3) or 3))
+        removed = 0
+        try:
+            # nur eigene Auto-Snapshots aufraeumen - manuelle bleiben unangetastet
+            items = [s for s in snap.listing(self.inst)
+                     if str(s.get("name", "")).startswith("auto_")]
+        except Exception:  # noqa: BLE001
+            items = []
+        # nach echter Aenderungszeit sortieren (Namen koennen nach dem Aufraeumen wiederverwendet werden)
+        items.sort(key=lambda s: os.path.getmtime(s["path"]) if s.get("path") else 0, reverse=True)
+        for old in items[keep:]:
+            try:
+                if snap.delete(self.inst, old["name"]):
+                    removed += 1
+            except Exception:  # noqa: BLE001
+                pass
+        notify_event(self.inst, "Snapshot erstellt",
+                     "%s (%.1f GB)%s" % (info["name"], info["size_gb"],
+                                         (", %d alte entfernt" % removed) if removed else ""),
+                     "info", {"Instanz": self.inst.name})
+        return "Snapshot %s (%.1f GB)%s" % (info["name"], info["size_gb"],
+                                            (", %d alte entfernt" % removed) if removed else "")
 
     def _do_backup(self) -> None:
         from . import backups
