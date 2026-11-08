@@ -4,6 +4,11 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.20] — 2026-11-08
+
+### Fixed
+- **"leer" in the whitelist list** was still hardcoded German; now translated via `i18n.py` (`empty`).
+
 ## [0.3.19] — 2026-11-08
 
 ### Fixed

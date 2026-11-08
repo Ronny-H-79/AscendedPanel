@@ -847,7 +847,7 @@ async function loadWl(){
   document.getElementById('wllist').innerHTML=w.players.length?w.players.map(p=>
     `<div class="p"><span><b>${p}</b></span>
       <span class="row"><button onclick="delWl('${p}')">${L['common.remove']}</button></span></div>`).join('')
-    :'<span style="color:var(--dim)">– leer –</span>';
+    :'<span style="color:var(--dim)">– '+(L['common.empty'])+' –</span>';
   document.getElementById('banlist').innerHTML=(b.bans||[]).length?b.bans.map(p=>
     `<div class="p"><span><b>${p}</b></span>
       <span class="row"><button onclick="unbanId('${p}')">Entbannen</button></span></div>`).join('')

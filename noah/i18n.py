@@ -168,6 +168,7 @@ T: dict[str, dict[str, str]] = {
                   "en": "Full copy of the server files including mods — for when an ARK update breaks the installation. Needs about 12 GB per snapshot."},
     "snap.create": {"de": "Snapshot erstellen", "en": "Create snapshot"},
     "snap.restore": {"de": "Zurückspielen", "en": "Roll back"},
+    "common.empty": {"de": "leer", "en": "empty"},
     "snap.none": {"de": "kein Snapshot vorhanden", "en": "no snapshot yet"},
     # ---------------------------------------------------------------- Zeitplan
     "sched.title": {"de": "Zeitplan (Neustart)", "en": "Schedule (restart)"},

@@ -4,6 +4,11 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.20] — 2026-11-08
+
+### Behoben
+- **„leer" in der Whitelist-Liste** war noch fest deutsch; läuft jetzt über `i18n.py` (`empty`).
+
 ## [0.3.19] — 2026-11-08
 
 ### Behoben
