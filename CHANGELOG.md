@@ -4,6 +4,13 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.27] — 2026-11-08
+
+### Neu
+- **Portprüfung vor dem Start.** Belegt ein fremdes Programm (z. B. ein AMP-Server) den Spiel-, Query-
+  oder RCON-Port, bricht noah mit einer klaren Meldung ab, statt einen Server zu starten, der nicht
+  erreichbar ist — und statt RCON-Anfragen versehentlich an den falschen Server zu schicken.
+
 ## [0.3.26] — 2026-11-08
 
 ### Behoben

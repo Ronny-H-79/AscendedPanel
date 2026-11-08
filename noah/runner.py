@@ -105,9 +105,31 @@ def tail_console(inst: Instance, lines: int = 60) -> list[str]:
     return tail(inst.console_log, lines)
 
 
+def _ports_free(inst: Instance) -> list[int]:
+    """Belegte Ports zurueckgeben - fremde Prozesse (z. B. AMP) blockieren den Start."""
+    import socket as _socket
+    busy = []
+    for port, kind in ((inst.port, _socket.SOCK_DGRAM), (inst.query_port, _socket.SOCK_DGRAM),
+                       (inst.rcon_port, _socket.SOCK_STREAM)):
+        sock = _socket.socket(_socket.AF_INET, kind)
+        try:
+            sock.bind(("0.0.0.0", port))
+        except OSError:
+            busy.append(port)
+        finally:
+            sock.close()
+    return busy
+
+
 def start(inst: Instance, wait: int = 0) -> int:
     if is_running(inst):
         raise RunnerError("laeuft bereits (PID %s)" % read_pid(inst))
+    busy = _ports_free(inst)
+    if busy:
+        raise RunnerError(
+            "Port %s ist schon belegt - vermutlich von einer anderen Instanz oder einem anderen "
+            "Serverprogramm. Ports in den Einstellungen aendern (Spiel, Query, RCON)."
+            % ", ".join(str(p) for p in busy))
     if not os.path.exists(inst.exe):
         raise RunnerError("Server nicht installiert: %s fehlt" % inst.exe)
     inst.write_ini()

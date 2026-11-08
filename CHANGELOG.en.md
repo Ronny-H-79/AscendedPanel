@@ -4,6 +4,13 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.27] — 2026-11-08
+
+### Added
+- **Port check before start.** If another program (e.g. an AMP server) holds the game, query or RCON port,
+  noah stops with a clear message instead of starting a server nobody can reach — and instead of sending
+  RCON requests to the wrong server.
+
 ## [0.3.26] — 2026-11-08
 
 ### Fixed
