@@ -15,6 +15,15 @@ Serverprozess, RCON für alles, was der Server von außen anbietet.
 
 ![Dashboard](docs/screenshot-dashboard.png)
 
+## Einblicke
+
+| | |
+|:--:|:--:|
+| ![Einstellungen](docs/screenshot-settings.png) | ![Mods](docs/screenshot-mods.png) |
+| ![Übersicht](docs/screenshot-instance.png) | ![Verwaltung](docs/screenshot-manage.png) |
+
+Mehr dazu: [docs/funktionen.md](docs/funktionen.md)
+
 ## Installation
 
 ```bash
