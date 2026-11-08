@@ -4,6 +4,12 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.19] — 2026-11-08
+
+### Behoben
+- **Zwei weitere deutsche Texte in der englischen Oberfläche:** „kein Snapshot vorhanden" und die
+  Meldung beim Speichern der Sprache kamen fest verdrahtet aus dem Code. Beide laufen jetzt über `i18n.py`.
+
 ## [0.3.18] — 2026-11-08
 
 ### Behoben

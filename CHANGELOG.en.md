@@ -4,6 +4,12 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.19] — 2026-11-08
+
+### Fixed
+- **Two more German strings in the English UI:** "kein Snapshot vorhanden" and the language-save error were
+  hardcoded. Both now come from `i18n.py`.
+
 ## [0.3.18] — 2026-11-08
 
 ### Fixed

@@ -276,7 +276,7 @@ const L=__LANGJSON__;
 async function toggleLang(){
   const next = (L.lang === 'de') ? 'en' : 'de';
   try{ await fetch('/api/lang?set=' + next + '&token=' + encodeURIComponent(T), {method:'POST'}); }
-  catch(e){ alert('Sprache/Sprache konnte nicht gespeichert werden: ' + e); return; }
+  catch(e){ alert(L['msg.lang_failed'] + ' ' + e); return; }
   location.reload();
 }
 function applyLang(){
@@ -637,7 +637,7 @@ const L=__LANGJSON__;
 async function toggleLang(){
   const next = (L.lang === 'de') ? 'en' : 'de';
   try{ await fetch('/api/lang?set=' + next + '&token=' + encodeURIComponent(T), {method:'POST'}); }
-  catch(e){ alert('Sprache/Sprache konnte nicht gespeichert werden: ' + e); return; }
+  catch(e){ alert(L['msg.lang_failed'] + ' ' + e); return; }
   location.reload();
 }
 function applyLang(){
@@ -1000,7 +1000,7 @@ async function loadSnaps(){
        <span class="row">
          <button onclick="restoreSnap('${x.name}')">${L['snap.restore']}</button>
          <button class="danger" onclick="delSnap('${x.name}')">${L['common.delete']}</button>
-       </span></div>`).join(''):'<span style="color:var(--dim)">– kein Snapshot vorhanden –</span>';
+       </span></div>`).join(''):'<span style="color:var(--dim)">– '+(L['snap.none'])+' –</span>';
   }catch(e){}
 }
 async function makeSnap(){
