@@ -163,6 +163,9 @@ class Instance:
         # Map-URL wie bei AMP: ohne ?RCONEnabled=True ignoriert ASA den RCON-Schalter aus der INI
         url = "%s?listen?Port=%d?RCONEnabled=True?RCONServerGameLogBuffer=600?RCONPort=%d" % (
             self.map, self.port, self.rcon_port)
+        # ASA nimmt das RCON-Passwort nur aus der URL an (wie AMP); die INI allein genuegt nicht
+        if self.rcon_password:
+            url += "?ServerAdminPassword=" + self.rcon_password
         argv = [
             self.exe,
             url,

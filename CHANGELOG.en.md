@@ -4,6 +4,13 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.25] — 2026-11-08
+
+### Fixed
+- **RCON still said "wrong password" even with `RCONEnabled=True`.** ASA only takes the admin password from
+  the command line; the map URL now carries `?ServerAdminPassword=…` (exactly like AMP). Note: as with any
+  ARK server, the password is then visible in `ps`.
+
 ## [0.3.24] — 2026-11-08
 
 ### Fixed
