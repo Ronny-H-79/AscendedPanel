@@ -822,11 +822,10 @@ async function loadCluster(){
   try{
     const c=JSON.parse(await api('/api/cluster'));
     const id=document.getElementById('clid'), dir=document.getElementById('cldir'), f=document.getElementById('clfilt');
-    if(id) id.value = c.cluster_id_custom ? c.cluster_id : '';
-    if(dir) dir.value = c.cluster_dir_custom ? c.cluster_dir : '';
+    // Vorgabewerte stehen direkt im Feld, damit man den Pfad sieht und nur aendern muss
+    if(id){ id.value = c.cluster_id || ''; id.placeholder = c.cluster_id || ''; }
+    if(dir){ dir.value = c.cluster_dir || ''; dir.placeholder = c.cluster_dir || ''; }
     if(f) f.checked = !!c.transfer_filtering;
-    if(id) id.placeholder = c.cluster_id_custom ? '' : c.cluster_id;
-    if(dir) dir.placeholder = c.cluster_dir_custom ? '' : c.cluster_dir;
   }catch(e){}
 }
 async function saveCluster(){

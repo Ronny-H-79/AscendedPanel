@@ -4,6 +4,13 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.22] — 2026-11-08
+
+### Geändert
+- **Cluster-Felder zeigen ihre Vorgabewerte direkt im Feld** — Cluster-ID ist der Instanzname, Verzeichnis
+  ist `<instanz>/clusters`. Man sieht also den Pfad, muss ihn nur überschreiben, wenn geteilt werden soll.
+  Der Hinweis nennt zusätzlich ein Beispiel (`/home/benutzer/arkcluster`).
+
 ## [0.3.21] — 2026-11-08
 
 ### Neu

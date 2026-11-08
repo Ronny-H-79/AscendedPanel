@@ -4,6 +4,13 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.22] — 2026-11-08
+
+### Changed
+- **Cluster fields show their defaults inside the input** — cluster ID is the instance name, directory is
+  `<instance>/clusters`. You see the path and only overwrite it when maps should share. The hint also names
+  an example (`/home/user/arkcluster`).
+
 ## [0.3.21] — 2026-11-08
 
 ### Added
