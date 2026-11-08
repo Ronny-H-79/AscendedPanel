@@ -129,6 +129,10 @@ t() {
     de:access_tunnel)     echo "Zugriff von einem anderen Rechner: ssh -N -L 8790:127.0.0.1:8790 $(id -un)@$MYIP" ;;
     en:access_https)      echo "HTTPS einrichten mit: sudo noah proxy --write --cert" ;;
     de:access_https)      echo "HTTPS einrichten mit: sudo noah proxy --write --cert" ;;
+    en:ip_warning_strong)  echo "WARNING: this makes the interface reachable from the internet WITHOUT encryption."; echo "         Whoever reads the token (Wi-Fi, proxy, hosting provider, browser history) can start,"; echo "         stop and delete servers and send console commands. Mode [1] or [2] avoids this." ;;
+    de:ip_warning_strong)  echo "WARNUNG: Damit ist die Oberflaeche aus dem Internet erreichbar - UNVERSCHLUESSELT."; echo "         Wer den Token mitliest (WLAN, Proxy, Anbieter, Browser-Verlauf), kann Server starten,"; echo "         stoppen, loeschen und Konsolenbefehle absetzen. Modus [1] oder [2] vermeidet das." ;;
+    en:ip_confirm)         echo "Really set it up this way?  [j/N] " ;;
+    de:ip_confirm)         echo "Trotzdem so einrichten?  [j/N] " ;;
     en:ip_warning)         echo "Note: reachable over the network without HTTPS - the token protects the UI, traffic is unencrypted. Open port 8790 in the firewall." ;;
     de:ip_warning)         echo "Hinweis: im Netzwerk ohne HTTPS erreichbar - der Token schuetzt die Oberflaeche, die Uebertragung ist unverschluesselt. Port 8790 in der Firewall freigeben." ;;
     en:web_not_needed)     echo "No permanent service needed - the UI starts on demand: noah web" ;;
@@ -320,7 +324,14 @@ if [ -t 0 ]; then
   printf '  %s' "$(t access_q)"
   read -r _a || _a=""
   case "$_a" in
-    3) ACCESS="ip" ;;
+    3) ACCESS="ip"
+       t ip_warning_strong
+       printf '  %s' "$(t ip_confirm)"
+       read -r _ok || _ok=""
+       case "$_ok" in
+         j|J|y|Y|ja|Ja|yes|Yes) ;;
+         *) ACCESS="tunnel" ;;
+       esac ;;
     2) ACCESS="https"
        printf '  %s' "$(t access_domain_q)"
        read -r DOMAIN || DOMAIN="" ;;

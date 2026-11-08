@@ -91,6 +91,30 @@ Dann spricht die Oberfläche selbst HTTPS (getestet: `HTTP 200` mit Token, `401`
 **In allen Fällen gilt:** ohne Token antwortet die Oberfläche mit `HTTP 401`. Der Token ist kein
 Passwort, sondern der Zugangsschlüssel — wer ihn hat und den Port erreicht, kann den Server steuern.
 
+## Sicherheit — was der Token bedeutet
+
+Die Oberfläche ist eine **Administrationskonsole**, kein Schaufenster: wer den Token hat, kann Server
+starten, stoppen und löschen, Mods eintragen, Backups anlegen und über die Konsole beliebige
+Server-Befehle absetzen. Behandle den Link wie ein Passwort.
+
+Daraus folgen drei Regeln:
+
+- **Nur `127.0.0.1` ist sicher, ohne dass du etwas tun musst.** Der Standard bindet ausschließlich an
+  die lokale Adresse; von außen ist nichts erreichbar.
+- **Unverschlüsseltes HTTP im Internet ist keine Option.** Im Modus `[3]` (direkt über IP und Port)
+  wandert der Token im Klartext über jede Zwischenstation — WLAN, Proxy, Anbieter, Firmennetz. Wer ihn
+  dort mitliest, hat Vollzugriff. Wenn es öffentlich sein muss: Modus `[2]` mit HTTPS.
+- **Der Token steht in der Adresse**, also auch im Browser-Verlauf und in Lesezeichen. noah setzt
+  `Referrer-Policy: no-referrer`, damit er nicht über Klicks auf fremde Seiten abfließt; beim Weitergeben
+  eines Links geht er trotzdem mit. Neuen Token erzeugen: `rm ~/.config/noah/token` und Dienst neu
+  starten (`systemctl --user restart noah-web` bzw. `systemctl restart noah-web`).
+
+Was noah selbst absichert: jeder Aufruf ohne gültigen Token endet mit `401`, der Token wird in
+konstanter Zeit verglichen, Antworten tragen `nosniff`, `X-Frame-Options: DENY` und eine restriktive
+CSP, Mod- und Spieler-IDs werden validiert, und die Bild-Auslieferung kann das Verzeichnis nicht
+verlassen. Was noah **nicht** kann: deinen Server absichern, auf dem es läuft — Firewall, Updates und
+ein starker SSH-Zugang bleiben deine Aufgabe.
+
 ## Der Token — wozu der gut ist
 
 Beim ersten Start erzeugt noah einen zufälligen Schlüssel und legt ihn in

@@ -57,6 +57,10 @@ Am Ende steht genau der Befehl, der zu deiner Wahl passt: der SSH-Tunnel mit dei
 `sudo noah proxy --write --cert`, das die gespeicherte Domain automatisch verwendet.
 `--web` / `--no-web` überspringt die Dienst-Frage.
 
+> **Sicherheit:** Die Oberfläche ist eine Administrationskonsole — wer den Token hat, kann alles
+> steuern. Modus `[3]` (direkt über IP) ist **unverschlüsselt**, der Token ist dort mitlesbar. Nimm
+> `[1]` (SSH-Tunnel) oder `[2]` (HTTPS). Details: [docs/zugriff.md](docs/zugriff.md#sicherheit--was-der-token-bedeutet)
+
 ### Wenn die Installation hakt
 
 | Meldung | Ursache | Lösung |
