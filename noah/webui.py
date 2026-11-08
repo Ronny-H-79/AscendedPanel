@@ -317,7 +317,7 @@ async function load(){
       <div class="meta">${i.map} · Port ${i.port} · RCON ${i.rcon_port}</div>
       <div class="meta">${i.installed?('Build '+i.build+' · '+i.size_gb+' GB'):L['dash.not_installed']}</div>
       ${i.running?`<div class="stats">
-        <div title="${L['dash.cpu_title'].replace('{c}',(i.cpu/100).toFixed(1)).replace('{n}',i.cores).replace('{p}',(i.cpu/i.cores).toFixed(1))}"><b>${i.cpu.toFixed(1)}%</b><small>${L['dash.cpu']}</small></div>
+        <div title="${L['dash.cpu_title'].replace('{c}',(i.cpu/100).toFixed(1)).replace('{n}',i.cores||navigator.hardwareConcurrency||1).replace('{p}',(i.cpu/(i.cores||navigator.hardwareConcurrency||1)).toFixed(1))}"><b>${i.cpu.toFixed(1)}%</b><small>${L['dash.cpu']}</small></div>
         <div title="Spitze: ${i.ram_peak_gb||0} GB"><b>${i.ram_gb.toFixed(1)}G</b><small>${L['dash.ram']}</small></div>
         <div><b>${i.players}</b><small>${L['dash.players']}</small></div>
         <div><b>${fmtUp(i.uptime)}</b><small>${L['dash.uptime']}</small></div>

@@ -4,6 +4,12 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.36] — 2026-11-08
+
+### Fixed
+- **The CPU tooltip showed `undefined`/`NaN`** when the response carried no core count (older answer in
+  the browser cache). The fallback is now the browser's core count, otherwise 1.
+
 ## [0.3.35] — 2026-11-08
 
 ### Fixed

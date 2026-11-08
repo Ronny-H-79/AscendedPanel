@@ -4,6 +4,12 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.36] — 2026-11-08
+
+### Behoben
+- **CPU-Tooltip zeigte `undefined`/`NaN`**, wenn die Gegenstelle keine Kernzahl liefert (ältere
+  Antwort im Browser-Cache). Ersatzwert ist jetzt die Kernzahl des Browsers, sonst 1.
+
 ## [0.3.35] — 2026-11-08
 
 ### Behoben
