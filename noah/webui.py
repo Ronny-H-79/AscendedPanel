@@ -1410,7 +1410,8 @@ class Handler(BaseHTTPRequestHandler):
             self._send(401, b"token fehlt")
             return
         u = urllib.parse.urlparse(self.path)
-        path, q = u.path, urllib.parse.parse_qs(u.query)
+        # keep_blank_values: ein geleertes Feld (z. B. Uhrzeiten) muss auch geleert ankommen
+        path, q = u.path, urllib.parse.parse_qs(u.query, keep_blank_values=True)
         tok = q.get("token", [""])[0]
 
         if path == "/":
@@ -1573,7 +1574,8 @@ class Handler(BaseHTTPRequestHandler):
             self._send(401, b"token fehlt")
             return
         u = urllib.parse.urlparse(self.path)
-        path, q = u.path, urllib.parse.parse_qs(u.query)
+        # keep_blank_values: ein geleertes Feld (z. B. Uhrzeiten) muss auch geleert ankommen
+        path, q = u.path, urllib.parse.parse_qs(u.query, keep_blank_values=True)
 
         if path == "/api/selfupdate":
             from . import selfupdate

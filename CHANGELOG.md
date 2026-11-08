@@ -4,6 +4,13 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.66] — 2026-11-08
+
+### Behoben
+- **Geleerte Uhrzeiten-Felder wurden ignoriert:** ein leer gelassenes Feld (Neustart, Backup, Snapshot)
+  kam beim Server gar nicht an, weil leere Query-Werte wegfielen — die alten Zeiten blieben stehen und
+  ließen sich so nicht abschalten. Jetzt werden leere Werte mitgesendet und leeren die Liste.
+
 ## [0.3.65] — 2026-11-08
 
 ### Geändert

@@ -4,6 +4,13 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.66] — 2026-11-08
+
+### Fixed
+- **Cleared time fields were ignored:** an empty field (restart, backup, snapshot) never reached the
+  server because empty query values were dropped — the old times stayed and could not be switched off.
+  Empty values are passed through now and clear the list.
+
 ## [0.3.65] — 2026-11-08
 
 ### Changed
