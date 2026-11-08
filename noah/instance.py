@@ -160,9 +160,12 @@ class Instance:
 
     # ------------------------------------------------------------------ Start
     def launch_argv(self) -> list[str]:
+        # Map-URL wie bei AMP: ohne ?RCONEnabled=True ignoriert ASA den RCON-Schalter aus der INI
+        url = "%s?listen?Port=%d?RCONEnabled=True?RCONServerGameLogBuffer=600?RCONPort=%d" % (
+            self.map, self.port, self.rcon_port)
         argv = [
             self.exe,
-            self.map,
+            url,
             "-server",
             "-log",
             "-NoBattlEye",

@@ -4,6 +4,14 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.24] — 2026-11-08
+
+### Fixed
+- **RCON replied "wrong password" on freshly created instances.** noah passed only `-RCONPort` and relied on
+  the INI to enable it; ASA only honours that with `?RCONEnabled=True` in the map URL (same as AMP). The URL
+  now carries `?listen?Port=…?RCONEnabled=True?RCONServerGameLogBuffer=600?RCONPort=…`. The password stays in
+  the INI, so it does not show up in the process list.
+
 ## [0.3.23] — 2026-11-08
 
 ### Changed
