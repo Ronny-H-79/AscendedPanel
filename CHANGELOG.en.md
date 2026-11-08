@@ -4,6 +4,14 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.38] — 2026-11-08
+
+### Added
+- **Live server log inside the dashboard card.** Next to status and metrics the last log lines scroll by
+  (refresh every 2.5 s), so you can see what the server is doing without opening the detail page. On
+  narrow cards the log moves below the metrics.
+- The number of lines follows the card height; empty output shows as "no output".
+
 ## [0.3.37] — 2026-11-08
 
 ### Changed

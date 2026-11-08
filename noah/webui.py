@@ -134,8 +134,15 @@ padding:6px 0;border-top:1px solid #12241f}
 .setrow .bool{display:flex;justify-content:flex-end}
 .setrow input[type=checkbox]{width:auto;transform:scale(1.25);margin:0}
 .cards{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));padding:0 24px 24px}
+.cardgrid{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;align-items:start}
+.cardmain{display:flex;flex-direction:column;gap:10px;min-width:0}
+@container (min-width:560px){.cardgrid{grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr)}}
+.logwrap{background:#070f13;border:1px solid #12241f;border-radius:4px;padding:6px 8px;min-width:0}
+.loghead{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin-bottom:4px}
+.cardlog{margin:0;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:9.5px;line-height:1.35;
+color:#9fb8ae;white-space:pre-wrap;word-break:break-word;max-height:132px;overflow:hidden}
 .card{border:1px solid #16302a;border-radius:6px;padding:14px 16px;background:rgba(11,17,22,.92);
-display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden}
+display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden;container-type:inline-size}
 .card .bgimg{position:absolute;inset:0;background-size:cover;background-position:center;
 opacity:.62;filter:saturate(.9) contrast(1.05) brightness(.95);z-index:0}
 .card .bgimg::after{content:"";position:absolute;inset:0;
@@ -287,6 +294,7 @@ function applyLang(){
 const T=new URLSearchParams(location.search).get('token')||'';
 const api=(p,o)=>fetch(p+(p.includes('?')?'&':'?')+'token='+encodeURIComponent(T),o).then(r=>r.text());
 let DATA=[];
+let LOGTIMER=null, LOGS={};   // Karten-Log: Timer und letzte Zeilen je Instanz
 function fmtUp(s){ if(!s) return '–'; const h=Math.floor(s/3600), m=Math.floor(s%3600/60);
   return h? h+'h '+m+'m' : m+'m'; }
 function spark(cv, a, b, amax, bmax){
@@ -310,6 +318,7 @@ async function load(){
   document.getElementById('cards').innerHTML=list.map(i=>`
     <div class="card">
       ${i.map_image?`<div class="bgimg" style="background-image:url('${i.map_image}?token=${encodeURIComponent(T)}')"></div>`:''}
+      <div class="cardgrid"><div class="cardmain">
       <div class="row" style="justify-content:space-between">
         <h3>${i.name}</h3>
         <span class="badge ${i.running?(i.ready?'on':'warn'):'off'}">${i.running?(i.ready?L['status.running']:L['status.starting']):L['status.off']}</span>
@@ -332,6 +341,8 @@ async function load(){
              <button class="danger" onclick="delInst('${i.name}',${i.size_gb||0})">${L['common.delete']}</button>`
           : `<button class="primary" onclick="install('${i.name}')">${L['dash.install']}</button>`}
       </div>
+      </div>${i.running?`<div class="logwrap"><div class="loghead">${L['dash.log']}</div><pre class="cardlog" data-inst="${i.name}">…</pre></div>`:''}
+      </div>
     </div>`).join('');
   const canvases=[...document.querySelectorAll('.spark')];
   canvases.forEach(cv=>{
@@ -342,6 +353,19 @@ async function load(){
     const chist=d.cpu_hist_pct||(d.cpu_hist||[]).map(v=>v/(d.cores||1));
     spark(cv, chist, d.ram_hist||[], 100, rmax*1.15);
   });
+  // Lebendes Server-Log rechts in der Karte; die letzte Fassung ueberlebt den 3-Sekunden-Refresh
+  const logBoxes=[...document.querySelectorAll('.cardlog')];
+  logBoxes.forEach(el=>{ const t=LOGS[el.dataset.inst]; if(t) el.textContent=t; });
+  clearInterval(LOGTIMER);
+  if(logBoxes.length){
+    const pull=async()=>{ for(const el of logBoxes){
+        try{ const txt=(await api('/api/logs?name='+encodeURIComponent(el.dataset.inst)+'&n=10')).trim();
+          LOGS[el.dataset.inst]=txt; el.textContent=txt||L['dash.log_empty'];
+        }catch(e){}
+    } };
+    pull();
+    LOGTIMER=setInterval(pull,2500);
+  }
 }
 async function loadHost(){
   try{ const h=JSON.parse(await api('/api/host'));

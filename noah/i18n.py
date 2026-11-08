@@ -63,6 +63,8 @@ T: dict[str, dict[str, str]] = {
     "dash.memory": {"de": "RAM: ohne Mods leer ca. 4 GB, mit Mods/Welt/Spielern 11–12 GB und mehr",
                     "en": "RAM: empty without mods about 4 GB, with mods/world/players 11-12 GB and more"},
     "dash.cpu": {"de": "CPU", "en": "CPU"},
+    "dash.log": {"de": "Log", "en": "log"},
+    "dash.log_empty": {"de": "keine Ausgabe", "en": "no output"},
     "dash.cpu_title": {"de": "{p} % des Servers ausgelastet - das sind {c} von {n} Kernen "
                              "(ein voll ausgelasteter Kern zaehlt 100 %, wie bei top/htop)",
                        "en": "{p} % of the server busy - that is {c} of {n} cores "

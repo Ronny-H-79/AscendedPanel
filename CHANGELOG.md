@@ -4,6 +4,14 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.38] — 2026-11-08
+
+### Neu
+- **Lebendes Server-Log in der Dashboard-Karte.** Rechts neben Status und Kennzahlen laufen die
+  letzten Logzeilen mit (Aktualisierung alle 2,5 s), damit man ohne die Detailseite sieht, was der
+  Server gerade tut. Bei schmalen Karten rutscht das Log unter die Kennzahlen.
+- Die angezeigte Zeilenzahl folgt der Kartenhöhe; leere Ausgabe erscheint als „keine Ausgabe".
+
 ## [0.3.37] — 2026-11-08
 
 ### Geändert
