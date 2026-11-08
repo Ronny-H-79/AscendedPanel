@@ -4,6 +4,12 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.42] — 2026-11-08
+
+### Geändert
+- **„Öffnen" ist jetzt ein Menü** statt eines einzelnen Buttons: Übersicht, Einstellungen, Mods oder
+  Verwaltung direkt anwählen, die Detailseite springt in den passenden Reiter.
+
 ## [0.3.41] — 2026-11-08
 
 ### Geändert
