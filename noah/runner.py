@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import os
 import signal
+import re
+import shutil
 import subprocess
 import sys
 import time
@@ -111,18 +113,31 @@ def start(inst: Instance, wait: int = 0) -> int:
     inst.write_ini()
     clear_stopped(inst)
 
-    # consoled starten: er haelt die stdin-Pipe und startet die Server-exe
-    subprocess.Popen(
-        [sys.executable, "-m", "noah.consoled", inst.name],
-        cwd=os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
-        start_new_session=True,
-    )
+    # consoled starten: er haelt die stdin-Pipe und startet die Server-exe.
+    # In einer eigenen systemd-Scope, damit Wine-Prozesse nicht in der Prozessgruppe
+    # des Web-Dienstes haengen und dessen Neustart blockieren.
+    base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    argv = [sys.executable, "-m", "noah.consoled", inst.name]
+    launcher = list(argv)
+    scope_unit = "noah-%s.scope" % re.sub(r"[^A-Za-z0-9_.-]", "-", inst.name)
+    if os.environ.get("NOAH_NO_SCOPE") != "1" and shutil.which("systemd-run"):
+        launcher = ["systemd-run", "--scope", "--collect", "--quiet",
+                    "--unit", scope_unit] + argv
+
+    def _spawn(cmd: list[str]) -> None:
+        subprocess.Popen(cmd, cwd=base, stdout=subprocess.DEVNULL,
+                         stderr=subprocess.DEVNULL, start_new_session=True)
+
+    _spawn(launcher)
     deadline = time.time() + 45
+    fell_back = False
     while time.time() < deadline:
         if is_running(inst):
             break
+        # Scope-Start gescheitert (kein systemd, kein Bus)? Dann ohne Scope versuchen
+        if not fell_back and launcher is not argv and time.time() > (deadline - 36):
+            _spawn(argv)
+            fell_back = True
         time.sleep(0.5)
     else:
         raise RunnerError("Server nicht gestartet - siehe %s" % inst.console_log)

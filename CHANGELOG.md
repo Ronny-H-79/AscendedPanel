@@ -4,6 +4,16 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.15] — 2026-11-08
+
+### Behoben
+- **Der Spielserver hängt nicht mehr am Web-Dienst.** Bisher startete er als Kindprozess von
+  `noah-web`; Wine-Prozesse blieben beim Stoppen in dessen Prozessgruppe zurück („Unit process …
+  remains running after unit stopped") und blockierten jeden Neustart der Oberfläche. Jetzt läuft jede
+  Instanz in einer eigenen transienten Unit (`noah-<name>.scope`, via `systemd-run --scope`), damit
+  überlebt der Server einen Neustart der Oberfläche und umgekehrt. Ohne systemd fällt noah auf den
+  bisherigen Start zurück (`NOAH_NO_SCOPE=1` erzwingt das).
+
 ## [0.3.14] — 2026-11-08
 
 ### Geändert

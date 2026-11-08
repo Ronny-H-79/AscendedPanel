@@ -4,6 +4,15 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.15] — 2026-11-08
+
+### Fixed
+- **The game server no longer lives inside the web service.** It used to start as a child of `noah-web`;
+  Wine processes stayed in that unit's cgroup on stop ("Unit process … remains running after unit
+  stopped") and blocked every restart of the UI. Each instance now runs in its own transient unit
+  (`noah-<name>.scope` via `systemd-run --scope`), so the server survives a UI restart and vice versa.
+  Without systemd noah falls back to the previous start (`NOAH_NO_SCOPE=1` forces it).
+
 ## [0.3.14] — 2026-11-08
 
 ### Changed
