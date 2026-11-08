@@ -185,6 +185,7 @@ T: dict[str, dict[str, str]] = {
     "self.current_build": {"de": "aktueller Stand", "en": "up to date"},
     "self.build_only": {"de": "gleiche Version, nur ein neuer Build - kein Update nötig",
                         "en": "same version, only a new build - no update needed"},
+    "ui.docs_en": {"de": "English", "en": "English"},
     "self.changelog": {"de": "Changelog", "en": "Changelog"},
     "self.on_github": {"de": "Auf GitHub öffnen", "en": "Open on GitHub"},
     "self.up_to_date": {"de": "noah ist aktuell", "en": "noah is up to date"},

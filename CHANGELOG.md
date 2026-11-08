@@ -4,6 +4,12 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.17] — 2026-11-08
+
+### Neu
+- **Englische Beschreibung:** eigener Knopf im Kopfbereich (neben „Changelog") öffnet
+  `README.en.md` auf GitHub. Das README verlinkt jetzt oben zwischen Deutsch und English.
+
 ## [0.3.16] — 2026-11-08
 
 ### Behoben (wichtig)

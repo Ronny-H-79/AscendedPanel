@@ -1,6 +1,6 @@
 # noah — ARK: Survival Ascended Servermanager für Linux
 
-Deutsch · English — der Installer fragt beim Start nach der Sprache, die Oberfläche lässt sich
+[Deutsch](README.md) · [English](README.en.md) — der Installer fragt beim Start nach der Sprache, die Oberfläche lässt sich
 jederzeit umschalten (Knopf oben rechts, `noah lang en` in der Konsole).
 
 [![Spenden](https://img.shields.io/badge/Spenden-PayPal-00457C?logo=paypal&logoColor=white)](https://www.paypal.com/donate/?business=ronnyhase%40fn.de&item_name=noah%20Servermanager&currency_code=EUR)
