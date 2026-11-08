@@ -4,6 +4,12 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.32] — 2026-11-08
+
+### Fixed
+- **`--user` left the files owned by root** when no web service was set up (`--no-web`), so the user could not
+  write its own configs. Ownership is now fixed right after copying.
+
 ## [0.3.31] — 2026-11-08
 
 ### Fixed

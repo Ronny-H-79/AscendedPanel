@@ -416,6 +416,10 @@ export PYTHONPATH="$DEST\${PYTHONPATH:+\$PYTHONPATH}"
 exec "$PY" -P -m noah "\$@"
 EOF
 chmod +x "$BIN/noah"
+# bei --user gehoert alles dem Dienst-Benutzer, sonst kann er seine Configs nicht schreiben
+if [ -n "$SERVICE_USER" ]; then
+  chown -R "$SERVICE_USER":"$SERVICE_USER" "$DEST" "$HOME/.config/noah" "$BIN/noah" 2>/dev/null || true
+fi
 say "$(t command "$BIN/noah")"
 
 case ":$PATH:" in

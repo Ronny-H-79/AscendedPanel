@@ -4,6 +4,13 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.32] — 2026-11-08
+
+### Behoben
+- **`--user` ließ die Dateien root gehören**, wenn kein Web-Dienst eingerichtet wurde (`--no-web`) — der
+  Benutzer konnte danach seine eigenen Configs nicht schreiben. Die Rechte werden jetzt direkt nach dem
+  Kopieren gesetzt.
+
 ## [0.3.31] — 2026-11-08
 
 ### Behoben
