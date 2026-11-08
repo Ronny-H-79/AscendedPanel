@@ -124,6 +124,8 @@ Installationsdetails: [INSTALL.md](INSTALL.md)
 
 ## Lizenz
 
-MIT — siehe [LICENSE](LICENSE).
+**Alle Rechte vorbehalten.** Der Quellcode darf gelesen und für den eigenen Betrieb
+heruntergeladen werden; Weitergabe, Veränderung und kommerzielle Nutzung brauchen eine
+schriftliche Zustimmung. Details: [LICENSE](LICENSE).
 
 © 2026 Ronny H.
