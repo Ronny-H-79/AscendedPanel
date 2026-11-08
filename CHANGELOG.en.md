@@ -4,6 +4,16 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.26] — 2026-11-08
+
+### Fixed
+- **Launch line modelled on AMP.** Port, query port, RCON and password now live only in the map URL
+  (`?listen?Port=…?QueryPort=…?RCONEnabled=True?RCONServerGameLogBuffer=600?RCONPort=…?ServerAdminPassword=…`),
+  the password as the **last** option — otherwise ASA swallows the rest of the line. The separate
+  `-port`/`-RCONPort` arguments are gone.
+- `-SessionName` is no longer passed as an argument (spaces in the name split the line); the name comes from
+  `[SessionSettings]` in the INI.
+
 ## [0.3.25] — 2026-11-08
 
 ### Fixed

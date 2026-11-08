@@ -160,10 +160,10 @@ class Instance:
 
     # ------------------------------------------------------------------ Start
     def launch_argv(self) -> list[str]:
-        # Map-URL wie bei AMP: ohne ?RCONEnabled=True ignoriert ASA den RCON-Schalter aus der INI
-        url = "%s?listen?Port=%d?RCONEnabled=True?RCONServerGameLogBuffer=600?RCONPort=%d" % (
-            self.map, self.port, self.rcon_port)
-        # ASA nimmt das RCON-Passwort nur aus der URL an (wie AMP); die INI allein genuegt nicht
+        # Map-URL wie bei AMP: ASA liest Port, RCON und Admin-Passwort aus der URL.
+        # ServerAdminPassword MUSS die letzte ?-Option sein, sonst schluckt sie den Rest.
+        url = "%s?listen?Port=%d?QueryPort=%d?RCONEnabled=True?RCONServerGameLogBuffer=600?RCONPort=%d" % (
+            self.map, self.port, self.query_port, self.rcon_port)
         if self.rcon_password:
             url += "?ServerAdminPassword=" + self.rcon_password
         argv = [
@@ -174,14 +174,10 @@ class Instance:
             "-NoBattlEye",
             "-servergamelog",
             "-servergamelogincludetribelogs",
-            "-ClusterDirOverride=" + self.cluster_path,
-            "-clusterid=" + self.cluster_name,
-            "-port=%d" % self.port,
-            "-QueryPort=%d" % self.query_port,
-            "-RCONPort=%d" % self.rcon_port,
             "-ServerPlatform=All",
             "-MaxPlayers=%d" % self.max_players,
-            "-SessionName=%s" % self.session_name,
+            "-ClusterDirOverride=" + self.cluster_path,
+            "-clusterid=" + self.cluster_name,
         ]
         if self.cluster_transfer_filtering:
             argv.append("-NoTransferFromFiltering")
