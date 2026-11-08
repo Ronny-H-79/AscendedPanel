@@ -4,6 +4,13 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.37] — 2026-11-08
+
+### Changed
+- **The CPU tile now shows the server's share (0–100 %)** instead of the sum over all cores. 755 % on
+  64 cores appears as "11.8 %"; the history graph ends at 100 % as well. The core breakdown ("7.6 of 64
+  cores") moved to the tooltip, the raw value stays in the API as `cpu`.
+
 ## [0.3.36] — 2026-11-08
 
 ### Fixed

@@ -317,7 +317,7 @@ async function load(){
       <div class="meta">${i.map} · Port ${i.port} · RCON ${i.rcon_port}</div>
       <div class="meta">${i.installed?('Build '+i.build+' · '+i.size_gb+' GB'):L['dash.not_installed']}</div>
       ${i.running?`<div class="stats">
-        <div title="${L['dash.cpu_title'].replace('{c}',(i.cpu/100).toFixed(1)).replace('{n}',i.cores||navigator.hardwareConcurrency||1).replace('{p}',(i.cpu/(i.cores||navigator.hardwareConcurrency||1)).toFixed(1))}"><b>${i.cpu.toFixed(1)}%</b><small>${L['dash.cpu']}</small></div>
+        <div title="${L['dash.cpu_title'].replace('{p}',(i.cpu_pct!==undefined?i.cpu_pct:(i.cpu/(i.cores||navigator.hardwareConcurrency||1))).toFixed(1)).replace('{c}',(i.cpu/100).toFixed(1)).replace('{n}',i.cores||navigator.hardwareConcurrency||1)}"><b>${(i.cpu_pct!==undefined?i.cpu_pct:(i.cpu/(i.cores||navigator.hardwareConcurrency||1))).toFixed(1)}%</b><small>${L['dash.cpu']}</small></div>
         <div title="Spitze: ${i.ram_peak_gb||0} GB"><b>${i.ram_gb.toFixed(1)}G</b><small>${L['dash.ram']}</small></div>
         <div><b>${i.players}</b><small>${L['dash.players']}</small></div>
         <div><b>${fmtUp(i.uptime)}</b><small>${L['dash.uptime']}</small></div>
@@ -338,8 +338,9 @@ async function load(){
     const name=cv.closest('.card').querySelector('h3').textContent.trim();
     const d=DATA.find(x=>x.name===name); if(!d)return;
     const rmax=Math.max(1,...(d.ram_hist||[0]));
-    const cmax=Math.max(100,...(d.cpu_hist||[0]))*1.1;   // ueber 100 % nicht abschneiden
-    spark(cv, d.cpu_hist||[], d.ram_hist||[], cmax, rmax*1.15);
+    // CPU als Anteil des Servers (0-100), damit die Achse immer bei 100 % endet
+    const chist=d.cpu_hist_pct||(d.cpu_hist||[]).map(v=>v/(d.cores||1));
+    spark(cv, chist, d.ram_hist||[], 100, rmax*1.15);
   });
 }
 async function loadHost(){

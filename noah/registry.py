@@ -177,8 +177,10 @@ def info(inst: Instance) -> dict:
         "map_image": ("/static/maps/%s.jpg" % inst.map
                       if os.path.exists(os.path.expanduser("~/.config/noah/static/maps/%s.jpg" % inst.map))
                       else ""),
-        "cpu": data["cpu"],
+        "cpu": data["cpu"],                        # Summe ueber alle Kerne, wie top
+        "cpu_pct": round(data["cpu"] / (metrics.CORES or 1), 1),   # Anteil des Servers
         "cores": metrics.CORES,
+        "cpu_hist_pct": [round(v / (metrics.CORES or 1), 1) for v in data["cpu_hist"]],
         "ram_gb": data["ram_gb"],
         "ram_mb": data["ram_mb"],
         "ram_peak_gb": data.get("ram_peak_gb", 0.0),

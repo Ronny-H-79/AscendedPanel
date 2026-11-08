@@ -4,6 +4,14 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.37] — 2026-11-08
+
+### Geändert
+- **CPU-Kachel zeigt jetzt den Anteil des Servers (0–100 %)** statt der Summe über alle Kerne.
+  755 % auf 64 Kernen erscheint damit als „11,8 %"; der Verlaufsgraph endet ebenfalls bei 100 %.
+  Die Kern-Aufschlüsselung („7,6 von 64 Kernen") steht im Tooltip, der Rohwert bleibt in der API
+  unter `cpu` erhalten.
+
 ## [0.3.36] — 2026-11-08
 
 ### Behoben

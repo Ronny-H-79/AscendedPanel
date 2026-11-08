@@ -63,10 +63,10 @@ T: dict[str, dict[str, str]] = {
     "dash.memory": {"de": "RAM: ohne Mods leer ca. 4 GB, mit Mods/Welt/Spielern 11–12 GB und mehr",
                     "en": "RAM: empty without mods about 4 GB, with mods/world/players 11-12 GB and more"},
     "dash.cpu": {"de": "CPU", "en": "CPU"},
-    "dash.cpu_title": {"de": "{c} von {n} Kernen ausgelastet ({p} % des Servers) - "
-                             "ein voll ausgelasteter Kern zaehlt 100 %, wie bei top/htop",
-                       "en": "{c} of {n} cores busy ({p} % of the server) - "
-                             "one saturated core counts as 100 %, like top/htop"},
+    "dash.cpu_title": {"de": "{p} % des Servers ausgelastet - das sind {c} von {n} Kernen "
+                             "(ein voll ausgelasteter Kern zaehlt 100 %, wie bei top/htop)",
+                       "en": "{p} % of the server busy - that is {c} of {n} cores "
+                             "(one saturated core counts as 100 %, like top/htop)"},
     "dash.ram": {"de": "RAM", "en": "RAM"},
     "dash.players": {"de": "Spieler", "en": "Players"},
     "dash.uptime": {"de": "Laufzeit", "en": "Uptime"},
