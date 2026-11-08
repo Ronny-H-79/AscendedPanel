@@ -4,6 +4,13 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.62] — 2026-11-08
+
+### Geändert
+- **Der Zeitplan nimmt die volle Breite ein**, die Backup-Box steht jetzt darunter. Damit haben die
+  Aufgabenzeilen Platz für Aktion, Uhrzeit, Tage, Argument und Schalter in einer Zeile.
+- „Backup-Uhrzeiten" bleibt in der Backup-Box (Backups sind keine Snapshots).
+
 ## [0.3.61] — 2026-11-08
 
 ### Geändert

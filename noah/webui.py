@@ -675,11 +675,6 @@ INST = """<!doctype html><html lang="__LANG__"><head><meta charset="utf-8">
       die Installation zerschießt. Ein Welt-Backup hilft dort nicht, weil SteamCMD immer die neue
       Programmversion liefert. Platzbedarf: ca. 12 GB pro Snapshot.</div>
     <div id="snaps" style="margin-top:10px">…</div>
-    <div class="setrow" style="margin-top:10px"><label><b data-t="bk.times">Backup-Uhrzeiten</b>
-      <small data-t="bk.times_hint">hint</small></label>
-      <input id="schedBackup" type="text" placeholder="03:00"></div>
-    <div class="meta" data-t="snap.backup_note" style="margin:0 0 8px">Alternativ als Aufgabe im Zeitplan
-      (Aktion „Backup") — beides läuft im Supervisor.</div>
     <div class="row" style="margin-top:8px">
       <button class="primary" onclick="makeSnap()" data-t="snap.create">Snapshot erstellen</button>
       <span class="meta" id="snapmsg"></span>
@@ -700,15 +695,7 @@ INST = """<!doctype html><html lang="__LANG__"><head><meta charset="utf-8">
     </div>
   </section>
 
-  <section class="tab tab-server"><h2 data-t="bk.title">Backups</h2>
-    <div id="backups">…</div>
-    <div class="row" style="margin-top:8px">
-      <button class="primary" onclick="makeBackup()" data-t="bk.now">Jetzt sichern</button>
-      <span class="meta" id="bkmsg"></span>
-    </div>
-  </section>
-
-  <section class="tab tab-server"><h2 data-t="sched.title">Zeitplan</h2>
+  <section class="tab tab-server wide"><h2 data-t="sched.title">Zeitplan</h2>
     <div id="tasklist"></div>
     <div class="row" style="margin:6px 0 12px">
       <button onclick="addTask()" data-t="sched.add">Aufgabe hinzufügen</button>
@@ -729,6 +716,18 @@ INST = """<!doctype html><html lang="__LANG__"><head><meta charset="utf-8">
     <div class="row" style="margin-top:10px"><button onclick="saveSchedule()" data-t="common.save">Speichern</button></div>
     <pre id="schedmsg">–</pre>
   </section>
+
+  <section class="tab tab-server"><h2 data-t="bk.title">Backups</h2>
+    <div id="backups">…</div>
+    <div class="setrow"><label><b data-t="bk.times">Backup-Uhrzeiten</b>
+      <small data-t="bk.times_hint">hint</small></label>
+      <input id="schedBackup" type="text" placeholder="03:00"></div>
+    <div class="row" style="margin-top:8px">
+      <button class="primary" onclick="makeBackup()" data-t="bk.now">Jetzt sichern</button>
+      <span class="meta" id="bkmsg"></span>
+    </div>
+  </section>
+
 
 </main>
 <script>""" + BG_JS + """

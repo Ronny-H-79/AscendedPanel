@@ -4,6 +4,13 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.62] — 2026-11-08
+
+### Changed
+- **The schedule now takes the full width**, the backup box sits below it. That gives the task rows room
+  for action, time, weekdays, argument and switch on one line.
+- "Backup times" stays in the backup box (backups are not snapshots).
+
 ## [0.3.61] — 2026-11-08
 
 ### Changed

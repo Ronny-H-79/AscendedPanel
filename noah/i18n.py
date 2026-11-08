@@ -208,8 +208,6 @@ T: dict[str, dict[str, str]] = {
     "snap.restore": {"de": "Zurückspielen", "en": "Roll back"},
     "common.empty": {"de": "leer", "en": "empty"},
     "snap.none": {"de": "kein Snapshot vorhanden", "en": "no snapshot yet"},
-    "snap.backup_note": {"de": "Alternativ als Aufgabe im Zeitplan (Aktion „Backup“) — beides läuft im Supervisor.",
-                         "en": "Alternatively as a task in the schedule (action “Backup”) — both run in the supervisor."},
     # ---------------------------------------------------------------- Zeitplan
     "sched.title": {"de": "Zeitplan", "en": "Schedule"},
     "sched.restart_times": {"de": "Neustart-Uhrzeiten (alt)", "en": "Restart times (legacy)"},
