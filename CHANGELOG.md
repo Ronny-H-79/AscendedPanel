@@ -9,9 +9,10 @@ Alle nennenswerten Änderungen an noah. Format nach
 ### Geändert
 - **Das Log steht jetzt auch bei gestoppten Instanzen** in der Karte (letzte Ausgabe vor dem Stopp, bzw.
   „keine Ausgabe"). Vorher erschien es nur bei laufendem Server — nach einem Absturz war es damit weg.
-- **Log größer:** 11 px statt 9,5 px, bis zu 300 px hoch, 18 Zeilen. Die Karte bleibt eine Rasterzelle
-  (nur *laufende* Instanzen nehmen ab 900 px Fensterbreite zwei Spalten ein), damit mehrere Instanzen
-  weiter sauber nebeneinander stehen.
+- **Log größer:** 11 px statt 9,5 px, bis zu 300 px hoch, 18 Zeilen.
+- **Karten sind breiter** (mindestens 460 px), damit das Log auch bei gestoppten Instanzen daneben passt.
+  Bei mehreren Instanzen fließen sie im Raster weiter nebeneinander; nur laufende nehmen ab 900 px
+  Fensterbreite zwei Spalten ein.
 
 ## [0.3.39] — 2026-11-08
 

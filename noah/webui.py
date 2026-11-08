@@ -133,10 +133,10 @@ padding:6px 0;border-top:1px solid #12241f}
 .setrow input[type=text],.setrow input[type=number]{margin:0}
 .setrow .bool{display:flex;justify-content:flex-end}
 .setrow input[type=checkbox]{width:auto;transform:scale(1.25);margin:0}
-.cards{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));padding:0 24px 24px}
+.cards{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(460px,1fr));padding:0 24px 24px}
 .cardgrid{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;align-items:start}
 .cardmain{display:flex;flex-direction:column;gap:10px;min-width:0}
-@container (min-width:560px){.cardgrid{grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr)}}
+@container (min-width:460px){.cardgrid{grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr)}}
 @media (min-width:900px){.card.running{grid-column:span 2}}
 @container (min-width:700px){.cardlog{max-height:300px}}
 .logwrap{background:#070f13;border:1px solid #12241f;border-radius:4px;padding:6px 8px;min-width:0}
