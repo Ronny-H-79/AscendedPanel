@@ -379,16 +379,19 @@ def _session_env() -> dict:
 
 
 def restart_service() -> dict:
-    """Web-Dienst neu starten, damit der neue Code laeuft."""
-    candidates = [
-        (["systemctl", "restart", "noah-web"], "system"),
-        (["systemctl", "--user", "restart", "noah-web"], "user"),
-    ]
-    for cmd, kind in candidates:
-        try:
-            done = subprocess.run(cmd, capture_output=True, timeout=30, env=_session_env())
-            if done.returncode == 0:
-                return {"ok": True, "scope": kind}
-        except (OSError, subprocess.SubprocessError):
-            continue
-    return {"ok": False, "error": "kein noah-web-Dienst gefunden"}
+    """Web-Dienst und Supervisor neu starten, damit der neue Code laeuft."""
+    env = _session_env()
+    done = []
+    for service in ("noah-web", "noah-supervise"):
+        for cmd, kind in ((["systemctl", "restart", service], "system"),
+                          (["systemctl", "--user", "restart", service], "user")):
+            try:
+                res = subprocess.run(cmd, capture_output=True, timeout=30, env=env)
+                if res.returncode == 0:
+                    done.append("%s (%s)" % (service, kind))
+                    break
+            except (OSError, subprocess.SubprocessError):
+                continue
+    if done:
+        return {"ok": True, "scope": ", ".join(done)}
+    return {"ok": False, "error": "kein noah-web/noah-supervise-Dienst gefunden"}

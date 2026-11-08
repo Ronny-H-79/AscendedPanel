@@ -4,6 +4,28 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.61] — 2026-11-08
+
+### Changed
+- **"Backup times" now sits with the snapshots** instead of the backup box — where the safety copies
+  belong. The note also points to the new schedule task "Backup" as an alternative.
+
+## [0.3.60] — 2026-11-08
+
+### Fixed
+- **The supervisor only read the schedule at start-up.** Tasks saved in the UI only ran after a
+  supervisor restart. It now reloads the schedule fields each round as soon as the instance file changes
+  (ports and mods deliberately untouched).
+- **Self-update did not restart the supervisor**, so it kept running old code. Now `noah-web` and
+  `noah-supervise` are both restarted when they are active.
+
+## [0.3.59] — 2026-11-08
+
+### Fixed
+- **Scheduled tasks could share the same ID** when created within the same millisecond (e.g. when the
+  whole list was sent). The ID now carries an index — otherwise the supervisor would treat two tasks as
+  "already done".
+
 ## [0.3.58] — 2026-11-08
 
 ### Added

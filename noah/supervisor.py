@@ -74,6 +74,7 @@ class Supervisor:
         self.inst = inst
         self.interval = interval
         self.state = _load_state(inst)
+        self._schedule_mtime = 0.0
         self.state.setdefault("restarts", [])
         self.state.setdefault("last_size", 0)
         self.state.setdefault("last_scheduled", "")
@@ -224,9 +225,35 @@ class Supervisor:
         except runner.RunnerError as exc:
             notify(self.inst, "start fehlgeschlagen: %s" % exc)
 
+    def _reload_schedule(self) -> None:
+        """Zeitplan-Einstellungen neu lesen - die UI schreibt sie in die Instanzdatei.
+
+        Ohne das laedt der Supervisor nur beim Start und ignorierte neue Aufgaben bis zum Neustart.
+        Bewusst nur die Zeitplan-Felder: Ports/Mods mitten im Betrieb zu wechseln waere gefaehrlich.
+        """
+        from . import registry
+        path = registry.conf_path(self.inst.name)
+        try:
+            mtime = os.path.getmtime(path)
+        except OSError:
+            return
+        if mtime == self._schedule_mtime:
+            return
+        self._schedule_mtime = mtime
+        fresh = registry.load(self.inst.name)
+        if fresh is None:
+            return
+        self.inst.tasks = fresh.tasks
+        self.inst.restart_times = fresh.restart_times
+        self.inst.backup_times = fresh.backup_times
+        self.inst.warn_minutes = fresh.warn_minutes
+        self.inst.backups_keep = fresh.backups_keep
+
     def tick(self) -> None:
         if os.path.exists(runner.maintenance_lock(self.inst)):
             return          # laufende Wartung (Restore/Update) nicht stoeren
+
+        self._reload_schedule()
 
         # Zeitplan (Aufgabenliste)
         for task in self.tasks_due():

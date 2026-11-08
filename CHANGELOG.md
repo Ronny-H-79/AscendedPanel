@@ -4,6 +4,21 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.61] — 2026-11-08
+
+### Geändert
+- **„Backup-Uhrzeiten" steht jetzt bei den Snapshots** statt in der Backup-Box — dort, wo die Sicherungen
+  hingehören. Der Hinweis nennt zusätzlich die neue Zeitplan-Aufgabe „Backup" als Alternative.
+
+## [0.3.60] — 2026-11-08
+
+### Behoben
+- **Der Supervisor las den Zeitplan nur beim Start.** In der Oberfläche gespeicherte Aufgaben wurden erst
+  nach einem Supervisor-Neustart ausgeführt. Er liest die Zeitplan-Felder jetzt bei jeder Runde neu,
+  sobald sich die Instanzdatei geändert hat (Ports und Mods bleiben bewusst unberührt).
+- **Das Selbst-Update startete den Supervisor nicht mit** — er lief weiter mit altem Code. Jetzt werden
+  `noah-web` und `noah-supervise` neu gestartet, sofern sie laufen.
+
 ## [0.3.59] — 2026-11-08
 
 ### Behoben
