@@ -539,6 +539,7 @@ INST = """<!doctype html><html lang="__LANG__"><head><meta charset="utf-8">
       <button onclick="searchMods()" data-t="mods.search">Suchen</button>
       <button onclick="addMod()" data-t="common.add">Hinzufügen</button>
     </div>
+    <div class="row"><span class="meta" id="keystate"></span></div>
     <div id="modhits"></div>
     <div class="row"><span class="meta" id="modsize"></span></div>
     <div class="setrow" style="margin-top:10px">
@@ -910,10 +911,19 @@ async function addModId(id){
   out.textContent=await api('/api/mods/add?id='+encodeURIComponent(id),{method:'POST'});
   loadMods();
 }
+async function loadKeyState(){
+  const el=document.getElementById('keystate'); if(!el) return;
+  try{
+    const d=JSON.parse(await api('/api/mods/key'));
+    el.textContent = d.has_key ? (L['mods.key_on']+(d.masked?(' · '+d.masked):'')) : L['mods.key_off'];
+    el.style.color = d.has_key ? 'var(--ok,#3ecf8e)' : '';
+  }catch(e){ el.textContent=''; }
+}
 async function saveKey(){
   const v=document.getElementById('cfkey').value.trim();
   try{ await api('/api/mods/key?key='+encodeURIComponent(v),{method:'POST'});
-       document.getElementById('cfkeymsg').textContent=L['notify.saved']; }
+       document.getElementById('cfkeymsg').textContent=L['notify.saved'];
+       document.getElementById('cfkey').value=''; loadKeyState(); }
   catch(e){ document.getElementById('cfkeymsg').textContent=L['notify.failed']; }
 }
 async function addMod(){
@@ -1035,7 +1045,7 @@ async function pa(sid,action){ if(!confirm(action+' für '+sid+'?'))return;
 async function give(sid){ const bp=prompt('Blueprint','PrimalItemResource_Stone_C'); if(!bp)return;
   const q=prompt('Menge','10')||'10';
   document.getElementById('out').textContent=await api('/api/player/give?steamid='+sid+'&bp='+encodeURIComponent(bp)+'&qty='+q,{method:'POST'}); }
-applyLang(); restoreTab(); setTimeout(restoreTab, 250); refresh(); updCheck(); renderCmds(); loadMods(); loadCfg(); loadWl(); loadSettings(); loadSnaps(); loadBackups(); loadSchedule(); loadHooks();
+applyLang(); restoreTab(); setTimeout(restoreTab, 250); refresh(); updCheck(); renderCmds(); loadMods(); loadKeyState(); loadCfg(); loadWl(); loadSettings(); loadSnaps(); loadBackups(); loadSchedule(); loadHooks();
 setInterval(refresh,5000); setInterval(updCheck,60000);
 </script><footer style="text-align:center;padding:16px 0 10px;font-size:11.5px;color:var(--dim);
 letter-spacing:.04em">noah __VERSION__ · © 2026 Ronny H.</footer>
@@ -1186,6 +1196,22 @@ class Handler(BaseHTTPRequestHandler):
             self._json(out)
             return
 
+        # Mods: Suche und Key-Status brauchen keine Instanz
+        if path == "/api/mods/search":
+            term = q.get("q", [""])[0]
+            key = modlib._api_key()
+            self._json({"results": modlib.search(term, limit=10),
+                        "needs_key": not bool(key), "has_key": bool(key)})
+            return
+        if path == "/api/mods/suggest":
+            self._json(modlib.suggest(q.get("q", [""])[0]))
+            return
+        if path == "/api/mods/key":
+            key = modlib._api_key()
+            self._json({"has_key": bool(key),
+                        "masked": (key[:3] + "…" + key[-3:]) if len(key) > 8 else ""})
+            return
+
         inst = self._inst(q)
         if path == "/api/install/log":
             if not inst:
@@ -1217,12 +1243,6 @@ class Handler(BaseHTTPRequestHandler):
             self._json({"url": inst.webhook_url if inst else "", "log": notify_mod.log_path(inst) if inst else ""})
         elif path == "/api/commands":
             self._json([i18n.command(c) for c in cmdreg.COMMANDS])
-        elif path == "/api/mods/suggest":
-            self._json(modlib.suggest(q.get("q", [""])[0]))
-        elif path == "/api/mods/search":
-            term = q.get("q", [""])[0]
-            results = modlib.search(term, limit=10)
-            self._json({"results": results, "needs_key": not bool(modlib._api_key())})
         elif path == "/api/mods":
             data = modlib.list_all_enriched(inst)
             data["size_mb"] = modlib.mod_size_mb(inst)
@@ -1289,6 +1309,11 @@ class Handler(BaseHTTPRequestHandler):
             inst.write_ini()
             self._send(200, ("Instanz '%s' angelegt - Port %d, RCON %d\nJetzt 'Installieren' druecken."
                              % (inst.name, inst.port, inst.rcon_port)).encode())
+            return
+
+        if path == "/api/mods/key":
+            i18n.put("curseforge_key", q.get("key", [""])[0].strip())
+            self._send(200, b"ok")
             return
 
         inst = self._inst(q)
@@ -1382,10 +1407,6 @@ class Handler(BaseHTTPRequestHandler):
             result = notify_mod.test(inst, url)
             self._json(result)
             return
-        elif path == "/api/mods/key":
-            key = q.get("key", [""])[0].strip()
-            i18n.put("curseforge_key", key)
-            self._json({"ok": True})
         elif path == "/api/mods/refresh":
             ids = [m["id"] for m in modlib.list_all(inst)["active"] + modlib.list_all(inst)["inactive"]]
             self._json(modlib.refresh_meta(ids))

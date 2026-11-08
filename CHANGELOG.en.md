@@ -4,6 +4,14 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.7] — 2026-11-08
+
+### Changed
+- **Mod search works without an instance.** `/api/mods/search`, `/api/mods/suggest` and saving the API key
+  sat behind the instance check and answered "keine Instanz" when no instance existed.
+- The Mods tab shows which mode is active: `CurseForge API active · searches titles and descriptions,
+  sorted by downloads` (green, with a masked key) or `No API key · only exact mod ID or CurseForge link`.
+
 ## [0.3.6] — 2026-11-08
 
 ### Changed

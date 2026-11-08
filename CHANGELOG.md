@@ -4,6 +4,15 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.7] — 2026-11-08
+
+### Geändert
+- **Mod-Suche funktioniert ohne Instanz.** `/api/mods/search`, `/api/mods/suggest` und das Speichern des
+  API-Keys hingen hinter der Instanz-Prüfung und antworteten ohne angelegte Instanz mit „keine Instanz".
+- Der Mods-Reiter zeigt, womit gesucht wird: `CurseForge-API aktiv · Suche nach Titel und Beschreibung,
+  sortiert nach Downloads` (grün, mit maskiertem Key) oder `Kein API-Key · nur genaue Mod-ID oder
+  CurseForge-Link, keine Volltextsuche`.
+
 ## [0.3.6] — 2026-11-08
 
 ### Geändert
