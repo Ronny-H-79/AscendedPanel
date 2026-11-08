@@ -4,6 +4,13 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.59] — 2026-11-08
+
+### Behoben
+- **Zeitplan-Aufgaben konnten dieselbe ID bekommen**, wenn sie in derselben Millisekunde angelegt wurden
+  (z. B. beim Senden der ganzen Liste). Die ID ist jetzt zusätzlich durchnummeriert — sonst hätte der
+  Supervisor zwei Aufgaben als „schon gelaufen" verwechselt.
+
 ## [0.3.58] — 2026-11-08
 
 ### Neu

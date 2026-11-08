@@ -1785,7 +1785,7 @@ class Handler(BaseHTTPRequestHandler):
                     continue
                 days = [int(d) for d in (item.get("days") or []) if str(d).isdigit() and 1 <= int(d) <= 7]
                 clean.append({
-                    "id": str(item.get("id") or "")[:32] or "t%d" % int(time.time() * 1000),
+                    "id": str(item.get("id") or "")[:32] or "t%d-%d" % (int(time.time() * 1000), len(clean)),
                     "action": action,
                     "time": tm,
                     "days": sorted(set(days)),
