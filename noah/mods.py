@@ -73,8 +73,8 @@ def list_mods(inst: Instance) -> list[dict]:
             "downloaded": bool(dirs),
             "folder": dirs[0] if dirs else "",
             "state": state.get("state", "unbekannt"),
-            "issue": ("nicht heruntergeladen" if not dirs
-                      else ("fuer alte Engine gebacken" if state.get("state") == "cooked" else "")),
+            "issue": ("not_downloaded" if not dirs
+                      else ("cooked" if state.get("state") == "cooked" else "")),
         })
     return out
 

@@ -4,6 +4,13 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.18] — 2026-11-08
+
+### Behoben
+- **Mod-Status war fest auf Deutsch** („nicht heruntergeladen", „für alte Engine gebacken") und blieb
+  auch in der englischen Oberfläche deutsch. Jetzt kommen Codes aus `mods.py` und die Übersetzung aus
+  `i18n.py` — `not downloaded` / `built for an older engine`.
+
 ## [0.3.17] — 2026-11-08
 
 ### Neu

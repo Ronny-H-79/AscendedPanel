@@ -743,7 +743,7 @@ async function runCmd(id){
 }
 function modRow(m, active){
   const label = m.state==='valid' ? L['mods.loaded'] : (m.state==='cooked' ? L['mods.old_engine'] : L['mods.unknown']);
-  const sub = `${m.id}${active?' · '+label+(m.issue?' · '+m.issue:''):' · '+L['mods.on_disk']}`;
+  const sub = `${m.id}${active?' · '+label+(m.issue?' · '+(L['mods.issue_'+m.issue]||m.issue):''):' · '+L['mods.on_disk']}`;
   const thumb = m.thumbnail
     ? `<img class="thumb" src="${m.thumbnail}" alt="" loading="lazy">`
     : '<div class="thumb"></div>';

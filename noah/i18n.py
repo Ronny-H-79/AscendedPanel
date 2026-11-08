@@ -101,6 +101,8 @@ T: dict[str, dict[str, str]] = {
     "mods.search": {"de": "Suchen", "en": "Search"},
     "mods.search_ph": {"de": "Mod suchen oder ID eingeben", "en": "search a mod or enter its ID"},
     "mods.search_empty": {"de": "nichts gefunden", "en": "nothing found"},
+    "mods.issue_not_downloaded": {"de": "nicht heruntergeladen", "en": "not downloaded"},
+    "mods.issue_cooked": {"de": "für alte Engine gebacken", "en": "built for an older engine"},
     "mods.key_on": {"de": "CurseForge-API aktiv · Suche nach Titel und Beschreibung, sortiert nach Downloads",
                     "en": "CurseForge API active · searches titles and descriptions, sorted by downloads"},
     "mods.key_off": {"de": "Kein API-Key · nur genaue Mod-ID oder CurseForge-Link, keine Volltextsuche",
