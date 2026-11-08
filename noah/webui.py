@@ -492,7 +492,7 @@ INST = """<!doctype html><html lang="__LANG__"><head><meta charset="utf-8">
   <a href="/?token=__TOK__" style="font-size:15px;letter-spacing:.18em;color:var(--acc)">noah</a>
   <a href="/?token=__TOK__" style="margin-left:6px"><button data-t="common.back_dashboard">← Dashboard</button></a>
   <span class="badge" id="st">…</span><span class="badge" id="rd">…</span>
-  <span class="badge">__NAME__</span><span class="badge" id="upd">UPDATE ?</span>
+  <span class="badge">__NAME__</span><span class="badge" id="upd" role="button" tabindex="0">UPDATE ?</span>
   <button onclick="toggleLang()" id="langbtn" style="padding:2px 8px">EN</button>
 </header>
 <div class="tabs">
@@ -668,9 +668,19 @@ async function refresh(){
 async function act(a){ await api('/api/'+a,{method:'POST'}); setTimeout(refresh,1200); }
 async function updCheck(){
   try{ const u=JSON.parse(await api('/api/update')); const b=document.getElementById('upd');
-    if(u.up_to_date===null || u.installed==null){b.style.display='none';}
-    else if(u.up_to_date){b.style.display='';b.textContent=L['status.current']+' '+u.installed;b.className='badge on';}
-    else {b.style.display='';b.textContent=L['status.update_available']+' '+u.installed+'→'+u.available;b.className='badge off';}
+    if(u.up_to_date===null || u.installed==null){b.style.display='none';return;}
+    b.style.display='';
+    if(u.up_to_date){
+      // Build ist aktuell: Klick prüft erneut
+      b.textContent=L['status.current']+' '+u.installed; b.className='badge on';
+      b.title=L['status.hint_current']; b.style.cursor='pointer';
+      b.onclick=updCheck; b.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();updCheck();}};
+    } else {
+      // Update verfuegbar: Klick startet es (mit Rueckfrage) - auch hier auf der Instanzseite
+      b.textContent=L['status.update_available']+' '+u.installed+'→'+u.available; b.className='badge off';
+      b.title=L['status.hint_update']; b.style.cursor='pointer';
+      b.onclick=doUpdate; b.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();doUpdate();}};
+    }
   }catch(e){}
 }
 async function doUpdate(){

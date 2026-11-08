@@ -4,6 +4,14 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.9] — 2026-11-08
+
+### Neu
+- **Der Build-Badge ist ein Knopf.** Auf der Instanzseite stand bisher nur `AKTUELL 26515168` — das
+  Update ließ sich nur von der Übersicht starten. Jetzt gilt: `UPDATE a→b` anklicken startet das Update
+  (mit Rückfrage, Sicherung und Stop), `AKTUELL b` prüft beim Klick erneut. Tooltip erklärt beides,
+  per Tastatur (Enter/Leertaste) genauso bedienbar.
+
 ## [0.3.8] — 2026-11-08
 
 ### Sicherheit

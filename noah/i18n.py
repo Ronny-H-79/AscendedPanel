@@ -40,6 +40,10 @@ T: dict[str, dict[str, str]] = {
     "status.off": {"de": "AUS", "en": "STOPPED"},
     "status.ready": {"de": "BEREIT", "en": "READY"},
     "status.current": {"de": "AKTUELL", "en": "UP TO DATE"},
+    "status.hint_current": {"de": "Build ist aktuell - Klick prüft erneut",
+                            "en": "build is up to date - click to check again"},
+    "status.hint_update": {"de": "Klick startet das Update (Server wird gestoppt, vorher Sicherung)",
+                           "en": "click to update (server is stopped, backup first)"},
     "status.update_available": {"de": "UPDATE", "en": "UPDATE"},
     # ---------------------------------------------------------------- Dashboard
     "dash.instances": {"de": "Instanzen", "en": "instances"},

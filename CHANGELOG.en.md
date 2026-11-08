@@ -4,6 +4,13 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.9] — 2026-11-08
+
+### Added
+- **The build badge is a button.** On the instance page it only read `UP TO DATE 26515168`; the update
+  could only be started from the overview. Now `UPDATE a→b` starts the update on click (confirmation,
+  backup, stop), `UP TO DATE b` re-checks. Tooltips explain both, keyboard (Enter/Space) works too.
+
 ## [0.3.8] — 2026-11-08
 
 ### Security
