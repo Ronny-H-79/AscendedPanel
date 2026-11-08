@@ -4,6 +4,13 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.56] — 2026-11-08
+
+### Added
+- **Note about the hit limit** below the search field: at most 50 hits per search, narrow the term for
+  more. Also appended to the hit line as soon as the list is truncated
+  ("50 / 7,291 hits · no more per search").
+
 ## [0.3.55] — 2026-11-08
 
 ### Changed

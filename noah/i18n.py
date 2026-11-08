@@ -139,6 +139,12 @@ T: dict[str, dict[str, str]] = {
     "mods.add_hit": {"de": "Hinzufügen", "en": "Add"},
     "mods.key": {"de": "CurseForge-API-Key", "en": "CurseForge API key"},
     "mods.hits": {"de": "Treffer", "en": "hits"},
+    "mods.search_hint": {"de": "Suche zeigt maximal 50 Treffer — für mehr den Begriff eingrenzen "
+                               "(z. B. \u201espyglass\u201c statt \u201ego\u201c).",
+                         "en": "Search shows at most 50 hits — narrow the term for more "
+                               "(e.g. \u201cspyglass\u201d instead of \u201cgo\u201d)."},
+    "mods.limit_note": {"de": "mehr pro Suche nicht möglich, Begriff eingrenzen",
+                        "en": "no more per search, narrow the term"},
     "mods.suggestions": {"de": "Vorschläge (Klick fügt hinzu)", "en": "suggestions (click to add)"},
     "mods.key_hint": {"de": "optional — ohne Key ist die Suche unzuverlässig; kostenlosen Key erzeugen auf",
                       "en": "optional — without a key the search is unreliable; create a free key at"},

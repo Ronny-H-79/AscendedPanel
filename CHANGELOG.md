@@ -4,6 +4,13 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.56] — 2026-11-08
+
+### Neu
+- **Hinweis zur Trefferbegrenzung** unter dem Suchfeld: maximal 50 Treffer pro Suche, für mehr den
+  Begriff eingrenzen. Steht zusätzlich an der Trefferzeile, sobald die Liste abgeschnitten ist
+  („50 / 7.291 Treffer · mehr pro Suche nicht möglich").
+
 ## [0.3.55] — 2026-11-08
 
 ### Geändert
