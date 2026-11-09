@@ -209,9 +209,47 @@ def was_stopped(inst: Instance) -> bool:
     return os.path.exists(stop_marker(inst))
 
 
-def stop(inst: Instance, timeout: int = 90) -> str:
+def instance_pids(inst: Instance) -> list[int]:
+    """Alle Prozesse dieser Instanz - auch die Wine-Kinder.
+
+    Der PID in der PID-Datei gehoert dem Starter (consoled), nicht dem Spiel.
+    Beim Beenden verschwindet der Starter zuerst, waehrend ArkAscendedServer.exe
+    und wineserver noch laufen. Deshalb ueber die Kommandozeile suchen.
+    """
+    base = os.path.realpath(inst.directory)
+    needle = os.path.join(base, "ShooterGame")
+    own = os.getpid()
+    pids: list[int] = []
+    try:
+        entries = os.listdir("/proc")
+    except OSError:
+        return pids
+    for entry in entries:
+        if not entry.isdigit():
+            continue
+        pid = int(entry)
+        if pid == own:
+            continue
+        try:
+            with open("/proc/%d/cmdline" % pid, "rb") as fh:
+                raw = fh.read().replace(b"\0", b" ").decode("utf-8", "replace")
+        except OSError:
+            continue
+        if needle in raw or ("ArkAscendedServer.exe" in raw and base in raw):
+            pids.append(pid)
+    return pids
+
+
+def stop(inst: Instance, timeout: int = 45) -> str:
+    """Beendet die Instanz und meldet, was passiert ist.
+
+    Reihenfolge: SaveWorld -> DoExit -> warten, bis wirklich kein Prozess der
+    Instanz mehr laeuft -> SIGTERM an die Gruppe -> SIGKILL auf die Reste.
+    """
+    started = time.time()
     pid = read_pid(inst)
-    if pid is None:
+    leftovers = instance_pids(inst)
+    if pid is None and not leftovers:
         mark_stopped(inst)          # gewollt aus: Supervisor soll nicht neu starten
         return "lief nicht"
     steps: list[str] = []
@@ -227,39 +265,51 @@ def stop(inst: Instance, timeout: int = 90) -> str:
     except (RconError, OSError) as exc:
         steps.append("RCON nicht erreichbar (%s)" % exc.__class__.__name__)
 
+    # 2. Warten, bis die Prozesse der Instanz wirklich weg sind
     rcon_ok = "SaveWorld ok" in steps
-    grace = timeout if rcon_ok else min(20, timeout)
+    grace = timeout if rcon_ok else min(15, timeout)
     deadline = time.time() + grace
     while time.time() < deadline:
-        try:
-            os.kill(pid, 0)
-        except OSError:
+        if not instance_pids(inst):
             _cleanup(inst)
-            steps.append("beendet")
+            steps.append("beendet nach %.0f s" % (time.time() - started))
             return ", ".join(steps)
-        time.sleep(3)
-
-    # 2. SIGTERM
-    try:
-        os.killpg(os.getpgid(pid), signal.SIGTERM)
-        steps.append("SIGTERM")
-    except OSError:
-        pass
-    for _ in range(20):
         time.sleep(1)
+
+    # 3. SIGTERM an die Prozessgruppe, dann an die Reste
+    targets = instance_pids(inst)
+    if pid is not None:
         try:
-            os.kill(pid, 0)
+            os.killpg(os.getpgid(pid), signal.SIGTERM)
         except OSError:
+            pass
+    for target in targets:
+        try:
+            os.kill(target, signal.SIGTERM)
+        except OSError:
+            pass
+    if targets or pid is not None:
+        steps.append("SIGTERM")
+
+    for _ in range(15):
+        time.sleep(1)
+        if not instance_pids(inst):
             _cleanup(inst)
-            steps.append("beendet")
+            steps.append("beendet nach %.0f s" % (time.time() - started))
             return ", ".join(steps)
 
-    # 3. SIGKILL
-    try:
-        os.killpg(os.getpgid(pid), signal.SIGKILL)
-        steps.append("SIGKILL")
-    except OSError:
-        pass
+    # 4. SIGKILL auf alles, was uebrig ist
+    for target in instance_pids(inst):
+        try:
+            os.kill(target, signal.SIGKILL)
+        except OSError:
+            pass
+    if pid is not None:
+        try:
+            os.killpg(os.getpgid(pid), signal.SIGKILL)
+        except OSError:
+            pass
+    steps.append("SIGKILL nach %.0f s" % (time.time() - started))
     _cleanup(inst)
     return ", ".join(steps)
 

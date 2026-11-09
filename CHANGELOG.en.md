@@ -4,6 +4,16 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.70] — 2026-11-09
+
+### Changed
+- **Stopping is much faster and now reports the duration.** Previously only the launcher PID was
+  watched: it disappears first while `ArkAscendedServer.exe` and `wineserver` are still running, so
+  noah waited out the full grace period (up to 90 s) and left processes behind. Now every process of
+  the instance is found via its command line, the wait ends as soon as none is left, and the message
+  includes the time taken ("stopped after 6 s"). Fallback unchanged: SIGTERM to the group, then
+  SIGKILL on the rest.
+
 ## [0.3.68] — 2026-11-08
 
 ### Changed

@@ -4,6 +4,16 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.70] — 2026-11-09
+
+### Geändert
+- **Stop ist deutlich schneller und meldet die Dauer.** Bisher wurde nur die PID des Starters
+  beobachtet: der verschwindet zuerst, während `ArkAscendedServer.exe` und `wineserver` noch liefen —
+  deshalb wartete noah die volle Kulanzzeit ab (bis 90 s) und ließ Reste stehen. Jetzt werden alle
+  Prozesse der Instanz über die Kommandozeile gefunden, das Warten endet, sobald wirklich keiner mehr
+  läuft, und die Meldung nennt die gebrauchte Zeit („beendet nach 6 s"). Notausstieg bleibt:
+  SIGTERM an die Gruppe, danach SIGKILL auf die Reste.
+
 ## [0.3.68] — 2026-11-08
 
 ### Geändert
