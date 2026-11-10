@@ -1360,7 +1360,7 @@ def _start_install(inst: Instance) -> None:
 
 
 
-def _translate_hits(data: dict, field: str, limit: int = 12) -> dict:
+def _translate_hits(data: dict, field: str, limit: int = 24) -> dict:
     """Mod-Beschreibungen in der deutschen Oberflaeche uebersetzen (Cache, fehlertolerant)."""
     try:
         from . import i18n as _i18n
@@ -1495,7 +1495,7 @@ class Handler(BaseHTTPRequestHandler):
                                        "summary"))
             return
         if path == "/api/mods/suggest":
-            self._json(_translate_hits(modlib.suggest(q.get("q", [""])[0]), "summary"))
+            self._json(_translate_hits(modlib.suggest(q.get("q", [""])[0]), "summary", limit=8))
             return
         if path == "/api/update/progress":
             inst_p = self._inst(q)
