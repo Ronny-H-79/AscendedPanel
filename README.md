@@ -34,6 +34,8 @@ RCON for everything the server exposes.
 | ![Settings](docs/screenshot-settings.png) | ![Mods](docs/screenshot-mods.png) |
 | ![Overview](docs/screenshot-overview.png) | ![Management](docs/screenshot-manage.png) |
 
+![Mod search with CurseForge results](docs/screenshot-mods-search.png)
+
 ## Installation
 
 ```bash
