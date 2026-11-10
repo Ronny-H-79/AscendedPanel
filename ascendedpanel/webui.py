@@ -1398,6 +1398,23 @@ def _start_install(inst: Instance) -> None:
 
 
 
+def _uebersetzte_settings(inst) -> list:
+    """Einstellungen mit Label und Hinweis in der aktuellen Sprache.
+
+    Deutsch kommt aus ``config.py``, englisch aus ``i18n.setting()`` (kuratierte Tabelle,
+    sonst der lesbar gemachte Schluesselname) - vorher standen in der englischen
+    Oberflaeche deutsche Feldnamen.
+    """
+    from . import i18n as _i18n
+    felder = cfgfile.read_values(inst)
+    for feld in felder:
+        if not isinstance(feld, dict):
+            continue
+        label, hint = _i18n.setting(feld.get("key", ""), feld.get("label", ""), feld.get("hint", ""))
+        feld["label"], feld["hint"] = label, hint
+    return felder
+
+
 def _translate_hits(data: dict, field: str, limit: int = 24) -> dict:
     """Mod-Beschreibungen in der deutschen Oberflaeche uebersetzen (Cache, fehlertolerant)."""
     try:
@@ -1606,7 +1623,7 @@ class Handler(BaseHTTPRequestHandler):
                 "transfer_filtering": bool(inst.cluster_transfer_filtering),
             })
         elif path == "/api/settings":
-            self._json(cfgfile.read_values(inst))
+            self._json(_uebersetzte_settings(inst))
         elif path == "/api/backups":
             self._json(bk.listing(inst))
         elif path == "/api/schedule":

@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 
 from .paths import SETTINGS_PATH as CONFIG_PATH
 LANGS = ("de", "en")
@@ -575,10 +576,36 @@ ARG_EN = {
 }
 
 
+_ABKUERZUNG = {"PvP", "PvE", "PCU", "NPC", "HUD", "MOTD", "CPU", "GPU", "API", "ID", "IP", "URL"}
+
+
+def huebsch(key: str) -> str:
+    """Schluesselname lesbar machen: ``EnableResearch`` -> ``Enable research``."""
+    marken = {}
+    for i, kurz in enumerate(("PvP", "PvE")):
+        if kurz in key:
+            marke = "Acr%d" % i
+            key = key.replace(kurz, marke)
+            marken[marke] = kurz
+    worte = re.sub(r"(?<=[a-z0-9])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])", " ", key).split()
+    worte = [marken.get(w, w) for w in worte]
+    if not worte:
+        return key
+    aus = [worte[0]]
+    for wort in worte[1:]:
+        aus.append(wort if (wort in _ABKUERZUNG or (wort.isupper() and len(wort) <= 4)) else wort.lower())
+    return " ".join(aus)
+
+
 def setting(ini_key: str, label: str, hint: str) -> tuple[str, str]:
-    """Label und Hinweis eines Formularfelds in der aktuellen Sprache."""
-    if lang() == "en" and ini_key in SET_EN:
-        return SET_EN[ini_key]
+    """Label und Hinweis eines Formularfelds in der aktuellen Sprache.
+
+    Englisch: kuratierte Tabelle ``SET_EN``, sonst der lesbar gemachte Schluesselname.
+    """
+    if lang() == "en":
+        if ini_key in SET_EN:
+            return SET_EN[ini_key]
+        return huebsch(ini_key), ""
     return label, hint
 
 

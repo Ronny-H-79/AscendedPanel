@@ -4,6 +4,14 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.4.1] — 2026-11-10
+
+### Behoben
+- **Englische Oberfläche zeigte deutsche Feldnamen in den Einstellungen.** `i18n.setting()` war
+  implementiert, wurde aber nie aufgerufen. Jetzt übersetzt `_uebersetzte_settings()` jedes Feld:
+  kuratierte Tabelle `SET_EN` zuerst, sonst der lesbar gemachte Schlüsselname
+  („EnablePvPStructureDecay" → „Enable PvP structure decay"). Deutsch bleibt unverändert.
+
 ## [0.4.0] — 2026-11-10
 
 ### Geändert
