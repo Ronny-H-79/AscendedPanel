@@ -4,6 +4,12 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.4.2] — 2026-11-10
+
+### Geändert
+- **Kopfzeilen-Knopf heißt jetzt „Englische Website" / „English website"** statt nur „English" — er
+  öffnet die englische README auf GitHub, das war ohne das Wort nicht erkennbar.
+
 ## [0.4.1] — 2026-11-10
 
 ### Behoben
