@@ -1359,6 +1359,20 @@ def _start_install(inst: Instance) -> None:
     threading.Thread(target=run, daemon=True).start()
 
 
+
+def _translate_hits(data: dict, field: str, limit: int = 12) -> dict:
+    """Mod-Beschreibungen in der deutschen Oberflaeche uebersetzen (Cache, fehlertolerant)."""
+    try:
+        from . import i18n as _i18n
+        if _i18n.lang() != "de":
+            return data
+        from . import translate
+        translate.translate_items(data.get("results") or [], field, limit=limit)
+    except Exception:                       # noqa: BLE001 - Suche darf nie scheitern
+        pass
+    return data
+
+
 class Handler(BaseHTTPRequestHandler):
     server_version = "noah"
 
@@ -1476,11 +1490,12 @@ class Handler(BaseHTTPRequestHandler):
             term = q.get("q", [""])[0]
             key = modlib._api_key()
             results = modlib.search(term, limit=50)
-            self._json({"results": results, "total": modlib.api_total(),
-                        "needs_key": not bool(key), "has_key": bool(key)})
+            self._json(_translate_hits({"results": results, "total": modlib.api_total(),
+                                        "needs_key": not bool(key), "has_key": bool(key)},
+                                       "summary"))
             return
         if path == "/api/mods/suggest":
-            self._json(modlib.suggest(q.get("q", [""])[0]))
+            self._json(_translate_hits(modlib.suggest(q.get("q", [""])[0]), "summary"))
             return
         if path == "/api/update/progress":
             inst_p = self._inst(q)

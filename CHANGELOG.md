@@ -4,6 +4,14 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.72] — 2026-11-10
+
+### Neu
+- **Mod-Beschreibungen automatisch auf Deutsch.** In der deutschen Oberfläche werden Suchtreffer und
+  Vorschläge der Mod-Suche übersetzt. Übersetzungen liegen unter `~/.config/noah/cache/translations`
+  und werden wiederverwendet; scheitert die Übersetzung, bleibt der Originaltext stehen. Bereits
+  deutsche Texte werden erkannt und nicht erneut übersetzt.
+
 ## [0.3.71] — 2026-11-10
 
 ### Geändert

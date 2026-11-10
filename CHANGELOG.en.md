@@ -4,6 +4,14 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.72] — 2026-11-10
+
+### Added
+- **Mod descriptions are translated to German automatically.** In the German UI, search hits and
+  suggestions of the mod search are translated. Translations are cached in
+  `~/.config/noah/cache/translations` and reused; if translation fails the original text stays.
+  Texts that are already German are detected and left alone.
+
 ## [0.3.71] — 2026-11-10
 
 ### Changed
