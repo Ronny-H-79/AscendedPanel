@@ -4,6 +4,13 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.76] — 2026-11-10
+
+### Geändert
+- **Knopf „Dinos speichern" entfernt.** Er sendete denselben Befehl wie „Welt speichern"
+  (`SaveWorld`); ARK kennt keinen eigenen Dino-Save. Der Hinweis an „Welt speichern" nennt jetzt,
+  dass alle gezähmten Dinos mitgespeichert werden.
+
 ## [0.3.75] — 2026-11-10
 
 ### Behoben
