@@ -106,6 +106,7 @@ T: dict[str, dict[str, str]] = {
     "inst.item": {"de": "Item", "en": "Item"},
     # ---------------------------------------------------------------- Mods
     "mods.active": {"de": "Aktiv", "en": "Active"},
+    "mods.installed": {"de": "Installierte Mods", "en": "Installed mods"},
     "mods.inactive": {"de": "Inaktiv / auf Platte", "en": "Inactive / on disk"},
     "mods.none_active": {"de": "keine aktiven Mods", "en": "no active mods"},
     "mods.none_inactive": {"de": "keine weiteren Mods gefunden",

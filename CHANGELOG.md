@@ -4,6 +4,13 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.74] — 2026-11-10
+
+### Geändert
+- **Der Mods-Reiter ist oben mit „Installierte Mods" überschrieben** (mit Anzahl). Die Liste war
+  schon immer die installierte Liste, stand aber ohne Beschriftung über der Suche — jetzt ist auf
+  einen Blick klar, was installiert ist und was die Suche darunter ist.
+
 ## [0.3.73] — 2026-11-10
 
 ### Geändert

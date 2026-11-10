@@ -611,6 +611,10 @@ INST = """<!doctype html><html lang="__LANG__"><head><meta charset="utf-8">
   </section>
 
   <section class="tab tab-mods"><h2 data-t="tabs.mods">Mods</h2>
+    <div class="row" style="align-items:center;margin:0 0 6px">
+      <b data-t="mods.installed">Installierte Mods</b>
+      <span class="meta" id="mods-count"></span>
+    </div>
     <div id="mods">…</div>
     <div class="row" style="margin-top:8px">
       <input id="modid" data-tp="mods.search_ph" placeholder="Mod suchen oder ID eingeben"
@@ -1083,6 +1087,8 @@ async function loadMods(){
     const d=JSON.parse(await api('/api/mods'));
     document.getElementById('modsize').textContent=d.size_mb?(d.size_mb>=1024?(d.size_mb/1024).toFixed(1)+' GB':d.size_mb+' MB')+' '+L['mods.size_on_disk']:'';
     const active=(d.active||[]), inactive=(d.inactive||[]);
+    const anz=document.getElementById('mods-count');
+    if(anz) anz.textContent = '· ' + (active.length+inactive.length);
     document.getElementById('mods').innerHTML =
       `<div class="meta" style="margin:6px 0 2px">${L['mods.active']} (${active.length})</div>` +
       (active.length?active.map(m=>modRow(m,true)).join(''):'<span style="color:var(--dim)">– '+L['mods.none_active']+' –</span>') +
