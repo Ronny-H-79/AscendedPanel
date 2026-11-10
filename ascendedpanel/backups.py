@@ -11,7 +11,7 @@ import time
 from .instance import Instance
 from . import runner
 
-BASE = os.path.expanduser("~/noah-backups")
+BASE = os.path.expanduser("~/ascendedpanel-backups")
 SKIP_DIRS = {"Logs", "CrashReportClient", "Crashes"}
 
 

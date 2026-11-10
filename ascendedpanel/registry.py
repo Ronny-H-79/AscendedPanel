@@ -1,4 +1,4 @@
-"""Instanz-Registry: mehrere Server unter ~/.config/noah/<name>.json."""
+"""Instanz-Registry: mehrere Server unter ~/.config/ascendedpanel/<name>.json."""
 from __future__ import annotations
 
 import json
@@ -9,7 +9,7 @@ import socket
 
 from .instance import Instance
 
-CONF_DIR = os.path.expanduser("~/.config/noah")
+from .paths import CONF_DIR
 
 MAPS = [
     ("Ragnarok_WP", "Ragnarok"),
@@ -175,7 +175,7 @@ def info(inst: Instance) -> dict:
         "running": running,
         "ready": runner.server_ready(inst) if running else False,
         "map_image": ("/static/maps/%s.jpg" % inst.map
-                      if os.path.exists(os.path.expanduser("~/.config/noah/static/maps/%s.jpg" % inst.map))
+                      if os.path.exists(os.path.join(CONF_DIR, "static", "maps", "%s.jpg" % inst.map))
                       else ""),
         "cpu": data["cpu"],                        # Summe ueber alle Kerne, wie top
         "cpu_pct": round(data["cpu"] / (metrics.CORES or 1), 1),   # Anteil des Servers

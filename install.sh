@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# noah - Installer fuer den eigenen ARK-ASA-Servermanager
+# AscendedPanel - Installer fuer den eigenen ARK-ASA-Servermanager
 #
-#   ./install.sh                 Installation nach ~/.local/share/noah
+#   ./install.sh                 Installation nach ~/.local/share/ascendedpanel
 #   ./install.sh --lang en       Sprache ohne Rueckfrage (de|en)
 #   ./install.sh --check         nur pruefen, was fehlt (aendert nichts)
 #   ./install.sh --auto          fehlende Pakete ohne Rueckfrage installieren (sudo)
 #   ./install.sh --wizard        optional: danach den Konsolen-Assistenten starten
-#   ./install.sh --user noah     als eigener Dienst-Benutzer installieren (root, empfohlen)
+#   ./install.sh --user AscendedPanel     als eigener Dienst-Benutzer installieren (root, empfohlen)
 #   ./install.sh --uninstall     wieder entfernen (Instanzen bleiben erhalten)
 #
 # Umgebungsvariablen: NOAH_HOME (Zielordner), NOAH_BIN (Launcher-Ordner),
@@ -14,7 +14,7 @@
 set -euo pipefail
 
 SRC="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-DEST="${NOAH_HOME:-$HOME/.local/share/noah}"
+DEST="${NOAH_HOME:-$HOME/.local/share/ascendedpanel}"
 BIN="${NOAH_BIN:-$HOME/.local/bin}"
 PY="${PYTHON:-python3}"
 RUN_WIZARD=0
@@ -60,7 +60,7 @@ if [ -n "$SERVICE_USER" ]; then
   SERVICE_UID="$(id -u "$SERVICE_USER")"
   HOME="$(getent passwd "$SERVICE_USER" | cut -d: -f6)"
   export HOME
-  [ -n "${NOAH_HOME:-}" ] || DEST="$HOME/.local/share/noah"
+  [ -n "${NOAH_HOME:-}" ] || DEST="$HOME/.local/share/ascendedpanel"
   [ -n "${NOAH_BIN:-}" ]  || BIN="$HOME/.local/bin"
 fi
 
@@ -84,8 +84,8 @@ esac
 
 t() {
   case "$LANG_SEL:$1" in
-    en:title)              echo "Installing noah" ;;
-    de:title)              echo "noah installieren" ;;
+    en:title)              echo "Installing AscendedPanel" ;;
+    de:title)              echo "AscendedPanel installieren" ;;
     en:python_missing)     echo "Python 3 not found (set PYTHON=/path/to/python3)" ;;
     de:python_missing)     echo "Python 3 nicht gefunden (PYTHON=/pfad/zu/python3 setzen)" ;;
     en:python_old)         echo "Error: Python 3.10 or newer required, found %s" ;;
@@ -108,8 +108,8 @@ t() {
     de:no_sudo)            echo "sudo fehlt - bitte als root installieren: $2" ;;
     en:check_missing)      echo "$2 missing${3:+ (package: $3)}" ;;
     de:check_missing)      echo "$2 fehlt${3:+ (Paket: $3)}" ;;
-    en:uninstall)          echo "Removing noah" ;;
-    de:uninstall)          echo "noah entfernen" ;;
+    en:uninstall)          echo "Removing AscendedPanel" ;;
+    de:uninstall)          echo "AscendedPanel entfernen" ;;
     en:service_removed)    echo "service stopped and removed: $2" ;;
     de:service_removed)    echo "Dienst beendet und entfernt: $2" ;;
     en:removed)            echo "Launcher and program files removed." ;;
@@ -128,54 +128,54 @@ t() {
     de:command)            echo "Befehl: $2" ;;
     en:service_restarted)  echo "web service restarted (new code active)" ;;
     de:service_restarted)  echo "Web-Dienst neu gestartet (neuer Code aktiv)" ;;
-    en:linked_usr_local)   echo "Command available as 'noah' (symlink in /usr/local/bin)" ;;
-    de:linked_usr_local)   echo "Befehl 'noah' verfuegbar (Symlink in /usr/local/bin)" ;;
+    en:linked_usr_local)   echo "Command available as 'AscendedPanel' (symlink in /usr/local/bin)" ;;
+    de:linked_usr_local)   echo "Befehl 'AscendedPanel' verfuegbar (Symlink in /usr/local/bin)" ;;
     en:path_hint)          echo "Note: $2 is not in PATH - e.g. add to ~/.config/fish/config.fish:" ;;
     de:path_hint)          echo "Hinweis: $2 ist nicht im PATH - z. B. in ~/.config/fish/config.fish ergaenzen:" ;;
     en:done)               echo "Done. Next steps:" ;;
     de:done)               echo "Fertig. Naechste Schritte:" ;;
-    en:wizard_step)        echo "  noah web             open the web UI - create instances in the browser" ;;
-    de:wizard_step)        echo "  noah web             Web-Oberflaeche oeffnen - Instanzen im Browser anlegen" ;;
-    en:wizard_opt)         echo "  noah wizard          optional, console only: guided setup in the terminal" ;;
-    de:wizard_opt)         echo "  noah wizard          optional, nur Konsole: gefuehrte Einrichtung im Terminal" ;;
-    en:supervise_step)     echo "  noah supervise --all   watch all instances" ;;
-    en:uninstall_step)     echo "  ./install.sh --uninstall   remove noah (instances and backups stay)" ;;
-    de:uninstall_step)     echo "  ./install.sh --uninstall   noah entfernen (Instanzen und Backups bleiben)" ;;
-    de:supervise_step)     echo "  noah supervise --all   alle Instanzen ueberwachen" ;;
-    en:web)                echo "Web interface (after 'noah web'):" ;;
-    de:web)                echo "Web interface (nach 'noah web'):" ;;
-    en:net_note)           echo "only with: noah web --host 0.0.0.0" ;;
-    de:net_note)           echo "nur mit: noah web --host 0.0.0.0" ;;
-    en:token_hint)         echo "  token is also stored in ~/.config/noah/token - show it again with: noah url" ;;
-    de:token_hint)         echo "  Token auch in ~/.config/noah/token - erneut anzeigen mit: noah url" ;;
+    en:wizard_step)        echo "  AscendedPanel web             open the web UI - create instances in the browser" ;;
+    de:wizard_step)        echo "  AscendedPanel web             Web-Oberflaeche oeffnen - Instanzen im Browser anlegen" ;;
+    en:wizard_opt)         echo "  AscendedPanel wizard          optional, console only: guided setup in the terminal" ;;
+    de:wizard_opt)         echo "  AscendedPanel wizard          optional, nur Konsole: gefuehrte Einrichtung im Terminal" ;;
+    en:supervise_step)     echo "  AscendedPanel supervise --all   watch all instances" ;;
+    en:uninstall_step)     echo "  ./install.sh --uninstall   remove AscendedPanel (instances and backups stay)" ;;
+    de:uninstall_step)     echo "  ./install.sh --uninstall   AscendedPanel entfernen (Instanzen und Backups bleiben)" ;;
+    de:supervise_step)     echo "  AscendedPanel supervise --all   alle Instanzen ueberwachen" ;;
+    en:web)                echo "Web interface (after 'AscendedPanel web'):" ;;
+    de:web)                echo "Web interface (nach 'AscendedPanel web'):" ;;
+    en:net_note)           echo "only with: AscendedPanel web --host 0.0.0.0" ;;
+    de:net_note)           echo "nur mit: AscendedPanel web --host 0.0.0.0" ;;
+    en:token_hint)         echo "  token is also stored in ~/.config/AscendedPanel/token - show it again with: AscendedPanel url" ;;
+    de:token_hint)         echo "  Token auch in ~/.config/AscendedPanel/token - erneut anzeigen mit: AscendedPanel url" ;;
     en:access_q)          echo "How should the web interface be reachable?  [1] client-side only (SSH tunnel)  [2] public via domain with HTTPS  [3] direct via IP and port (HTTP)   [1] " ;;
     de:access_q)          echo "Wie soll die Oberflaeche erreichbar sein?  [1] nur Client-seitig (SSH-Tunnel)  [2] oeffentlich ueber Domain mit HTTPS  [3] direkt ueber IP und Port (HTTP)   [1] " ;;
     en:access_domain_q)   echo "Domain (must point to this server): " ;;
     de:access_domain_q)   echo "Domain (muss auf diesen Server zeigen): " ;;
     en:access_tunnel)     echo "Access from another machine: ssh -N -L 8790:127.0.0.1:8790 $(id -un)@$MYIP" ;;
     de:access_tunnel)     echo "Zugriff von einem anderen Rechner: ssh -N -L 8790:127.0.0.1:8790 $(id -un)@$MYIP" ;;
-    en:access_https)      echo "HTTPS einrichten mit: sudo noah proxy --write --cert" ;;
-    de:access_https)      echo "HTTPS einrichten mit: sudo noah proxy --write --cert" ;;
+    en:access_https)      echo "HTTPS einrichten mit: sudo AscendedPanel proxy --write --cert" ;;
+    de:access_https)      echo "HTTPS einrichten mit: sudo AscendedPanel proxy --write --cert" ;;
     en:ip_warning_strong)  echo "WARNING: this makes the interface reachable from the internet WITHOUT encryption."; echo "         Whoever reads the token (Wi-Fi, proxy, hosting provider, browser history) can start,"; echo "         stop and delete servers and send console commands. Mode [1] or [2] avoids this." ;;
     de:ip_warning_strong)  echo "WARNUNG: Damit ist die Oberflaeche aus dem Internet erreichbar - UNVERSCHLUESSELT."; echo "         Wer den Token mitliest (WLAN, Proxy, Anbieter, Browser-Verlauf), kann Server starten,"; echo "         stoppen, loeschen und Konsolenbefehle absetzen. Modus [1] oder [2] vermeidet das." ;;
     en:ip_confirm)         echo "Really set it up this way?  [j/N] " ;;
     de:ip_confirm)         echo "Trotzdem so einrichten?  [j/N] " ;;
     en:ip_warning)         echo "Note: reachable over the network without HTTPS - the token protects the UI, traffic is unencrypted. Open port 8790 in the firewall." ;;
     de:ip_warning)         echo "Hinweis: im Netzwerk ohne HTTPS erreichbar - der Token schuetzt die Oberflaeche, die Uebertragung ist unverschluesselt. Port 8790 in der Firewall freigeben." ;;
-    en:web_not_needed)     echo "No permanent service needed - the UI starts on demand: noah web" ;;
-    de:web_not_needed)     echo "Kein Dauerdienst noetig - Oberflaeche startet bei Bedarf: noah web" ;;
+    en:web_not_needed)     echo "No permanent service needed - the UI starts on demand: AscendedPanel web" ;;
+    de:web_not_needed)     echo "Kein Dauerdienst noetig - Oberflaeche startet bei Bedarf: AscendedPanel web" ;;
     en:web_q)              echo "Start the web interface automatically (systemd service)? [y/N] " ;;
     de:web_q)              echo "Web-Oberflaeche automatisch starten (systemd-Dienst)? [j/N] " ;;
-    en:web_installed_system) echo "Web interface runs as systemd system service (starts at boot): systemctl status noah-web" ;;
-    de:web_installed_system) echo "Web-Oberflaeche laeuft als Systemdienst (startet beim Booten): systemctl status noah-web" ;;
-    en:web_installed_user) echo "Web interface runs as $2 - user service noah-web; check: su - $2 -c 'systemctl --user status noah-web'" ;;
-    de:web_installed_user) echo "Web-Oberflaeche laeuft als Benutzer $2 - User-Dienst noah-web; pruefen: su - $2 -c 'systemctl --user status noah-web'" ;;
-    en:web_installed)      echo "Web interface runs as noah-web.service - check: systemctl --user status noah-web" ;;
-    de:web_installed)      echo "Web-Oberflaeche laeuft als noah-web.service - pruefen: systemctl --user status noah-web" ;;
-    en:web_failed)         echo "Could not enable the service - start manually with: noah web" ;;
-    de:web_failed)         echo "Dienst konnte nicht aktiviert werden - manuell starten mit: noah web" ;;
-    en:web_skipped)        echo "No service created - start the UI when needed with: noah web" ;;
-    de:web_skipped)        echo "Kein Dienst angelegt - Oberflaeche bei Bedarf starten mit: noah web" ;;
+    en:web_installed_system) echo "Web interface runs as systemd system service (starts at boot): systemctl status ascendedpanel-web" ;;
+    de:web_installed_system) echo "Web-Oberflaeche laeuft als Systemdienst (startet beim Booten): systemctl status ascendedpanel-web" ;;
+    en:web_installed_user) echo "Web interface runs as $2 - user service ascendedpanel-web; check: su - $2 -c 'systemctl --user status ascendedpanel-web'" ;;
+    de:web_installed_user) echo "Web-Oberflaeche laeuft als Benutzer $2 - User-Dienst ascendedpanel-web; pruefen: su - $2 -c 'systemctl --user status ascendedpanel-web'" ;;
+    en:web_installed)      echo "Web interface runs as ascendedpanel-web.service - check: systemctl --user status ascendedpanel-web" ;;
+    de:web_installed)      echo "Web-Oberflaeche laeuft als ascendedpanel-web.service - pruefen: systemctl --user status ascendedpanel-web" ;;
+    en:web_failed)         echo "Could not enable the service - start manually with: AscendedPanel web" ;;
+    de:web_failed)         echo "Dienst konnte nicht aktiviert werden - manuell starten mit: AscendedPanel web" ;;
+    en:web_skipped)        echo "No service created - start the UI when needed with: AscendedPanel web" ;;
+    de:web_skipped)        echo "Kein Dienst angelegt - Oberflaeche bei Bedarf starten mit: AscendedPanel web" ;;
     en:language_saved)     echo "Language: English" ;;
     de:language_saved)     echo "Sprache: Deutsch" ;;
     *) return 1 ;;
@@ -255,10 +255,10 @@ ask_install() {
 
 # ---------------------------------------------------------------- Sprache speichern
 save_lang() {
-  mkdir -p "$HOME/.config/noah"
+  mkdir -p "$HOME/.config/ascendedpanel"
   "$PY" - "$LANG_SEL" <<'PYEOF'
 import json, os, sys
-path = os.path.expanduser("~/.config/noah/settings.json")
+path = os.path.expanduser("~/.config/AscendedPanel/settings.json")
 data = {}
 try:
     with open(path, encoding="utf-8") as fh:
@@ -275,7 +275,7 @@ PYEOF
 if [ "$UNINSTALL" = "1" ]; then
   t uninstall
   # laufende Dienste zuerst beenden, sonst zeigen sie nach dem Loeschen ins Leere
-  for unit in "$HOME"/.config/systemd/user/noah-*.service; do
+  for unit in "$HOME"/.config/systemd/user/AscendedPanel-*.service; do
     [ -e "$unit" ] || continue
     name="$(basename "$unit")"
     systemctl --user disable --now "$name" >/dev/null 2>&1 || true
@@ -283,11 +283,11 @@ if [ "$UNINSTALL" = "1" ]; then
     say "$(t service_removed "$name")"
   done
   systemctl --user daemon-reload >/dev/null 2>&1 || true
-  rm -f "$BIN/noah"
+  rm -f "$BIN/AscendedPanel"
   rm -rf "$DEST"
   say "$(t removed)"
   say "$(t kept)"
-  say "  ~/.config/noah   ~/arkserver-*   ~/noah-backups   ~/noah-snapshots"
+  say "  ~/.config/AscendedPanel   ~/arkserver-*   ~/AscendedPanel-backups   ~/AscendedPanel-snapshots"
   exit 0
 fi
 
@@ -373,7 +373,7 @@ fi
 if [ -n "$ACCESS" ]; then
   "$PY" - "$ACCESS" "$DOMAIN" <<'PYEOF'
 import json, os, sys
-path = os.path.expanduser("~/.config/noah/settings.json")
+path = os.path.expanduser("~/.config/AscendedPanel/settings.json")
 data = {}
 try:
     with open(path, encoding="utf-8") as fh:
@@ -389,8 +389,8 @@ PYEOF
 fi
 
 # ---------------------------------------------------------------- Kopieren
-mkdir -p "$DEST" "$BIN" "$HOME/.config/noah"
-cp -a "$SRC/noah" "$DEST/"
+mkdir -p "$DEST" "$BIN" "$HOME/.config/ascendedpanel"
+cp -a "$SRC/AscendedPanel" "$DEST/"
 cp -a "$SRC/README.md" "$DEST/" 2>/dev/null || true
 cp -a "$SRC/INSTALL.md" "$DEST/" 2>/dev/null || true
 cp -a "$SRC"/CHANGELOG*.md "$DEST/" 2>/dev/null || true
@@ -400,35 +400,35 @@ say "$(t copied "$DEST")"
 # Installierten Stand festhalten (Commit), damit auch Aenderungen ohne Versionssprung ankommen
 if command -v git >/dev/null 2>&1 && [ -d "$SRC/.git" ]; then
   SHA="$(git -C "$SRC" rev-parse --short HEAD 2>/dev/null || true)"
-  VER="$(grep -m1 __version__ "$DEST/noah/__init__.py" 2>/dev/null | cut -d'"' -f2)"
+  VER="$(grep -m1 __version__ "$DEST/AscendedPanel/__init__.py" 2>/dev/null | cut -d'"' -f2)"
   if [ -n "$SHA" ]; then
-    printf '{"sha": "%s", "version": "%s", "written": "%s"}\n' "$SHA" "$VER" "$(date '+%F %T')" > "$DEST/noah/.build"
+    printf '{"sha": "%s", "version": "%s", "written": "%s"}\n' "$SHA" "$VER" "$(date '+%F %T')" > "$DEST/AscendedPanel/.build"
   else
     # Installation aus einem Archiv (kein .git): alten Stand nicht stehen lassen,
     # sonst meldet die Pruefung dauerhaft "neuer Stand verfuegbar"
-    rm -f "$DEST/noah/.build"
+    rm -f "$DEST/AscendedPanel/.build"
   fi
 fi
 
-cat > "$BIN/noah" <<EOF
+cat > "$BIN/AscendedPanel" <<EOF
 #!/bin/sh
-# noah-Launcher (erzeugt von install.sh)
+# AscendedPanel-Launcher (erzeugt von install.sh)
 export PYTHONPATH="$DEST\${PYTHONPATH:+\$PYTHONPATH}"
-# -P: aktuelles Verzeichnis nicht in sys.path - sonst importiert noah aus dem Quellordner
-exec "$PY" -P -m noah "\$@"
+# -P: aktuelles Verzeichnis nicht in sys.path - sonst importiert AscendedPanel aus dem Quellordner
+exec "$PY" -P -m ascendedpanel "\$@"
 EOF
-chmod +x "$BIN/noah"
+chmod +x "$BIN/AscendedPanel"
 # bei --user gehoert alles dem Dienst-Benutzer, sonst kann er seine Configs nicht schreiben
 if [ -n "$SERVICE_USER" ]; then
-  chown -R "$SERVICE_USER":"$SERVICE_USER" "$DEST" "$HOME/.config/noah" "$BIN/noah" 2>/dev/null || true
+  chown -R "$SERVICE_USER":"$SERVICE_USER" "$DEST" "$HOME/.config/ascendedpanel" "$BIN/AscendedPanel" 2>/dev/null || true
 fi
-say "$(t command "$BIN/noah")"
+say "$(t command "$BIN/AscendedPanel")"
 
 case ":$PATH:" in
   *":$BIN:"*) ;;
   *)
     if [ "$(id -u)" = "0" ] && [ -d /usr/local/bin ] && [ -z "$SERVICE_USER" ]; then
-      if ln -sf "$BIN/noah" /usr/local/bin/noah 2>/dev/null; then
+      if ln -sf "$BIN/AscendedPanel" /usr/local/bin/AscendedPanel 2>/dev/null; then
         say "$(t linked_usr_local)"
       else
         say "$(t path_hint "$BIN")"
@@ -450,7 +450,7 @@ t uninstall_step
 # ---------------------------------------------------------------- Web-Dienst
 if [ -z "$WANT_WEB" ]; then
   if [ "$ACCESS" = "tunnel" ]; then
-    # Client-seitig: die Oberflaeche wird bei Bedarf mit "noah web" gestartet, kein Dauerdienst noetig
+    # Client-seitig: die Oberflaeche wird bei Bedarf mit "AscendedPanel web" gestartet, kein Dauerdienst noetig
     WANT_WEB=0
     say "$(t web_not_needed)"
   elif [ -t 0 ]; then
@@ -471,35 +471,35 @@ if [ "$WANT_WEB" = "1" ]; then
   if [ -n "$SERVICE_USER" ]; then
     UNIT_DIR="$HOME/.config/systemd/user"
     install -d -o "$SERVICE_USER" -g "$SERVICE_USER" "$UNIT_DIR"
-    cat > "$UNIT_DIR/noah-web.service" <<EOF
+    cat > "$UNIT_DIR/ascendedpanel-web.service" <<EOF
 [Unit]
-Description=noah web interface
+Description=AscendedPanel web interface
 After=network-online.target
 
 [Service]
 Type=simple
 WorkingDirectory=$DEST
 Environment=PYTHONPATH=$DEST
-ExecStart=/usr/bin/python3 -m noah web $WEBHOST --port 8790
+ExecStart=/usr/bin/python3 -m ascendedpanel web $WEBHOST --port 8790
 Restart=on-failure
 RestartSec=5
 
 [Install]
 WantedBy=default.target
 EOF
-    chown -R "$SERVICE_USER":"$SERVICE_USER" "$DEST" "$HOME/.config/noah" "$BIN/noah" "$UNIT_DIR" 2>/dev/null || true
+    chown -R "$SERVICE_USER":"$SERVICE_USER" "$DEST" "$HOME/.config/ascendedpanel" "$BIN/AscendedPanel" "$UNIT_DIR" 2>/dev/null || true
     loginctl enable-linger "$SERVICE_USER" >/dev/null 2>&1 || true
-    if su - "$SERVICE_USER" -c "XDG_RUNTIME_DIR=/run/user/$SERVICE_UID systemctl --user daemon-reload && XDG_RUNTIME_DIR=/run/user/$SERVICE_UID systemctl --user enable --now noah-web.service" >/dev/null 2>&1; then
+    if su - "$SERVICE_USER" -c "XDG_RUNTIME_DIR=/run/user/$SERVICE_UID systemctl --user daemon-reload && XDG_RUNTIME_DIR=/run/user/$SERVICE_UID systemctl --user enable --now ascendedpanel-web.service" >/dev/null 2>&1; then
       say "$(t web_installed_user "$SERVICE_USER")"
     else
       warn "$(t web_failed)"
     fi
   elif [ "$(id -u)" = "0" ]; then
     # Systemdienst: startet beim Booten, kein Login und kein linger noetig
-    UNIT="/etc/systemd/system/noah-web.service"
+    UNIT="/etc/systemd/system/ascendedpanel-web.service"
     cat > "$UNIT" <<EOF
 [Unit]
-Description=noah web interface
+Description=AscendedPanel web interface
 After=network-online.target
 Wants=network-online.target
 
@@ -508,14 +508,14 @@ Type=simple
 User=root
 WorkingDirectory=$DEST
 Environment=PYTHONPATH=$DEST
-ExecStart=/usr/bin/python3 -m noah web $WEBHOST --port 8790
+ExecStart=/usr/bin/python3 -m ascendedpanel web $WEBHOST --port 8790
 Restart=on-failure
 RestartSec=5
 
 [Install]
 WantedBy=multi-user.target
 EOF
-    if systemctl daemon-reload 2>/dev/null && systemctl enable --now noah-web.service 2>/dev/null; then
+    if systemctl daemon-reload 2>/dev/null && systemctl enable --now ascendedpanel-web.service 2>/dev/null; then
       say "$(t web_installed_system)"
     else
       warn "$(t web_failed)"
@@ -523,23 +523,23 @@ EOF
   else
     UNIT_DIR="$HOME/.config/systemd/user"
     mkdir -p "$UNIT_DIR"
-    cat > "$UNIT_DIR/noah-web.service" <<EOF
+    cat > "$UNIT_DIR/ascendedpanel-web.service" <<EOF
 [Unit]
-Description=noah web interface
+Description=AscendedPanel web interface
 After=network-online.target
 
 [Service]
 Type=simple
 WorkingDirectory=$DEST
 Environment=PYTHONPATH=$DEST
-ExecStart=/usr/bin/python3 -m noah web $WEBHOST --port 8790
+ExecStart=/usr/bin/python3 -m ascendedpanel web $WEBHOST --port 8790
 Restart=on-failure
 RestartSec=5
 
 [Install]
 WantedBy=default.target
 EOF
-    if systemctl --user daemon-reload 2>/dev/null && systemctl --user enable --now noah-web.service 2>/dev/null; then
+    if systemctl --user daemon-reload 2>/dev/null && systemctl --user enable --now ascendedpanel-web.service 2>/dev/null; then
       say "$(t web_installed)"
     else
       warn "$(t web_failed)"
@@ -551,13 +551,13 @@ fi
 
 
 # laufenden Web-Dienst neu starten, damit der neue Code aktiv ist
-if systemctl is-active noah-web >/dev/null 2>&1; then
-  systemctl restart noah-web >/dev/null 2>&1 && say "$(t service_restarted)"
-elif systemctl --user is-active noah-web >/dev/null 2>&1; then
-  systemctl --user restart noah-web >/dev/null 2>&1 && say "$(t service_restarted)"
+if systemctl is-active ascendedpanel-web >/dev/null 2>&1; then
+  systemctl restart ascendedpanel-web >/dev/null 2>&1 && say "$(t service_restarted)"
+elif systemctl --user is-active ascendedpanel-web >/dev/null 2>&1; then
+  systemctl --user restart ascendedpanel-web >/dev/null 2>&1 && say "$(t service_restarted)"
 fi
 
-URL="$("$BIN/noah" url --quiet 2>/dev/null | head -1 || true)"
+URL="$("$BIN/AscendedPanel" url --quiet 2>/dev/null | head -1 || true)"
 TOK="${URL##*token=}"
 if [ -n "$TOK" ]; then
   echo
@@ -573,7 +573,7 @@ fi
 
 if [ "$ACCESS" = "https" ] && [ -n "$DOMAIN" ]; then
   echo
-  say "HTTPS: sudo noah proxy --domain $DOMAIN --write --cert"
+  say "HTTPS: sudo AscendedPanel proxy --domain $DOMAIN --write --cert"
 elif [ "$ACCESS" = "tunnel" ]; then
   echo
   say "$(t access_tunnel)"
@@ -581,5 +581,5 @@ fi
 
 if [ "$RUN_WIZARD" = "1" ]; then
   echo
-  exec "$BIN/noah" wizard
+  exec "$BIN/AscendedPanel" wizard
 fi

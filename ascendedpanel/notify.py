@@ -1,4 +1,4 @@
-"""Discord-Benachrichtigungen fuer noah.
+"""Discord-Benachrichtigungen fuer AscendedPanel.
 
 Alle Meldungen laufen ueber den Webhook der Instanz (`webhook_url`). Ist keiner
 gesetzt, wird nur ins lokale Log geschrieben - nie eine Ausnahme nach aussen.
@@ -21,7 +21,7 @@ COLORS = {
 
 
 def log_path(inst) -> str:
-    return os.path.join(inst.directory, ".noah-notify.log")
+    return os.path.join(inst.directory, ".AscendedPanel-notify.log")
 
 
 def _write_log(inst, line: str) -> None:
@@ -37,7 +37,7 @@ def _payload(inst, title: str, text: str, kind: str = "info", fields=None) -> di
         "title": title[:250],
         "description": (text or "")[:1800],
         "color": COLORS.get(kind, COLORS["info"]),
-        "footer": {"text": "noah · %s" % inst.name},
+        "footer": {"text": "AscendedPanel · %s" % inst.name},
         "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
     }
     if fields:
@@ -45,13 +45,13 @@ def _payload(inst, title: str, text: str, kind: str = "info", fields=None) -> di
             {"name": str(k)[:100], "value": str(v)[:1000], "inline": True}
             for k, v in list(fields.items())[:8]
         ]
-    return {"username": "noah", "embeds": [embed]}
+    return {"username": "AscendedPanel", "embeds": [embed]}
 
 
 def _post(url: str, data: bytes, timeout: int = 10) -> None:
     req = urllib.request.Request(
         url, data=data,
-        headers={"Content-Type": "application/json", "User-Agent": "noah"},
+        headers={"Content-Type": "application/json", "User-Agent": "AscendedPanel"},
     )
     with urllib.request.urlopen(req, timeout=timeout) as resp:
         resp.read()
@@ -81,7 +81,7 @@ def test(inst, url: str = "") -> dict:
         return {"ok": False, "error": "kein Webhook gesetzt"}
     try:
         _post(target, json.dumps(_payload(
-            inst, "Test von noah", "Wenn du das liest, stimmt der Webhook.", "update",
+            inst, "Test von AscendedPanel", "Wenn du das liest, stimmt der Webhook.", "update",
             {"Instanz": inst.name},
         )).encode())
         return {"ok": True}

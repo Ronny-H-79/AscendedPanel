@@ -1,4 +1,4 @@
-"""Web-UI fuer noah: Dashboard mit Instanzen + Instanzseiten + JSON-API."""
+"""Web-UI fuer AscendedPanel: Dashboard mit Instanzen + Instanzseiten + JSON-API."""
 from __future__ import annotations
 
 import json
@@ -27,7 +27,7 @@ from . import supervisor
 from . import whitelist as wl
 from .rcon import RconClient
 
-TOKEN_PATH = os.path.expanduser("~/.config/noah/token")
+from .paths import TOKEN_PATH, CONF_DIR
 RE_PLAYER = re.compile(r"^\s*(\d+)\.\s*(.+?),\s*([0-9]{15,17})\s*$")
 INSTALLS: dict[str, dict] = {}
 
@@ -281,20 +281,20 @@ HEADER_ICONS = """
 <a class="iconlink discord" href="https://discord.gg/ark-ase-asa-hilfe" target="_blank" rel="noopener"
    data-tp="ui.discord" data-ttitle="ui.discord" title="Discord: Ark-ASA-ASE-Hilfe" aria-label="Discord">
   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg></a>
-<a class="iconlink paypal" href="https://www.paypal.com/donate/?business=ronnyhase%40fn.de&item_name=noah%20Servermanager&currency_code=EUR"
+<a class="iconlink paypal" href="https://www.paypal.com/donate/?business=ronnyhase%40fn.de&item_name=AscendedPanel%20Servermanager&currency_code=EUR"
    target="_blank" rel="noopener" data-ttitle="ui.donate" title="Spenden via PayPal" aria-label="PayPal">
   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.607 4.653H8.941L6.645 19.251H1.82L4.862 0h7.995c3.754 0 6.375 2.294 6.473 5.513-.648-.478-2.105-.86-3.722-.86m6.57 5.546c0 3.41-3.01 6.853-6.958 6.853h-2.493L11.595 24H6.74l1.845-11.538h3.592c4.208 0 7.346-3.634 7.153-6.949a5.24 5.24 0 0 1 2.848 4.686M9.653 5.546h6.408c.907 0 1.942.222 2.363.541-.195 2.741-2.655 5.483-6.441 5.483H8.714Z"/></svg></a>
 </span>
 """
 
 DASH = """<!doctype html><html lang="__LANG__"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1"><title>noah</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>AscendedPanel</title>
 <style>""" + SHARED_CSS + """</style></head><body>
 <canvas id="bg"></canvas>
-<header><h1>noah</h1><span class="badge" id="cnt">…</span>
+<header><h1>AscendedPanel</h1><span class="badge" id="cnt">…</span>
 <span class="badge" data-t="dash.dashboard">Dashboard</span>
 <span class="hostbar"><span id="hostcpu">CPU –</span><span id="hostram">RAM –</span>
-  <button onclick="noahUpdate()" id="verbtn" style="padding:2px 8px">noah</button>
+  <button onclick="noahUpdate()" id="verbtn" style="padding:2px 8px">AscendedPanel</button>
   <button onclick="openChangelog()" id="clogbtn" style="padding:2px 8px"
     data-t="self.changelog" title="Changelog">Changelog</button>
       <button onclick="window.open('https://github.com/Ronny-H-79/Noah/blob/main/README.md','_blank','noopener')"
@@ -473,17 +473,17 @@ async function checkNoah(){
   const b=document.getElementById('verbtn');
   if(!b||!_noahInfo||!_noahInfo.ok) return;
   if(!_noahInfo.update){
-    b.textContent='noah '+_noahInfo.installed+' · '+L['self.current_build']; b.className='';
+    b.textContent='AscendedPanel '+_noahInfo.installed+' · '+L['self.current_build']; b.className='';
     b.disabled=true; b.style.cursor='default'; b.style.opacity='.7';
     b.title=L['self.up_to_date'];
     return;
   }
   else if(_noahInfo.available && _noahInfo.available!==_noahInfo.installed){
-    b.textContent='noah update: '+_noahInfo.installed+' → '+_noahInfo.available;
+    b.textContent='AscendedPanel update: '+_noahInfo.installed+' → '+_noahInfo.available;
     b.className='badge on';
   } else {
     // gleiche Version, nur neuer Commit: nur ein Hinweis, nicht klickbar
-    b.textContent='noah '+_noahInfo.installed+' · '+L['self.new_build'];
+    b.textContent='AscendedPanel '+_noahInfo.installed+' · '+L['self.new_build'];
     b.className='badge';
     b.disabled=true; b.style.cursor='default'; b.style.opacity='.7';
     b.title=L['self.build_only'];
@@ -563,11 +563,11 @@ async function noahUpdate(){
 }
 applyLang(); load(); loadHost(); checkNoah(); setInterval(load,3000); setInterval(loadHost,3000);
 </script><footer style="text-align:center;padding:16px 0 10px;font-size:11.5px;color:var(--dim);
-letter-spacing:.04em">noah __VERSION__ · © 2026 Ronny H.</footer>
+letter-spacing:.04em">AscendedPanel __VERSION__ · © 2026 Ronny H.</footer>
 </body></html>"""
 
 INST = """<!doctype html><html lang="__LANG__"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1"><title>noah · __NAME__</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>AscendedPanel · __NAME__</title>
 <style>""" + SHARED_CSS + """</style></head><body>
 <canvas id="bg"></canvas>
 <div class="modal" id="modal" onclick="if(event.target.id==='modal')closeModal()">
@@ -577,7 +577,7 @@ INST = """<!doctype html><html lang="__LANG__"><head><meta charset="utf-8">
   </div>
 </div>
 <header>
-  <a href="/?token=__TOK__" style="font-size:15px;letter-spacing:.18em;color:var(--acc)">noah</a>
+  <a href="/?token=__TOK__" style="font-size:15px;letter-spacing:.18em;color:var(--acc)">AscendedPanel</a>
   <a href="/?token=__TOK__" style="margin-left:6px"><button data-t="common.back_dashboard">← Dashboard</button></a>
   <span class="badge" id="st">…</span><span class="badge" id="rd">…</span>
   <span class="badge">__NAME__</span><span class="badge" id="upd" role="button" tabindex="0">UPDATE ?</span>
@@ -614,7 +614,7 @@ INST = """<!doctype html><html lang="__LANG__"><head><meta charset="utf-8">
     </div>
     <div class="meta" style="margin:10px 0 2px">Whitelist</div>
     <div id="wllist">…</div>
-    <div class="meta" style="margin:10px 0 2px" data-t="wl.banned_list">Gebannt (über noah)</div>
+    <div class="meta" style="margin:10px 0 2px" data-t="wl.banned_list">Gebannt (über AscendedPanel)</div>
     <div id="banlist">…</div>
     <pre id="wlmsg">–</pre>
   </section>
@@ -889,13 +889,13 @@ function showTab(name, btn){
   document.querySelectorAll('.tab').forEach(el=>el.classList.toggle('on', el.classList.contains('tab-'+name)));
   document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('on'));
   if(btn) btn.classList.add('on');
-  try{ localStorage.setItem('noah.tab', name); if(history.replaceState) history.replaceState(null,'','#'+name); }catch(e){}
+  try{ localStorage.setItem('AscendedPanel.tab', name); if(history.replaceState) history.replaceState(null,'','#'+name); }catch(e){}
   if(name==='overview'){ const l=document.getElementById('log');
     if(l){ requestAnimationFrame(()=>{ l.scrollTop=l.scrollHeight; }); } }
 }
 function restoreTab(){
   let t='';
-  try{ t = (location.hash||'').replace('#','') || localStorage.getItem('noah.tab') || ''; }catch(e){}
+  try{ t = (location.hash||'').replace('#','') || localStorage.getItem('AscendedPanel.tab') || ''; }catch(e){}
   const known=['overview','settings','mods','server'];
   if(!known.includes(t)) t='overview';
   const b=document.querySelector('.tabs button[data-tab="'+t+'"]');
@@ -1007,7 +1007,7 @@ function _setField(v){
 function showSetGroup(g){
   document.querySelectorAll('#settings .setgroup').forEach(el=>el.classList.toggle('on', el.dataset.g===g));
   document.querySelectorAll('#settabs button').forEach(b=>b.classList.toggle('on', b.dataset.g===g));
-  try{ localStorage.setItem('noah.setgroup', g); }catch(e){}
+  try{ localStorage.setItem('AscendedPanel.setgroup', g); }catch(e){}
 }
 async function loadSettings(){
   SETTINGS=JSON.parse(await api('/api/settings'));
@@ -1029,7 +1029,7 @@ async function loadSettings(){
     return `<div class="setgroup" data-g="${g}">${inner}</div>`;
   }).join('');
   document.getElementById('settings').innerHTML=`<div class="settabs" id="settabs">${tabs}</div>`+blocks;
-  let g=''; try{ g=localStorage.getItem('noah.setgroup')||''; }catch(e){}
+  let g=''; try{ g=localStorage.getItem('AscendedPanel.setgroup')||''; }catch(e){}
   if(!byGroup[g]) g=present[0]||'play';
   showSetGroup(g);
 }
@@ -1327,7 +1327,7 @@ async function give(sid){ const bp=prompt('Blueprint','PrimalItemResource_Stone_
 applyLang(); restoreTab(); setTimeout(restoreTab, 250); refresh(); updCheck(); renderCmds(); loadMods(); loadKeyState(); loadCfg(); loadWl(); loadSettings(); loadCluster(); loadSnaps(); loadBackups(); loadSchedule(); loadHooks();
 setInterval(refresh,5000); setInterval(updCheck,60000);
 </script><footer style="text-align:center;padding:16px 0 10px;font-size:11.5px;color:var(--dim);
-letter-spacing:.04em">noah __VERSION__ · © 2026 Ronny H.</footer>
+letter-spacing:.04em">AscendedPanel __VERSION__ · © 2026 Ronny H.</footer>
 </body></html>"""
 
 PLAYER_ACTIONS = {
@@ -1389,7 +1389,7 @@ def _translate_hits(data: dict, field: str, limit: int = 24) -> dict:
 
 
 class Handler(BaseHTTPRequestHandler):
-    server_version = "noah"
+    server_version = "AscendedPanel"
 
     def _auth(self) -> bool:
         q = urllib.parse.urlparse(self.path).query
@@ -1461,7 +1461,7 @@ class Handler(BaseHTTPRequestHandler):
 
         if path.startswith("/static/maps/"):
             name = os.path.basename(path)
-            base = os.path.expanduser("~/.config/noah/static/maps")
+            base = os.path.join(CONF_DIR, "static", "maps")
             full = os.path.join(base, name)
             if not name.endswith(".jpg") or not os.path.isfile(full):
                 self._send(404, b"kein Bild")
@@ -1925,5 +1925,5 @@ def serve(host: str = "127.0.0.1", port: int = 8790,
         ctx.load_cert_chain(cert, key)
         srv.socket = ctx.wrap_socket(srv.socket, server_side=True)
         scheme = "https"
-    print("noah UI: %s://%s:%d/?token=%s" % (scheme, host, port, token()), flush=True)
+    print("AscendedPanel UI: %s://%s:%d/?token=%s" % (scheme, host, port, token()), flush=True)
     srv.serve_forever()

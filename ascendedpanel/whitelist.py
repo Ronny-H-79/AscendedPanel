@@ -31,7 +31,7 @@ def write_whitelist(inst: Instance, ids: list[str]) -> None:
         if value and value not in seen:
             seen.append(value)
     with open(path, "w", encoding="utf-8") as fh:
-        fh.write("# Steam-/EOS-IDs, eine pro Zeile (noah)\n")
+        fh.write("# Steam-/EOS-IDs, eine pro Zeile (AscendedPanel)\n")
         for value in seen:
             fh.write(value + "\n")
 

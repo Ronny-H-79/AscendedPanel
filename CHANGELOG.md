@@ -4,6 +4,17 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.4.0] — 2026-11-10
+
+### Geändert
+- **Das Projekt heißt jetzt AscendedPanel.** Reines ASA-Werkzeug, der Name sagt es: Befehl
+  `ascendedpanel` (auch als `python3 -m ascendedpanel`), Dienst `ascendedpanel-web.service`,
+  Konfiguration unter `~/.config/ascendedpanel`, Backups/Snapshots unter
+  `~/ascendedpanel-backups` bzw. `~/ascendedpanel-snapshots`.
+- **Bestehende Installationen werden automatisch übernommen:** liegt noch `~/.config/noah` herum und
+  `~/.config/ascendedpanel` existiert nicht, wird das Verzeichnis beim ersten Start umbenannt
+  (gleiche Partition) bzw. kopiert — Instanzen, Token und Einstellungen bleiben also erhalten.
+
 ## [0.3.76] — 2026-11-10
 
 ### Geändert

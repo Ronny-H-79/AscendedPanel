@@ -7,28 +7,28 @@ Structure, console usage, stop order and notes for developers.
 ## Usage
 
 ```bash
-noah web               # web UI on http://127.0.0.1:8790
-noah url               # ready-made address including the token
-noah status            # process, RCON, last log line
-noah start --wait 240
-noah stop              # SaveWorld → DoExit → SIGTERM → SIGKILL
-noah update --check    # is a new Steam build available?
-noah supervise --all   # auto-restart, schedule, backups
+ascendedpanel web               # web UI on http://127.0.0.1:8790
+ascendedpanel url               # ready-made address including the token
+ascendedpanel status            # process, RCON, last log line
+ascendedpanel start --wait 240
+ascendedpanel stop              # SaveWorld → DoExit → SIGTERM → SIGKILL
+ascendedpanel update --check    # is a new Steam build available?
+ascendedpanel supervise --all   # auto-restart, schedule, backups
 ```
 
 ## Structure
 
 | File | Purpose |
 |---|---|
-| `noah/instance.py` | instance configuration (JSON), paths, writing INI files, start parameters |
-| `noah/runner.py` | start/stop/status/update, RCON shutdown, maintenance lock |
-| `noah/consoled.py` | starts the server on a PTY so Wine opens no window |
-| `noah/rcon.py` | own Source RCON client |
-| `noah/supervisor.py` | health check, auto-restart, schedule, countdown |
-| `noah/registry.py` | several instances, port picking, metrics |
-| `noah/mods.py` · `whitelist.py` · `config.py` · `backups.py` · `snapshots.py` | feature modules |
-| `noah/webui.py` | dashboard, instance pages, JSON API (stdlib `http.server`) |
-| `noah/cli.py` | command line including `wizard` |
+| `AscendedPanel/instance.py` | instance configuration (JSON), paths, writing INI files, start parameters |
+| `AscendedPanel/runner.py` | start/stop/status/update, RCON shutdown, maintenance lock |
+| `AscendedPanel/consoled.py` | starts the server on a PTY so Wine opens no window |
+| `AscendedPanel/rcon.py` | own Source RCON client |
+| `AscendedPanel/supervisor.py` | health check, auto-restart, schedule, countdown |
+| `AscendedPanel/registry.py` | several instances, port picking, metrics |
+| `AscendedPanel/mods.py` · `whitelist.py` · `config.py` · `backups.py` · `snapshots.py` | feature modules |
+| `AscendedPanel/webui.py` | dashboard, instance pages, JSON API (stdlib `http.server`) |
+| `AscendedPanel/cli.py` | command line including `wizard` |
 
 ## Stop order (deliberate)
 

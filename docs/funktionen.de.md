@@ -1,6 +1,6 @@
 # Funktionen
 
-Was noah kann: Überblick, Screenshots, Mod-Verwaltung und Benachrichtigungen.
+Was ascendedpanel kann: Überblick, Screenshots, Mod-Verwaltung und Benachrichtigungen.
 
 [← zurück zum README](../README.de.md) · [English](funktionen.md)
 
@@ -41,13 +41,13 @@ Im Reiter **Mods** gibt es ein Suchfeld. Drei Eingaben funktionieren:
 | **CurseForge-Link** | `https://www.curseforge.com/ark-survival-ascended/mods/spyglass` | Mod wird aufgelöst, mit Titel und Bild angezeigt |
 | **Suchbegriff** | `spy` | **Vorschläge erscheinen beim Tippen** — Bild, ID, Downloads; Klick übernimmt die Mod |
 
-Für die **Namenssuche** braucht noah einen kostenlosen CurseForge-API-Key (Feld darunter,
+Für die **Namenssuche** braucht ascendedpanel einen kostenlosen CurseForge-API-Key (Feld darunter,
 [console.curseforge.com](https://console.curseforge.com) → API Keys). Ohne Key ist die Suche
 unzuverlässig, weil CurseForge automatisierte Anfragen blockt — ID und Link funktionieren aber immer.
 
 ## Mod-Updates im Blick
 
-Im Reiter **Mods** steht bei jedem Mod, ob die installierte Datei noch die neueste ist. noah
+Im Reiter **Mods** steht bei jedem Mod, ob die installierte Datei noch die neueste ist. AscendedPanel
 vergleicht den installierten Ordner (`<modid>_<fileid>`) mit der aktuellsten Datei auf CurseForge
 und zeigt bei Abweichung ein **UPDATE**-Kennzeichen samt „neu seit X Tagen". Damit sieht man sofort,
 welcher Modder noch nicht nachgeliefert hat — ohne jede Mod-Seite einzeln zu öffnen.
@@ -55,7 +55,7 @@ welcher Modder noch nicht nachgeliefert hat — ohne jede Mod-Seite einzeln zu �
 ## Benachrichtigungen (Discord)
 
 Im Reiter **Verwaltung** trägt man eine Webhook-Adresse aus Discord ein
-(Servereinstellungen → Integrationen → Webhooks). Dann meldet sich noah im Channel, wenn etwas
+(Servereinstellungen → Integrationen → Webhooks). Dann meldet sich ascendedpanel im Channel, wenn etwas
 passiert, das man wissen muss:
 
 | Ereignis | Wann |
@@ -67,7 +67,7 @@ passiert, das man wissen muss:
 | **Neustart ausgeführt** | nach einem geplanten Neustart |
 | **Server gestoppt** | wenn du ihn selbst gestoppt hast (der Supervisor lässt ihn dann aus) |
 
-Routine wie „Server gestartet" landet nur im Log (`<instanz>/.noah-notify.log`), damit der Channel
+Routine wie „Server gestartet" landet nur im Log (`<instanz>/.ascendedpanel-notify.log`), damit der Channel
 nicht zumüllt. **Test senden** prüft den Webhook sofort.
 
 Wichtig: ein **manueller Stop** wird respektiert — der Supervisor startet den Server danach nicht
@@ -77,7 +77,7 @@ wieder hoch, bis du ihn von Hand oder per Zeitplan startest.
 
 Auf der Dashboard-Karte steht **Löschen**. Der Ablauf fragt zweimal:
 
-1. „Instanz entfernen?" — der Eintrag wandert nach `~/.config/noah/.trash/`, die Serverdateien bleiben liegen.
+1. „Instanz entfernen?" — der Eintrag wandert nach `~/.config/ascendedpanel/.trash/`, die Serverdateien bleiben liegen.
 2. „Auch die Serverdateien löschen (X GB)?" — nur wenn du das bestätigst, wird das Serververzeichnis
    entfernt. Abbrechen lässt die 12 GB unangetastet.
 
@@ -85,19 +85,19 @@ Läuft der Server noch, wird er vorher sauber gestoppt (SaveWorld → DoExit). G
 Verzeichnis, das wie ein Serverordner heißt (`arkserver…`) — ein falsch gesetzter Pfad kann so nicht
 deine Daten treffen.
 
-## Was noah für dich übernimmt
+## Was ascendedpanel für dich übernimmt
 
 ARK-Server sind eigentlich Windows-Programme. Damit sie unter Linux zuverlässig laufen, sind ein
-paar Kniffe nötig — noah macht das automatisch, du musst davon nichts wissen:
+paar Kniffe nötig — ascendedpanel macht das automatisch, du musst davon nichts wissen:
 
 - **Der Server wird immer sauber beendet.** Vor jedem Stopp wird die Welt gespeichert. Einfach
   „abwürgen" würde den Fortschritt seit dem letzten Autosave kosten — das passiert hier nicht.
 - **Kein zusätzliches Fenster.** Normalerweise öffnet sich beim Start ein schwarzes
-  Windows-Fenster mit Technik-Meldungen. Der Server läuft bei noah komplett im Hintergrund.
+  Windows-Fenster mit Technik-Meldungen. Der Server läuft bei ascendedpanel komplett im Hintergrund.
 - **Einstellungen bleiben erhalten.** Das Admin-Passwort und die Admin-Schnittstelle überleben
   einen Neustart — bei einem manuell gestarteten Server überschreibt ARK diese Werte sonst.
 - **Befehle kommen an.** Alles, was du in der Weboberfläche schickst (Nachrichten, Dino-Wipe,
   Spieler kicken), läuft über die offizielle Admin-Schnittstelle des Spiels.
-- **Der Anti-Cheat-Dienst bleibt aus.** Er blockiert unter Linux den Start; noah startet den
+- **Der Anti-Cheat-Dienst bleibt aus.** Er blockiert unter Linux den Start; ascendedpanel startet den
   Server deshalb ohne ihn — auf einem eigenen Server ist das der übliche Weg.
 

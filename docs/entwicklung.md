@@ -1,6 +1,6 @@
 # Entwicklung
 
-Hinweise für alle, die an noah mitarbeiten wollen.
+Hinweise für alle, die an ascendedpanel mitarbeiten wollen.
 
 [← zurück zum README](../README.md)
 

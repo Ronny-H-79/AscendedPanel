@@ -1,4 +1,4 @@
-"""CLI: python3 -m noah <befehl> [--name NAME]"""
+"""CLI: python3 -m ascendedpanel <befehl> [--name NAME]"""
 from __future__ import annotations
 
 import argparse
@@ -11,7 +11,7 @@ from . import i18n
 from . import runner
 from .rcon import RconClient
 
-CONF_DIR = os.path.expanduser("~/.config/noah")
+from .paths import CONF_DIR
 
 
 def conf_path(name: str) -> str:
@@ -257,7 +257,7 @@ def cmd_version(args: argparse.Namespace) -> None:
     """Installierte Version und Stand auf GitHub anzeigen."""
     from . import selfupdate
     info = selfupdate.check(force=True)
-    print("noah %s" % info.get("installed", "?"))
+    print("AscendedPanel %s" % info.get("installed", "?"))
     if not info.get("ok"):
         print("  Pruefung fehlgeschlagen: %s" % info.get("error", ""))
         return
@@ -269,18 +269,18 @@ def cmd_version(args: argparse.Namespace) -> None:
         else:
             print("  neuer Stand verfuegbar (%s, installiert %s)"
                   % (info.get("commit", ""), info.get("local_commit", "") or "unbekannt"))
-        print("  einspielen mit: noah self-update")
+        print("  einspielen mit: AscendedPanel self-update")
     else:
         print("  aktuell")
 
 
 def cmd_self_update(args: argparse.Namespace) -> None:
-    """noah selbst aktualisieren (Paket von GitHub ersetzen, Dienst neu starten)."""
+    """AscendedPanel selbst aktualisieren (Paket von GitHub ersetzen, Dienst neu starten)."""
     from . import selfupdate
     # ohne Cache pruefen: wer "self-update" tippt, will den echten Stand
     info = selfupdate.check(force=True)
     if not args.force and info.get("ok") and not info.get("update"):
-        print("noah %s ist aktuell" % info.get("installed", "?"))
+        print("AscendedPanel %s ist aktuell" % info.get("installed", "?"))
         return
     print("lade %s (installiert: %s)" % (info.get("available", "?"), info.get("installed", "?")))
     result = selfupdate.apply()
@@ -293,7 +293,7 @@ def cmd_self_update(args: argparse.Namespace) -> None:
     print("Sicherung des alten Stands: %s" % result.get("backup"))
     restarted = selfupdate.restart_service()
     print("Dienst neu gestartet (%s)" % restarted.get("scope") if restarted.get("ok")
-          else "Dienst nicht neu gestartet - bitte noah-web neu starten")
+          else "Dienst nicht neu gestartet - bitte ascendedpanel-web neu starten")
 
 
 def cmd_install_unit(args: argparse.Namespace) -> None:
@@ -305,7 +305,7 @@ def cmd_install_unit(args: argparse.Namespace) -> None:
         sys.exit("Dienst fehlgeschlagen: %s" % (result.get("error") or result.get("message")))
     print("Dienst eingerichtet: %s (%s)"
           % (result["path"], "Systemdienst" if result["system"] else "Benutzerdienst"))
-    print("  systemctl %sstatus noah-%s" % ("" if result["system"] else "--user ", inst.name))
+    print("  systemctl %sstatus AscendedPanel-%s" % ("" if result["system"] else "--user ", inst.name))
 
 
 def cmd_wizard(args: argparse.Namespace) -> None:
@@ -361,24 +361,24 @@ def cmd_wizard(args: argparse.Namespace) -> None:
     if input(t("wiz.service_q") + " ").strip().lower() in ("j", "y", "ja", "ja", "yes"):
         unit = os.path.expanduser("~/.config/systemd/user")
         os.makedirs(unit, exist_ok=True)
-        path = os.path.join(unit, "noah-%s.service" % name)
+        path = os.path.join(unit, "AscendedPanel-%s.service" % name)
         with open(path, "w", encoding="utf-8") as fh:
             fh.write("[Unit]\nDescription=ARK Manager (%s)\nAfter=network-online.target\n\n"
                      "[Service]\nType=simple\nWorkingDirectory=%s\n"
-                     "ExecStart=%s -m noah supervise --all\nRestart=always\nRestartSec=15\n\n"
+                     "ExecStart=%s -m ascendedpanel supervise --all\nRestart=always\nRestartSec=15\n\n"
                      "[Install]\nWantedBy=default.target\n"
                      % (name, os.path.dirname(os.path.dirname(os.path.abspath(__file__))), sys.executable))
         print("Unit: %s" % path)
-        print("  systemctl --user daemon-reload && systemctl --user enable --now noah-%s" % name)
+        print("  systemctl --user daemon-reload && systemctl --user enable --now AscendedPanel-%s" % name)
 
     from .webui import token as _token
     print("\n" + t("wiz.web"))
-    print("  noah web")
+    print("  AscendedPanel web")
     print("  http://127.0.0.1:8790/?token=%s" % _token())
 
 
 def main(argv: list[str] | None = None) -> None:
-    p = argparse.ArgumentParser(prog="noah", description="ARK ASA Server-Manager")
+    p = argparse.ArgumentParser(prog="AscendedPanel", description="ARK ASA Server-Manager")
     p.add_argument("--name", default=None, help="Instanzname (default: test)")
     sub = p.add_subparsers(dest="cmd", required=True)
     common = argparse.ArgumentParser(add_help=False)
@@ -442,7 +442,7 @@ def main(argv: list[str] | None = None) -> None:
     pv = sub.add_parser("version", parents=[common], help="Version und Update-Status anzeigen")
     pv.set_defaults(func=cmd_version)
 
-    psu = sub.add_parser("self-update", parents=[common], help="noah selbst aktualisieren")
+    psu = sub.add_parser("self-update", parents=[common], help="AscendedPanel selbst aktualisieren")
     psu.add_argument("--force", action="store_true", help="auch ohne neuere Version neu laden")
     psu.set_defaults(func=cmd_self_update)
 

@@ -7,28 +7,28 @@ Aufbau, Benutzung auf der Konsole, Stop-Reihenfolge und Hinweise für Entwickler
 ## Benutzung
 
 ```bash
-noah web               # Weboberfläche auf http://127.0.0.1:8790
-noah url               # fertige Adresse inklusive Token
-noah status            # Prozess, RCON, letzte Logzeile
-noah start --wait 240
-noah stop              # SaveWorld → DoExit → SIGTERM → SIGKILL
-noah update --check    # ist ein neuer Steam-Build verfügbar?
-noah supervise --all   # Auto-Restart, Zeitplan, Backups
+ascendedpanel web               # Weboberfläche auf http://127.0.0.1:8790
+ascendedpanel url               # fertige Adresse inklusive Token
+ascendedpanel status            # Prozess, RCON, letzte Logzeile
+ascendedpanel start --wait 240
+ascendedpanel stop              # SaveWorld → DoExit → SIGTERM → SIGKILL
+ascendedpanel update --check    # ist ein neuer Steam-Build verfügbar?
+ascendedpanel supervise --all   # Auto-Restart, Zeitplan, Backups
 ```
 
 ## Aufbau
 
 | Datei | Aufgabe |
 |---|---|
-| `noah/instance.py` | Instanz-Konfiguration (JSON), Pfade, INI-Schreiben, Startparameter |
-| `noah/runner.py` | Start/Stop/Status/Update, RCON-Shutdown, Wartungssperre |
-| `noah/consoled.py` | startet den Server am PTY, damit Wine kein Fenster öffnet |
-| `noah/rcon.py` | eigener Source-RCON-Client |
-| `noah/supervisor.py` | Health-Check, Auto-Restart, Zeitplan, Countdown |
-| `noah/registry.py` | mehrere Instanzen, Portvergabe, Kennzahlen |
-| `noah/mods.py` · `whitelist.py` · `config.py` · `backups.py` · `snapshots.py` | Fachmodule |
-| `noah/webui.py` | Dashboard, Instanzseiten, JSON-API (stdlib `http.server`) |
-| `noah/cli.py` | Kommandozeile inkl. `wizard` |
+| `AscendedPanel/instance.py` | Instanz-Konfiguration (JSON), Pfade, INI-Schreiben, Startparameter |
+| `AscendedPanel/runner.py` | Start/Stop/Status/Update, RCON-Shutdown, Wartungssperre |
+| `AscendedPanel/consoled.py` | startet den Server am PTY, damit Wine kein Fenster öffnet |
+| `AscendedPanel/rcon.py` | eigener Source-RCON-Client |
+| `AscendedPanel/supervisor.py` | Health-Check, Auto-Restart, Zeitplan, Countdown |
+| `AscendedPanel/registry.py` | mehrere Instanzen, Portvergabe, Kennzahlen |
+| `AscendedPanel/mods.py` · `whitelist.py` · `config.py` · `backups.py` · `snapshots.py` | Fachmodule |
+| `AscendedPanel/webui.py` | Dashboard, Instanzseiten, JSON-API (stdlib `http.server`) |
+| `AscendedPanel/cli.py` | Kommandozeile inkl. `wizard` |
 
 ## Stop-Reihenfolge (bewusst so)
 

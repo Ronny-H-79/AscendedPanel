@@ -44,11 +44,12 @@ def _pump(master: int, out) -> None:
 
 
 def main(name: str) -> int:
-    conf = os.path.expanduser("~/.config/noah/%s.json" % name)
+    from .paths import CONF_DIR
+    conf = os.path.join(CONF_DIR, "%s.json" % name)
     inst = Instance.load(conf)
     inst.write_ini()
 
-    sock_path = os.path.join(inst.directory, ".noah-console.sock")
+    sock_path = os.path.join(inst.directory, ".AscendedPanel-console.sock")
     try:
         os.unlink(sock_path)
     except OSError:
@@ -58,7 +59,7 @@ def main(name: str) -> int:
     fcntl.ioctl(slave, termios.TIOCSWINSZ, struct.pack("HHHH", 50, 200, 0, 0))
 
     console = open(inst.console_log, "ab", buffering=0)
-    console.write(("\n=== noah start %s (pty) ===\n" % time.strftime("%F %T")).encode())
+    console.write(("\n=== AscendedPanel start %s (pty) ===\n" % time.strftime("%F %T")).encode())
 
     proc = subprocess.Popen(
         _argv(inst),
@@ -86,7 +87,7 @@ def main(name: str) -> int:
             data = conn.recv(4096).decode("utf-8", "replace").strip()
             if data:
                 os.write(master, (data + "\n").encode())
-                console.write(("[noah] >> %s\n" % data).encode())
+                console.write(("[AscendedPanel] >> %s\n" % data).encode())
                 conn.sendall(b"ok")
             else:
                 conn.sendall(b"leer")
@@ -113,7 +114,7 @@ def main(name: str) -> int:
     except OSError:
         pass
     runner._cleanup(inst)
-    console.write(("=== noah: Server beendet (exit %s) ===\n" % proc.returncode).encode())
+    console.write(("=== AscendedPanel: Server beendet (exit %s) ===\n" % proc.returncode).encode())
     return 0
 
 

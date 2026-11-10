@@ -69,11 +69,11 @@ class Instance:
 
     @property
     def pid_file(self) -> str:
-        return os.path.join(self.directory, ".noah.pid")
+        return os.path.join(self.directory, ".AscendedPanel.pid")
 
     @property
     def console_log(self) -> str:
-        return os.path.join(self.directory, ".noah-console.log")
+        return os.path.join(self.directory, ".AscendedPanel-console.log")
 
     @property
     def mods_dir(self) -> str:

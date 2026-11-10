@@ -6,12 +6,12 @@ How to get to the web UI — locally, over an SSH tunnel, in your network or pub
 
 ## Reaching the interface (also from somewhere else)
 
-By default noah listens on `127.0.0.1` only — the UI is then reachable on that machine alone. That is
+By default ascendedpanel listens on `127.0.0.1` only — the UI is then reachable on that machine alone. That is
 intentional. Three ways to get to it from elsewhere:
 
 **1. SSH tunnel (recommended, nothing to configure)**
 
-If noah runs on a server, build a tunnel from your machine:
+If ascendedpanel runs on a server, build a tunnel from your machine:
 
 ```bash
 ssh -N -L 8790:127.0.0.1:8790 user@server
@@ -20,67 +20,67 @@ ssh -N -L 8790:127.0.0.1:8790 user@server
 Get the token in a second terminal on the server:
 
 ```bash
-ssh root@server noah url
+ssh root@server ascendedpanel url
 ```
 
 The output is the full address including the token — open it in your browser
 (`http://127.0.0.1:8790/?token=…`), the tunnel forwards it to the server. Traffic is encrypted end to end
 by SSH and nothing is exposed.
 
-Where the token lives, if you prefer reading it: `~/.config/noah/token` on the server (mode `0600`, so
-only the user who installed noah can read it — for a root install `/root/.config/noah/token`).
-`noah url` shows both the address and the path to the file.
+Where the token lives, if you prefer reading it: `~/.config/ascendedpanel/token` on the server (mode `0600`, so
+only the user who installed ascendedpanel can read it — for a root install `/root/.config/AscendedPanel/token`).
+`ascendedpanel url` shows both the address and the path to the file.
 
 **2. In your own network (LAN, VPN, Tailscale)**
 
 ```bash
-noah web --host 0.0.0.0        # or the VPN address, e.g. --host 100.x.y.z
+ascendedpanel web --host 0.0.0.0        # or the VPN address, e.g. --host 100.x.y.z
 ```
 
-The UI is then reachable at `http://<server-ip>:8790/?token=…` — the token is still required. noah warns
+The UI is then reachable at `http://<server-ip>:8790/?token=…` — the token is still required. ascendedpanel warns
 at startup that the connection is unencrypted; inside a LAN or a Tailscale network that is acceptable.
-For permanent operation add `--host` to `ExecStart` of `noah-web.service` and run
-`systemctl --user daemon-reload && systemctl --user restart noah-web`.
+For permanent operation add `--host` to `ExecStart` of `ascendedpanel-web.service` and run
+`systemctl --user daemon-reload && systemctl --user restart ascendedpanel-web`.
 
 **2b. Directly via IP and port (without HTTPS)**
 
 ```bash
-noah web --host 0.0.0.0
+ascendedpanel web --host 0.0.0.0
 ```
 
 Then `http://<server-ip>:8790/?token=…`. The installer picks this with `[3]` and creates the service with
 `--host 0.0.0.0` right away. Careful: unencrypted — acceptable in a LAN or behind your own firewall, not
 openly on the internet.
 
-**3. From the internet: `noah proxy` sets up nginx**
+**3. From the internet: `ascendedpanel proxy` sets up nginx**
 
-A certificate needs a name pointing at the server (e.g. `noah.example.de`). noah then writes the nginx
+A certificate needs a name pointing at the server (e.g. `AscendedPanel.example.de`). ascendedpanel then writes the nginx
 configuration — with HTTPS, HTTP redirect, long timeouts for snapshots and no token in the logs:
 
 ```bash
-noah proxy --domain noah.example.de                       # just print the configuration
-noah proxy --domain noah.example.de > noah.conf           # write it to a file
+ascendedpanel proxy --domain AscendedPanel.example.de                       # just print the configuration
+ascendedpanel proxy --domain AscendedPanel.example.de > AscendedPanel.conf           # write it to a file
 
-sudo noah proxy --domain noah.example.de --write --cert   # write, test, reload nginx, get a certificate
+sudo ascendedpanel proxy --domain AscendedPanel.example.de --write --cert   # write, test, reload nginx, get a certificate
 ```
 
-`--write` creates `/etc/nginx/sites-available/noah-<domain>.conf`, links it into `sites-enabled`, runs
+`--write` creates `/etc/nginx/sites-available/ascendedpanel-<domain>.conf`, links it into `sites-enabled`, runs
 `nginx -t` and reloads nginx. If the test fails everything is removed again — no broken nginx is left
 behind. `--cert` then calls certbot (`--email you@example.de` optional, otherwise without an address).
 
 Extra login in front of the token:
 
 ```bash
-sudo htpasswd -c /etc/nginx/.htpasswd-noah yourname
-sudo noah proxy --domain noah.example.de --write --cert --auth-file /etc/nginx/.htpasswd-noah
+sudo htpasswd -c /etc/nginx/.htpasswd-ascendedpanel yourname
+sudo ascendedpanel proxy --domain AscendedPanel.example.de --write --cert --auth-file /etc/nginx/.htpasswd-AscendedPanel
 ```
 
-**4. Without nginx: HTTPS inside noah**
+**4. Without nginx: HTTPS inside AscendedPanel**
 
 Small setup, e.g. in a LAN with your own certificate:
 
 ```bash
-noah web --host 0.0.0.0 --tls-cert /path/cert.pem --tls-key /path/key.pem
+ascendedpanel web --host 0.0.0.0 --tls-cert /path/cert.pem --tls-key /path/key.pem
 ```
 
 The UI then speaks HTTPS itself (tested: `HTTP 200` with token, `401` without).
@@ -95,35 +95,35 @@ servers, add mods, create backups and send arbitrary console commands. Treat the
 
 Three rules follow:
 
-- **`127.0.0.1` is enough wherever something sits in front.** With a client install (mode `[1]`) noah runs
+- **`127.0.0.1` is enough wherever something sits in front.** With a client install (mode `[1]`) ascendedpanel runs
   on the server and listens locally; you need the **server address** in the tunnel command
-  (`ssh -N -L 8790:127.0.0.1:8790 user@server`) — only SSH has to be open, noah itself opens no port.
-  With a server install behind a domain (mode `[2]`) noah also stays on `127.0.0.1` and nginx forwards the
+  (`ssh -N -L 8790:127.0.0.1:8790 user@server`) — only SSH has to be open, ascendedpanel itself opens no port.
+  With a server install behind a domain (mode `[2]`) ascendedpanel also stays on `127.0.0.1` and nginx forwards the
   requests encrypted. Only mode `[3]` binds to all addresses (`--host 0.0.0.0`) — and that is what the next
   point is about.
 - **Unencrypted HTTP on the internet is not an option.** In mode `[3]` the token travels in clear text
   through every hop — Wi-Fi, proxy, hosting provider, corporate network. Whoever reads it has full access.
   If it must be public: mode `[2]` with HTTPS.
-- **The token sits in the URL**, so it also lands in browser history and bookmarks. noah sets
+- **The token sits in the URL**, so it also lands in browser history and bookmarks. ascendedpanel sets
   `Referrer-Policy: no-referrer` so it does not leak when clicking external links, but sharing the link
-  passes it on. Create a new token: `rm ~/.config/noah/token` and restart the service
-  (`systemctl --user restart noah-web` or `systemctl restart noah-web`).
+  passes it on. Create a new token: `rm ~/.config/ascendedpanel/token` and restart the service
+  (`systemctl --user restart ascendedpanel-web` or `systemctl restart ascendedpanel-web`).
 
-What noah itself protects: every request without a valid token returns `401`, the token is compared in
+What ascendedpanel itself protects: every request without a valid token returns `401`, the token is compared in
 constant time, responses carry `nosniff`, `X-Frame-Options: DENY` and a restrictive CSP, mod and player
-IDs are validated, and image delivery cannot leave its directory. What noah **cannot** do: secure the
+IDs are validated, and image delivery cannot leave its directory. What ascendedpanel **cannot** do: secure the
 machine it runs on — firewall, updates and a strong SSH setup remain your job.
 
 ## The token — what it is for
 
-On first start noah creates a random key and stores it in `~/.config/noah/token` (mode `0600`, readable by
+On first start ascendedpanel creates a random key and stores it in `~/.config/ascendedpanel/token` (mode `0600`, readable by
 your user only). The address then looks like this:
 
 ```
 http://127.0.0.1:8790/?token=<your-key>
 ```
 
-Show it any time with `noah url`; `noah open` opens it in the browser. It also appears when `noah web`
+Show it any time with `ascendedpanel url`; `ascendedpanel open` opens it in the browser. It also appears when `ascendedpanel web`
 starts and at the end of the installation.
 
 **Why at all, if the UI only runs locally?**
@@ -144,5 +144,5 @@ repository.
 **Without or with a wrong token the UI answers `HTTP 401`.** The token can also be sent as a header
 (`X-Token: <key>`), but the query parameter is the practical route.
 
-**Reset the token:** delete `~/.config/noah/token` — a new one is created on the next start. Note that old
+**Reset the token:** delete `~/.config/ascendedpanel/token` — a new one is created on the next start. Note that old
 bookmarks and shared links stop working. Backups and instances are unaffected.

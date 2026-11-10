@@ -14,7 +14,8 @@ import urllib.parse
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 
-CACHE_DIR = os.path.expanduser("~/.config/noah/cache/translations")
+from .paths import CACHE_DIR as _CACHE
+CACHE_DIR = os.path.join(_CACHE, "translations")
 ENDPOINT = ("https://translate.googleapis.com/translate_a/single"
             "?client=gtx&sl=en&tl=de&dt=t&q=")
 MAX_CHARS = 400                      # laengere Texte werden abgeschnitten
@@ -65,7 +66,7 @@ def _eins(text: str) -> str:
         return text
     kurz = text[:MAX_CHARS]
     url = ENDPOINT + urllib.parse.quote(kurz)
-    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 noah"})
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 AscendedPanel"})
     try:
         with urllib.request.urlopen(req, timeout=TIMEOUT) as resp:
             daten = json.loads(resp.read().decode("utf-8", "replace"))

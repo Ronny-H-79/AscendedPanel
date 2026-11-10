@@ -4,7 +4,7 @@ from __future__ import annotations
 import json
 import os
 
-CONFIG_PATH = os.path.expanduser("~/.config/noah/settings.json")
+from .paths import SETTINGS_PATH as CONFIG_PATH
 LANGS = ("de", "en")
 DEFAULT = "de"
 
@@ -170,8 +170,8 @@ T: dict[str, dict[str, str]] = {
     "wl.add": {"de": "Auf Whitelist", "en": "Add to whitelist"},
     "wl.ban": {"de": "Bannen", "en": "Ban"},
     "wl.list": {"de": "Whitelist", "en": "Whitelist"},
-    "wl.banned": {"de": "Gebannt (über noah)", "en": "Banned (via noah)"},
-    "wl.banned_list": {"de": "Gebannt (über noah)", "en": "Banned (via noah)"},
+    "wl.banned": {"de": "Gebannt (über AscendedPanel)", "en": "Banned (via AscendedPanel)"},
+    "wl.banned_list": {"de": "Gebannt (über AscendedPanel)", "en": "Banned (via AscendedPanel)"},
     "wl.empty": {"de": "leer", "en": "empty"},
     "wl.none": {"de": "keine", "en": "none"},
     "wl.on": {"de": "AN", "en": "ON"},
@@ -271,11 +271,11 @@ T: dict[str, dict[str, str]] = {
     "ui.docs_en": {"de": "English", "en": "English"},
     "self.changelog": {"de": "Changelog", "en": "Changelog"},
     "self.on_github": {"de": "Auf GitHub öffnen", "en": "Open on GitHub"},
-    "self.up_to_date": {"de": "noah ist aktuell", "en": "noah is up to date"},
-    "self.click_update": {"de": "neue noah-Version verfügbar - klicken zum Aktualisieren",
-                          "en": "new noah version available - click to update"},
-    "self.confirm": {"de": "noah auf Version {v} aktualisieren? Die Oberfläche startet dabei neu.",
-                     "en": "update noah to version {v}? The interface restarts during this."},
+    "self.up_to_date": {"de": "AscendedPanel ist aktuell", "en": "AscendedPanel is up to date"},
+    "self.click_update": {"de": "neue AscendedPanel-Version verfügbar - klicken zum Aktualisieren",
+                          "en": "new AscendedPanel version available - click to update"},
+    "self.confirm": {"de": "AscendedPanel auf Version {v} aktualisieren? Die Oberfläche startet dabei neu.",
+                     "en": "update AscendedPanel to version {v}? The interface restarts during this."},
     "self.done": {"de": "Update eingespielt - die Seite lädt in ein paar Sekunden neu.",
                   "en": "update installed - the page reloads in a few seconds."},
     "msg.update_started": {"de": "Update gestartet - der Server stoppt, SteamCMD prüft die Dateien und startet neu. Das dauert einige Minuten.",
@@ -329,7 +329,7 @@ LABELS: dict[str, dict[str, str]] = {
 
 # Assistent und Kommandozeile
 WIZ: dict[str, dict[str, str]] = {
-    "wiz.intro": {"de": "noah - Einrichtung", "en": "noah - setup"},
+    "wiz.intro": {"de": "AscendedPanel - Einrichtung", "en": "AscendedPanel - setup"},
     "wiz.name": {"de": "Name der Instanz [{d}]:", "en": "Instance name [{d}]:"},
     "wiz.maps": {"de": "Maps:", "en": "Maps:"},
     "wiz.map": {"de": "Map waehlen [{d}]:", "en": "Choose map [{d}]:"},
@@ -360,17 +360,17 @@ WIZ: dict[str, dict[str, str]] = {
                                "en": "access from another machine: ssh -N -L 8790:127.0.0.1:8790 {user}@{host}"},
     "cli.domain_q": {"de": "Domain fuer HTTPS (optional, leer = nur lokal):",
                      "en": "Domain for HTTPS (optional, empty = local only):"},
-    "cli.domain_saved": {"de": "Domain gespeichert: {d} - HTTPS einrichten mit: sudo noah proxy --write --cert",
-                         "en": "domain saved: {d} - set up HTTPS with: sudo noah proxy --write --cert"},
-    "cli.domain_none": {"de": "keine Domain gesetzt - noah proxy --domain <name> --write --cert",
-                        "en": "no domain set - noah proxy --domain <name> --write --cert"},
+    "cli.domain_saved": {"de": "Domain gespeichert: {d} - HTTPS einrichten mit: sudo AscendedPanel proxy --write --cert",
+                         "en": "domain saved: {d} - set up HTTPS with: sudo AscendedPanel proxy --write --cert"},
+    "cli.domain_none": {"de": "keine Domain gesetzt - AscendedPanel proxy --domain <name> --write --cert",
+                        "en": "no domain set - AscendedPanel proxy --domain <name> --write --cert"},
     "cli.https_url": {"de": "HTTPS-Adresse", "en": "HTTPS address"},
-    "cli.token_remote": {"de": "auf einem Server: ssh {host} noah url  (gibt die Adresse mit Token aus)",
-                         "en": "on a server: ssh {host} noah url  (prints the address including the token)"},
+    "cli.token_remote": {"de": "auf einem Server: ssh {host} AscendedPanel url  (gibt die Adresse mit Token aus)",
+                         "en": "on a server: ssh {host} AscendedPanel url  (prints the address including the token)"},
     "cli.tunnel_hint": {"de": "von einem anderen Rechner: ssh -N -L {port}:127.0.0.1:{port} nutzer@server  (dann im Browser den Link oben oeffnen)",
                         "en": "from another machine: ssh -N -L {port}:127.0.0.1:{port} user@server  (then open the link above in your browser)"},
-    "cli.proxy_next_steps": {"de": "Naechste Schritte:\n  1) Zertifikat:  sudo certbot --nginx -d {domain}\n  2) optional Anmeldung:  sudo htpasswd -c /etc/nginx/.htpasswd-noah deinname\n     dann erneut mit --auth-file /etc/nginx/.htpasswd-noah aufrufen\n  3) schreiben:  sudo noah proxy --domain {domain} --write [--cert]\n  noah bleibt auf 127.0.0.1, Port {port} muss nicht nach aussen offen sein.",
-                            "en": "Next steps:\n  1) certificate:  sudo certbot --nginx -d {domain}\n  2) optional login:  sudo htpasswd -c /etc/nginx/.htpasswd-noah yourname\n     then run again with --auth-file /etc/nginx/.htpasswd-noah\n  3) write it:  sudo noah proxy --domain {domain} --write [--cert]\n  noah stays on 127.0.0.1, port {port} does not need to be open to the internet."},
+    "cli.proxy_next_steps": {"de": "Naechste Schritte:\n  1) Zertifikat:  sudo certbot --nginx -d {domain}\n  2) optional Anmeldung:  sudo htpasswd -c /etc/nginx/.htpasswd-AscendedPanel deinname\n     dann erneut mit --auth-file /etc/nginx/.htpasswd-AscendedPanel aufrufen\n  3) schreiben:  sudo AscendedPanel proxy --domain {domain} --write [--cert]\n  AscendedPanel bleibt auf 127.0.0.1, Port {port} muss nicht nach aussen offen sein.",
+                            "en": "Next steps:\n  1) certificate:  sudo certbot --nginx -d {domain}\n  2) optional login:  sudo htpasswd -c /etc/nginx/.htpasswd-AscendedPanel yourname\n     then run again with --auth-file /etc/nginx/.htpasswd-AscendedPanel\n  3) write it:  sudo AscendedPanel proxy --domain {domain} --write [--cert]\n  AscendedPanel stays on 127.0.0.1, port {port} does not need to be open to the internet."},
     "cli.proxy_written": {"de": "nginx-Konfiguration geschrieben: {file} (nginx neu geladen)",
                           "en": "nginx configuration written: {file} (nginx reloaded)"},
     "cli.proxy_failed": {"de": "Proxy-Einrichtung fehlgeschlagen: {err}",

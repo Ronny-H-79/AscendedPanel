@@ -1,9 +1,9 @@
-# noah — ARK: Survival Ascended server manager for Linux · web UI in the browser
+# AscendedPanel — ARK: Survival Ascended server manager for Linux · web UI in the browser
 
 English · [Deutsch](README.de.md) — the installer asks for the language up front, and the UI can switch
-any time (button in the top right, `noah lang en` on the console).
+any time (button in the top right, `ascendedpanel lang en` on the console).
 
-[![Donate](https://img.shields.io/badge/Donate-PayPal-00457C?logo=paypal&logoColor=white)](https://www.paypal.com/donate/?business=ronnyhase%40fn.de&item_name=noah%20Servermanager&currency_code=EUR)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-00457C?logo=paypal&logoColor=white)](https://www.paypal.com/donate/?business=ronnyhase%40fn.de&item_name=AscendedPanel%20Servermanager&currency_code=EUR)
 [![Discord](https://img.shields.io/badge/Discord-Ark--ASA--ASE--Hilfe-5865F2?logo=discord&logoColor=white)](https://discord.gg/ark-ase-asa-hilfe)
 
 [![Ubuntu 24.04](docs/badges/en/ubuntu.svg)](#installation)
@@ -17,7 +17,7 @@ any time (button in the top right, `noah lang en` on the console).
 Your own server manager for ARK ASA dedicated servers: start, stop, updates, mods, backups, settings
 and player management through a web interface.
 
-> **Not an app for your PC — no Windows or macOS program.** noah runs as a service on the Linux
+> **Not an app for your PC — no Windows or macOS program.** ascendedpanel runs as a service on the Linux
 > server and is used in a **browser**: from your PC, laptop, tablet or phone, on your LAN or over VPN.
 > You install it on the server **once** (`git clone`, `install.sh`); after that there is nothing to
 > download and no program to launch — just the address with a token.
@@ -37,17 +37,17 @@ RCON for everything the server exposes.
 ## Installation
 
 ```bash
-git clone https://github.com/Ronny-H-79/Noah.git noah   # once
-cd noah
+git clone https://github.com/Ronny-H-79/Noah.git ascendedpanel   # once
+cd AscendedPanel
 ./install.sh --check     # check what is missing (changes nothing)
 ./install.sh             # install
-noah web                 # start the web UI - the address with token is printed
+ascendedpanel web                 # start the web UI - the address with token is printed
 ```
 
 Instances are created **in the browser**: open the printed address, enter a name, pick the map, press
 **Anlegen / Create**, then **Install** on the card. No terminal is needed after that.
 
-**Console only, optional:** `noah wizard` is the terminal alternative — it asks for name, map, port
+**Console only, optional:** `ascendedpanel wizard` is the terminal alternative — it asks for name, map, port
 and session name, downloads the server files and sets up the systemd service. It needs an interactive
 shell and is **not** required: everything the wizard does is also in the web UI. `./install.sh
 --wizard` runs it right after installing.
@@ -63,7 +63,7 @@ to install Wine.
 | Ubuntu LTS | 24.04.5 | Python 3.12.3, Wine 9.0 |
 | Arch Linux (CachyOS) | current | Python 3.14.9, Wine 11.21 |
 
-Debian, Fedora and openSUSE are supported by the installer as well (`apt`, `dnf`, `zypper`), but noah
+Debian, Fedora and openSUSE are supported by the installer as well (`apt`, `dnf`, `zypper`), but AscendedPanel
 has not been tested there yet — feedback welcome. 64-bit Wine is required (the ARK server is a Windows
 build); Wine older than 8.0 is untested.
 
@@ -81,16 +81,16 @@ The installer asks, in order:
   **Tunnel** — client-side only over SSH,
   **Domain** — public with HTTPS (stored for later),
   **IP** — directly via IP and port (HTTP, open the port in your firewall)
-- **only for "Domain"**: whether the UI should run permanently (`noah-web.service`) — as root a
+- **only for "Domain"**: whether the UI should run permanently (`ascendedpanel-web.service`) — as root a
   **system service** in `/etc/systemd/system` (starts at boot, no login or `linger` needed), as a normal
   user a user service in `~/.config/systemd/user`
 
 With **"Tunnel"** the last question is skipped: no long-running service is needed, the UI starts with
-`noah web` when you want it.
+`ascendedpanel web` when you want it.
 
 At the end you get the command that matches your choice: the SSH tunnel with your user and the
 **server IP** (not the hostname — often not resolvable from outside), or
-`sudo noah proxy --write --cert`, which uses the stored domain.
+`sudo ascendedpanel proxy --write --cert`, which uses the stored domain.
 `--web` / `--no-web` skips the service question.
 
 > **Security:** the UI is an admin console — whoever has the token controls everything. Mode `[3]`
@@ -101,9 +101,9 @@ At the end you get the command that matches your choice: the SSH tunnel with you
 
 | Message | Cause | Fix |
 |---|---|---|
-| `fatal: destination path 'noah' already exists` | the folder is already there | `cd noah && git pull` instead of cloning again |
-| `./install.sh: No such file or directory` **after** `cd noah` | you are in the package folder `noah/noah` — only `.py` files live there | `cd ..` — `install.sh` is one level up |
-| `noah: command not found` | `~/.local/bin` is not in `PATH` | as root the installer links `/usr/local/bin/noah`; otherwise `export PATH="$HOME/.local/bin:$PATH"` and open a new shell |
+| `fatal: destination path 'AscendedPanel' already exists` | the folder is already there | `cd ascendedpanel && git pull` instead of cloning again |
+| `./install.sh: No such file or directory` **after** `cd AscendedPanel` | you are in the package folder `AscendedPanel/AscendedPanel` — only `.py` files live there | `cd ..` — `install.sh` is one level up |
+| `AscendedPanel: command not found` | `~/.local/bin` is not in `PATH` | as root the installer links `/usr/local/bin/AscendedPanel`; otherwise `export PATH="$HOME/.local/bin:$PATH"` and open a new shell |
 
 Details, requirements and uninstall: [INSTALL.md](INSTALL.md)
 
@@ -115,26 +115,26 @@ Details, requirements and uninstall: [INSTALL.md](INSTALL.md)
 ./install.sh --uninstall
 ```
 
-This also stops and removes the systemd units (`noah-web`, `noah-*`) so nothing points at a missing
+This also stops and removes the systemd units (`ascendedpanel-web`, `ascendedpanel-*`) so nothing points at a missing
 file afterwards. If the source folder is already gone:
 
 ```bash
-systemctl --user disable --now noah-web.service noah-test.service
-rm -f ~/.config/systemd/user/noah-*.service ~/.local/bin/noah
-rm -rf ~/.local/share/noah
+systemctl --user disable --now ascendedpanel-web.service ascendedpanel-test.service
+rm -f ~/.config/systemd/user/ascendedpanel-*.service ~/.local/bin/AscendedPanel
+rm -rf ~/.local/share/AscendedPanel
 ```
 
 **Everything** — additionally config, token, backups and server files (about 24 GB):
 
 ```bash
-rm -rf ~/.config/noah          # instances, token, mod cache
-rm -rf ~/noah-backups          # world backups
-rm -rf ~/noah-snapshots        # instance snapshots
+rm -rf ~/.config/ascendedpanel          # instances, token, mod cache
+rm -rf ~/ascendedpanel-backups          # world backups
+rm -rf ~/ascendedpanel-snapshots        # instance snapshots
 rm -rf ~/arkserver             # the server files (12 GB)
 rm -rf ~/.wine-arkserver       # Wine prefix
 ```
 
-Only the last step is irreversible: worlds and configs live in `~/noah-backups` — keep those and you can
+Only the last step is irreversible: worlds and configs live in `~/ascendedpanel-backups` — keep those and you can
 restore everything later.
 
 ## More
@@ -153,7 +153,7 @@ Install details: [INSTALL.md](INSTALL.md)
 
 Questions, problems or just other server admins: the
 **[Ark-ASA-ASE-Hilfe](https://discord.gg/ark-ase-asa-hilfe)** community on Discord helps with settings,
-mods and start-up problems. That is also the place for feedback on noah.
+mods and start-up problems. That is also the place for feedback on AscendedPanel.
 
 ## Licence
 

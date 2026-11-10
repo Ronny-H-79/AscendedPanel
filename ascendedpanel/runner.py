@@ -79,7 +79,7 @@ class maintenance:
 
 
 def console_socket(inst: Instance) -> str:
-    return os.path.join(inst.directory, ".noah-console.sock")
+    return os.path.join(inst.directory, ".AscendedPanel-console.sock")
 
 
 def send_console(inst: Instance, cmd: str) -> str:
@@ -143,9 +143,9 @@ def start(inst: Instance, wait: int = 0) -> int:
     # In einer eigenen systemd-Scope, damit Wine-Prozesse nicht in der Prozessgruppe
     # des Web-Dienstes haengen und dessen Neustart blockieren.
     base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    argv = [sys.executable, "-m", "noah.consoled", inst.name]
+    argv = [sys.executable, "-m", "AscendedPanel.consoled", inst.name]
     launcher = list(argv)
-    scope_unit = "noah-%s.scope" % re.sub(r"[^A-Za-z0-9_.-]", "-", inst.name)
+    scope_unit = "AscendedPanel-%s.scope" % re.sub(r"[^A-Za-z0-9_.-]", "-", inst.name)
     if os.environ.get("NOAH_NO_SCOPE") != "1" and shutil.which("systemd-run"):
         launcher = ["systemd-run", "--scope", "--collect", "--quiet",
                     "--unit", scope_unit] + argv
