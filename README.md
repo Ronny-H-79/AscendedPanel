@@ -37,7 +37,7 @@ RCON for everything the server exposes.
 ## Installation
 
 ```bash
-git clone https://github.com/Ronny-H-79/Noah.git ascendedpanel   # once
+git clone https://github.com/Ronny-H-79/AscendedPanel.git ascendedpanel   # once
 cd AscendedPanel
 ./install.sh --check     # check what is missing (changes nothing)
 ./install.sh             # install

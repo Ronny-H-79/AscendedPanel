@@ -49,7 +49,7 @@ sudo ./install.sh --user ascendedpanel      # creates the user, installs to /hom
 Normal install (inside your own account):
 
 ```bash
-git clone https://github.com/Ronny-H-79/Noah.git ascendedpanel   # or copy the folder
+git clone https://github.com/Ronny-H-79/AscendedPanel.git ascendedpanel   # or copy the folder
 cd ascendedpanel          # this folder contains install.sh - NOT AscendedPanel/ascendedpanel (that is the Python package)
 ./install.sh --check        # only check what is missing (changes nothing)
 ./install.sh                # install, asks before adding missing packages

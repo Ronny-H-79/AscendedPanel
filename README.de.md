@@ -39,7 +39,7 @@ Mehr dazu: [docs/funktionen.md](docs/funktionen.md)
 ## Installation
 
 ```bash
-git clone https://github.com/Ronny-H-79/Noah.git ascendedpanel   # einmalig
+git clone https://github.com/Ronny-H-79/AscendedPanel.git ascendedpanel   # einmalig
 cd AscendedPanel
 ./install.sh --check     # prüfen, was fehlt (ändert nichts)
 ./install.sh             # installieren
