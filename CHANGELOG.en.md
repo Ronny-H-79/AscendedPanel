@@ -4,6 +4,16 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.73] — 2026-11-10
+
+### Changed
+- **The wizard is no longer part of the normal install flow.** README and INSTALL now name
+  `noah web` as the path (create and install the instance in the browser); the console wizard is its
+  own, explicitly optional paragraph ("console only"). The wrong statement "the web interface cannot
+  create an instance" is gone.
+- The closing hints of `install.sh` name `noah web` first, the wizard follows as an optional line
+  (own translation key).
+
 ## [0.3.72] — 2026-11-10
 
 ### Added

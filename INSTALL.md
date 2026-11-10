@@ -101,13 +101,24 @@ the README, section "The token". Reset: delete the file, a new one is created on
 
 ## Set up
 
+**Normal way — in the browser:**
+
+```bash
+noah web
+```
+
+Open the printed address with token, enter an instance name, pick the map, press **Anlegen / Create**,
+then **Install** on the new card. That downloads the server files (~12.4 GB) and registers the service.
+
+**Optional, console only — the wizard:**
+
 ```bash
 noah wizard
 ```
 
 This runs in the **terminal on the server** — over SSH (`ssh user@server`) or on the console itself.
-The wizard asks questions, so it needs an interactive session. The web interface cannot create an
-instance; it only shows and manages existing ones.
+The wizard asks questions, so it needs an interactive session. It is not required: the same steps are
+in the web interface (name, map, **Anlegen**, **Installieren**).
 
 The wizard asks for name, map, port and session name, creates the instance and offers to download the
 server files (~12.4 GB, 10–30 minutes) and to set up a systemd service.

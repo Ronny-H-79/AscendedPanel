@@ -43,8 +43,16 @@ git clone https://github.com/Ronny-H-79/Noah.git noah   # einmalig
 cd noah
 ./install.sh --check     # prüfen, was fehlt (ändert nichts)
 ./install.sh             # installieren
-noah wizard              # Instanz anlegen, Server laden, Dienst einrichten
+noah web                 # Web-Oberfläche starten — die Adresse mit Token wird ausgegeben
 ```
+
+Instanzen legst du **im Browser** an: ausgegebene Adresse öffnen, Namen eintragen, Karte wählen,
+**Anlegen** drücken, dann **Installieren** auf der Karte. Danach braucht es kein Terminal mehr.
+
+**Nur Konsole, optional:** `noah wizard` ist die Terminal-Alternative — fragt Name, Karte, Port und
+Session-Namen ab, lädt die Serverdateien und richtet den systemd-Dienst ein. Er braucht eine
+interaktive Sitzung und ist **nicht** nötig: alles geht auch in der Web-Oberfläche.
+`./install.sh --wizard` startet ihn direkt nach der Installation.
 
 **Voraussetzungen:** Linux, Python ≥ 3.10, Wine, `curl` und `tar`. Fehlende Pakete fragt der Installer
 und installiert sie auf Wunsch (`pacman`, `apt`, `dnf`, `zypper`). SteamCMD lädt er selbst nach,

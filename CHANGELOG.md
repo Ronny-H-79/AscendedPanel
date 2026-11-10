@@ -4,6 +4,16 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.73] — 2026-11-10
+
+### Geändert
+- **Der Wizard steht nicht mehr im normalen Installationsablauf.** README und INSTALL nennen jetzt
+  `noah web` als Weg (Instanz im Browser anlegen und installieren); der Konsolen-Assistent ist ein
+  eigener, ausdrücklich optionaler Absatz („nur Konsole"). Die falsche Aussage „die Web-Oberfläche
+  kann keine Instanz anlegen" ist raus.
+- `install.sh` nennt in den Abschlusshinweisen zuerst `noah web`, der Wizard steht als optionale
+  Zeile darunter (eigener Übersetzungsschlüssel).
+
 ## [0.3.72] — 2026-11-10
 
 ### Neu

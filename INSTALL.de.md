@@ -102,13 +102,25 @@ Token zuruecksetzen: Datei loeschen, beim naechsten Start entsteht ein neuer.
 
 ## Einrichten
 
+**Normaler Weg — im Browser:**
+
+```bash
+noah web
+```
+
+Ausgegebene Adresse mit Token öffnen, Instanz-Namen eintragen, Karte wählen, **Anlegen** drücken,
+dann **Installieren** auf der neuen Karte. Damit werden die Serverdateien geladen (~12,4 GB) und der
+Dienst eingerichtet.
+
+**Optional, nur Konsole — der Assistent:**
+
 ```bash
 noah wizard
 ```
 
 Das laeuft im **Terminal auf dem Server** — per SSH (`ssh nutzer@server`) oder direkt an der Konsole.
-Der Assistent stellt Fragen, braucht also eine interaktive Sitzung. Aus der Web-Oberflaeche heraus
-laesst sich **keine** Instanz anlegen; die zeigt und verwaltet nur bestehende.
+Der Assistent stellt Fragen, braucht also eine interaktive Sitzung. Nötig ist er nicht: dieselben
+Schritte gibt es in der Web-Oberfläche (Name, Karte, **Anlegen**, **Installieren**).
 
 Der Assistent fragt Name, Map, Port und Session-Name, legt die Instanz an und bietet an,
 die Serverdateien zu laden (~12,4 GB, 10–30 Minuten) und einen systemd-Dienst einzurichten.
