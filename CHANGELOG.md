@@ -4,6 +4,18 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.4.4] — 2026-11-10
+
+### Behoben
+- **Frische Installation war nach dem Rename kaputt.** `install.sh` verwies an neun Stellen auf
+  `$BIN/AscendedPanel`, `$SRC/AscendedPanel`, `/usr/local/bin/AscendedPanel` und den Unit-Glob
+  `AscendedPanel-*.service` — beim Umbenennen war nur die Kleinschreibung im Paketordner angekommen.
+  Folge: `cp: .../opt/AscendedPanel fehlt` bzw. `~/.config/AscendedPanel/settings.json` (Großbuchstabe)
+  und damit Abbruch der Installation. Jetzt überall `ascendedpanel`, inklusive Config-Pfaden und
+  Backup-/Snapshot-Ordnern.
+- In einem leeren Home nachgestellt: `install.sh --check`, `--no-web --auto`, Launcher, Web-Start
+  (HTTP 200), Instanz anlegen, 90 Einstellungsfelder — alles ohne Fehler.
+
 ## [0.4.3] — 2026-11-10
 
 ### Geändert

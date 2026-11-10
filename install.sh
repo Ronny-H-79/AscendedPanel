@@ -134,20 +134,20 @@ t() {
     de:path_hint)          echo "Hinweis: $2 ist nicht im PATH - z. B. in ~/.config/fish/config.fish ergaenzen:" ;;
     en:done)               echo "Done. Next steps:" ;;
     de:done)               echo "Fertig. Naechste Schritte:" ;;
-    en:wizard_step)        echo "  AscendedPanel web             open the web UI - create instances in the browser" ;;
-    de:wizard_step)        echo "  AscendedPanel web             Web-Oberflaeche oeffnen - Instanzen im Browser anlegen" ;;
+    en:wizard_step)        echo "  ascendedpanel web             open the web UI - create instances in the browser" ;;
+    de:wizard_step)        echo "  ascendedpanel web             Web-Oberflaeche oeffnen - Instanzen im Browser anlegen" ;;
     en:wizard_opt)         echo "  AscendedPanel wizard          optional, console only: guided setup in the terminal" ;;
     de:wizard_opt)         echo "  AscendedPanel wizard          optional, nur Konsole: gefuehrte Einrichtung im Terminal" ;;
     en:supervise_step)     echo "  AscendedPanel supervise --all   watch all instances" ;;
     en:uninstall_step)     echo "  ./install.sh --uninstall   remove AscendedPanel (instances and backups stay)" ;;
     de:uninstall_step)     echo "  ./install.sh --uninstall   AscendedPanel entfernen (Instanzen und Backups bleiben)" ;;
     de:supervise_step)     echo "  AscendedPanel supervise --all   alle Instanzen ueberwachen" ;;
-    en:web)                echo "Web interface (after 'AscendedPanel web'):" ;;
-    de:web)                echo "Web interface (nach 'AscendedPanel web'):" ;;
-    en:net_note)           echo "only with: AscendedPanel web --host 0.0.0.0" ;;
-    de:net_note)           echo "nur mit: AscendedPanel web --host 0.0.0.0" ;;
-    en:token_hint)         echo "  token is also stored in ~/.config/AscendedPanel/token - show it again with: AscendedPanel url" ;;
-    de:token_hint)         echo "  Token auch in ~/.config/AscendedPanel/token - erneut anzeigen mit: AscendedPanel url" ;;
+    en:web)                echo "Web interface (after 'ascendedpanel web'):" ;;
+    de:web)                echo "Web interface (nach 'ascendedpanel web'):" ;;
+    en:net_note)           echo "only with: ascendedpanel web --host 0.0.0.0" ;;
+    de:net_note)           echo "nur mit: ascendedpanel web --host 0.0.0.0" ;;
+    en:token_hint)         echo "  token is also stored in ~/.config/ascendedpanel/token - show it again with: ascendedpanel url" ;;
+    de:token_hint)         echo "  Token auch in ~/.config/ascendedpanel/token - erneut anzeigen mit: ascendedpanel url" ;;
     en:access_q)          echo "How should the web interface be reachable?  [1] client-side only (SSH tunnel)  [2] public via domain with HTTPS  [3] direct via IP and port (HTTP)   [1] " ;;
     de:access_q)          echo "Wie soll die Oberflaeche erreichbar sein?  [1] nur Client-seitig (SSH-Tunnel)  [2] oeffentlich ueber Domain mit HTTPS  [3] direkt ueber IP und Port (HTTP)   [1] " ;;
     en:access_domain_q)   echo "Domain (must point to this server): " ;;
@@ -162,8 +162,8 @@ t() {
     de:ip_confirm)         echo "Trotzdem so einrichten?  [j/N] " ;;
     en:ip_warning)         echo "Note: reachable over the network without HTTPS - the token protects the UI, traffic is unencrypted. Open port 8790 in the firewall." ;;
     de:ip_warning)         echo "Hinweis: im Netzwerk ohne HTTPS erreichbar - der Token schuetzt die Oberflaeche, die Uebertragung ist unverschluesselt. Port 8790 in der Firewall freigeben." ;;
-    en:web_not_needed)     echo "No permanent service needed - the UI starts on demand: AscendedPanel web" ;;
-    de:web_not_needed)     echo "Kein Dauerdienst noetig - Oberflaeche startet bei Bedarf: AscendedPanel web" ;;
+    en:web_not_needed)     echo "No permanent service needed - the UI starts on demand: ascendedpanel web" ;;
+    de:web_not_needed)     echo "Kein Dauerdienst noetig - Oberflaeche startet bei Bedarf: ascendedpanel web" ;;
     en:web_q)              echo "Start the web interface automatically (systemd service)? [y/N] " ;;
     de:web_q)              echo "Web-Oberflaeche automatisch starten (systemd-Dienst)? [j/N] " ;;
     en:web_installed_system) echo "Web interface runs as systemd system service (starts at boot): systemctl status ascendedpanel-web" ;;
@@ -172,10 +172,10 @@ t() {
     de:web_installed_user) echo "Web-Oberflaeche laeuft als Benutzer $2 - User-Dienst ascendedpanel-web; pruefen: su - $2 -c 'systemctl --user status ascendedpanel-web'" ;;
     en:web_installed)      echo "Web interface runs as ascendedpanel-web.service - check: systemctl --user status ascendedpanel-web" ;;
     de:web_installed)      echo "Web-Oberflaeche laeuft als ascendedpanel-web.service - pruefen: systemctl --user status ascendedpanel-web" ;;
-    en:web_failed)         echo "Could not enable the service - start manually with: AscendedPanel web" ;;
-    de:web_failed)         echo "Dienst konnte nicht aktiviert werden - manuell starten mit: AscendedPanel web" ;;
-    en:web_skipped)        echo "No service created - start the UI when needed with: AscendedPanel web" ;;
-    de:web_skipped)        echo "Kein Dienst angelegt - Oberflaeche bei Bedarf starten mit: AscendedPanel web" ;;
+    en:web_failed)         echo "Could not enable the service - start manually with: ascendedpanel web" ;;
+    de:web_failed)         echo "Dienst konnte nicht aktiviert werden - manuell starten mit: ascendedpanel web" ;;
+    en:web_skipped)        echo "No service created - start the UI when needed with: ascendedpanel web" ;;
+    de:web_skipped)        echo "Kein Dienst angelegt - Oberflaeche bei Bedarf starten mit: ascendedpanel web" ;;
     en:language_saved)     echo "Language: English" ;;
     de:language_saved)     echo "Sprache: Deutsch" ;;
     *) return 1 ;;
@@ -258,7 +258,7 @@ save_lang() {
   mkdir -p "$HOME/.config/ascendedpanel"
   "$PY" - "$LANG_SEL" <<'PYEOF'
 import json, os, sys
-path = os.path.expanduser("~/.config/AscendedPanel/settings.json")
+path = os.path.expanduser("~/.config/ascendedpanel/settings.json")
 data = {}
 try:
     with open(path, encoding="utf-8") as fh:
@@ -275,7 +275,7 @@ PYEOF
 if [ "$UNINSTALL" = "1" ]; then
   t uninstall
   # laufende Dienste zuerst beenden, sonst zeigen sie nach dem Loeschen ins Leere
-  for unit in "$HOME"/.config/systemd/user/AscendedPanel-*.service; do
+  for unit in "$HOME"/.config/systemd/user/ascendedpanel-*.service; do
     [ -e "$unit" ] || continue
     name="$(basename "$unit")"
     systemctl --user disable --now "$name" >/dev/null 2>&1 || true
@@ -283,11 +283,11 @@ if [ "$UNINSTALL" = "1" ]; then
     say "$(t service_removed "$name")"
   done
   systemctl --user daemon-reload >/dev/null 2>&1 || true
-  rm -f "$BIN/AscendedPanel"
+  rm -f "$BIN/ascendedpanel"
   rm -rf "$DEST"
   say "$(t removed)"
   say "$(t kept)"
-  say "  ~/.config/AscendedPanel   ~/arkserver-*   ~/AscendedPanel-backups   ~/AscendedPanel-snapshots"
+  say "  ~/.config/AscendedPanel   ~/arkserver-*   ~/ascendedpanel-backups   ~/ascendedpanel-snapshots"
   exit 0
 fi
 
@@ -373,7 +373,7 @@ fi
 if [ -n "$ACCESS" ]; then
   "$PY" - "$ACCESS" "$DOMAIN" <<'PYEOF'
 import json, os, sys
-path = os.path.expanduser("~/.config/AscendedPanel/settings.json")
+path = os.path.expanduser("~/.config/ascendedpanel/settings.json")
 data = {}
 try:
     with open(path, encoding="utf-8") as fh:
@@ -390,7 +390,7 @@ fi
 
 # ---------------------------------------------------------------- Kopieren
 mkdir -p "$DEST" "$BIN" "$HOME/.config/ascendedpanel"
-cp -a "$SRC/AscendedPanel" "$DEST/"
+cp -a "$SRC/ascendedpanel" "$DEST/"
 cp -a "$SRC/README.md" "$DEST/" 2>/dev/null || true
 cp -a "$SRC/INSTALL.md" "$DEST/" 2>/dev/null || true
 cp -a "$SRC"/CHANGELOG*.md "$DEST/" 2>/dev/null || true
@@ -400,35 +400,35 @@ say "$(t copied "$DEST")"
 # Installierten Stand festhalten (Commit), damit auch Aenderungen ohne Versionssprung ankommen
 if command -v git >/dev/null 2>&1 && [ -d "$SRC/.git" ]; then
   SHA="$(git -C "$SRC" rev-parse --short HEAD 2>/dev/null || true)"
-  VER="$(grep -m1 __version__ "$DEST/AscendedPanel/__init__.py" 2>/dev/null | cut -d'"' -f2)"
+  VER="$(grep -m1 __version__ "$DEST/ascendedpanel/__init__.py" 2>/dev/null | cut -d'"' -f2)"
   if [ -n "$SHA" ]; then
-    printf '{"sha": "%s", "version": "%s", "written": "%s"}\n' "$SHA" "$VER" "$(date '+%F %T')" > "$DEST/AscendedPanel/.build"
+    printf '{"sha": "%s", "version": "%s", "written": "%s"}\n' "$SHA" "$VER" "$(date '+%F %T')" > "$DEST/ascendedpanel/.build"
   else
     # Installation aus einem Archiv (kein .git): alten Stand nicht stehen lassen,
     # sonst meldet die Pruefung dauerhaft "neuer Stand verfuegbar"
-    rm -f "$DEST/AscendedPanel/.build"
+    rm -f "$DEST/ascendedpanel/.build"
   fi
 fi
 
-cat > "$BIN/AscendedPanel" <<EOF
+cat > "$BIN/ascendedpanel" <<EOF
 #!/bin/sh
 # AscendedPanel-Launcher (erzeugt von install.sh)
 export PYTHONPATH="$DEST\${PYTHONPATH:+\$PYTHONPATH}"
 # -P: aktuelles Verzeichnis nicht in sys.path - sonst importiert AscendedPanel aus dem Quellordner
 exec "$PY" -P -m ascendedpanel "\$@"
 EOF
-chmod +x "$BIN/AscendedPanel"
+chmod +x "$BIN/ascendedpanel"
 # bei --user gehoert alles dem Dienst-Benutzer, sonst kann er seine Configs nicht schreiben
 if [ -n "$SERVICE_USER" ]; then
-  chown -R "$SERVICE_USER":"$SERVICE_USER" "$DEST" "$HOME/.config/ascendedpanel" "$BIN/AscendedPanel" 2>/dev/null || true
+  chown -R "$SERVICE_USER":"$SERVICE_USER" "$DEST" "$HOME/.config/ascendedpanel" "$BIN/ascendedpanel" 2>/dev/null || true
 fi
-say "$(t command "$BIN/AscendedPanel")"
+say "$(t command "$BIN/ascendedpanel")"
 
 case ":$PATH:" in
   *":$BIN:"*) ;;
   *)
     if [ "$(id -u)" = "0" ] && [ -d /usr/local/bin ] && [ -z "$SERVICE_USER" ]; then
-      if ln -sf "$BIN/AscendedPanel" /usr/local/bin/AscendedPanel 2>/dev/null; then
+      if ln -sf "$BIN/ascendedpanel" /usr/local/bin/ascendedpanel 2>/dev/null; then
         say "$(t linked_usr_local)"
       else
         say "$(t path_hint "$BIN")"
@@ -450,7 +450,7 @@ t uninstall_step
 # ---------------------------------------------------------------- Web-Dienst
 if [ -z "$WANT_WEB" ]; then
   if [ "$ACCESS" = "tunnel" ]; then
-    # Client-seitig: die Oberflaeche wird bei Bedarf mit "AscendedPanel web" gestartet, kein Dauerdienst noetig
+    # Client-seitig: die Oberflaeche wird bei Bedarf mit "ascendedpanel web" gestartet, kein Dauerdienst noetig
     WANT_WEB=0
     say "$(t web_not_needed)"
   elif [ -t 0 ]; then
@@ -473,7 +473,7 @@ if [ "$WANT_WEB" = "1" ]; then
     install -d -o "$SERVICE_USER" -g "$SERVICE_USER" "$UNIT_DIR"
     cat > "$UNIT_DIR/ascendedpanel-web.service" <<EOF
 [Unit]
-Description=AscendedPanel web interface
+Description=ascendedpanel web interface
 After=network-online.target
 
 [Service]
@@ -487,7 +487,7 @@ RestartSec=5
 [Install]
 WantedBy=default.target
 EOF
-    chown -R "$SERVICE_USER":"$SERVICE_USER" "$DEST" "$HOME/.config/ascendedpanel" "$BIN/AscendedPanel" "$UNIT_DIR" 2>/dev/null || true
+    chown -R "$SERVICE_USER":"$SERVICE_USER" "$DEST" "$HOME/.config/ascendedpanel" "$BIN/ascendedpanel" "$UNIT_DIR" 2>/dev/null || true
     loginctl enable-linger "$SERVICE_USER" >/dev/null 2>&1 || true
     if su - "$SERVICE_USER" -c "XDG_RUNTIME_DIR=/run/user/$SERVICE_UID systemctl --user daemon-reload && XDG_RUNTIME_DIR=/run/user/$SERVICE_UID systemctl --user enable --now ascendedpanel-web.service" >/dev/null 2>&1; then
       say "$(t web_installed_user "$SERVICE_USER")"
@@ -499,7 +499,7 @@ EOF
     UNIT="/etc/systemd/system/ascendedpanel-web.service"
     cat > "$UNIT" <<EOF
 [Unit]
-Description=AscendedPanel web interface
+Description=ascendedpanel web interface
 After=network-online.target
 Wants=network-online.target
 
@@ -525,7 +525,7 @@ EOF
     mkdir -p "$UNIT_DIR"
     cat > "$UNIT_DIR/ascendedpanel-web.service" <<EOF
 [Unit]
-Description=AscendedPanel web interface
+Description=ascendedpanel web interface
 After=network-online.target
 
 [Service]
@@ -557,7 +557,7 @@ elif systemctl --user is-active ascendedpanel-web >/dev/null 2>&1; then
   systemctl --user restart ascendedpanel-web >/dev/null 2>&1 && say "$(t service_restarted)"
 fi
 
-URL="$("$BIN/AscendedPanel" url --quiet 2>/dev/null | head -1 || true)"
+URL="$("$BIN/ascendedpanel" url --quiet 2>/dev/null | head -1 || true)"
 TOK="${URL##*token=}"
 if [ -n "$TOK" ]; then
   echo
@@ -581,5 +581,5 @@ fi
 
 if [ "$RUN_WIZARD" = "1" ]; then
   echo
-  exec "$BIN/AscendedPanel" wizard
+  exec "$BIN/ascendedpanel" wizard
 fi
