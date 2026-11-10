@@ -4,6 +4,16 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.75] — 2026-11-10
+
+### Behoben
+- **Nicht installierte Instanzen ließen sich nicht löschen.** Die Karte zeigte nur „Installieren";
+  jetzt steht dort auch `Löschen`, ohne Rückfrage nach Serverdateien (es gibt keine, der leere
+  Instanzordner wird mit entfernt).
+- **`delInst()` prüfte `r.ok` auf einer Textantwort** — nach dem Löschen lud die Karte nie neu und
+  eine Fehlermeldung blieb unsichtbar. Jetzt wird die JSON-Antwort gelesen und die freigegebenen
+  GB/MB angezeigt.
+
 ## [0.3.74] — 2026-11-10
 
 ### Geändert
