@@ -1101,22 +1101,29 @@ async function enableMod(id){
 }
 
 
-let _suggTimer=null;
+let _suggTimer=null, _suggSeq=0;
 function suggestMods(){
   clearTimeout(_suggTimer);
   const q=document.getElementById('modid').value.trim();
   const box=document.getElementById('modhits');
+  const seq=++_suggSeq;                       // veraltete Antworten verwerfen
   if(q.length<2){ box.innerHTML=''; return; }
   _suggTimer=setTimeout(async()=>{
     let data;
     try{ data=JSON.parse(await api('/api/mods/suggest?q='+encodeURIComponent(q))); }
     catch(e){ return; }
+    if(seq!==_suggSeq) return;
     const hits=(data.results||[]).slice(0,8);
     const sum=document.getElementById('modhitsum');
     if(sum) sum.textContent=hits.length? (hits.length+' '+L['mods.suggestions']) : '';
     if(!hits.length){
-      box.innerHTML='<div class="meta">'+L['mods.search_empty']+
-        (data.needs_key?(' · <a href="https://console.curseforge.com" target="_blank">'+L['mods.key']+'</a>'):'')+'</div>';
+      box.innerHTML = (data.needs_key && q.length>=2)
+        ? '<div class="meta">'+(L['mods.suggest_needs_key']
+            ||'Vorschläge beim Tippen brauchen einen CurseForge-API-Key (Feld weiter unten)')
+          +' · <a href="https://console.curseforge.com" target="_blank" rel="noopener">'
+          +L['mods.key']+'</a></div>'
+        : '<div class="meta">'+L['mods.search_empty']+
+          (data.needs_key?(' · <a href="https://console.curseforge.com" target="_blank">'+L['mods.key']+'</a>'):'')+'</div>';
       return;
     }
     box.innerHTML=hits.map(m=>`<div class="p" style="cursor:pointer" onclick="addModId('${m.id}')">

@@ -119,6 +119,8 @@ T: dict[str, dict[str, str]] = {
     "mods.search": {"de": "Suchen", "en": "Search"},
     "mods.search_ph": {"de": "Mod suchen oder ID eingeben", "en": "search a mod or enter its ID"},
     "mods.search_empty": {"de": "nichts gefunden", "en": "nothing found"},
+    "mods.suggest_needs_key": {"de": "Vorschläge beim Tippen brauchen einen CurseForge-API-Key (Feld weiter unten)",
+                               "en": "Suggestions while typing need a CurseForge API key (field below)"},
     "mods.issue_not_downloaded": {"de": "nicht heruntergeladen", "en": "not downloaded"},
     "mods.issue_cooked": {"de": "für alte Engine gebacken", "en": "built for an older engine"},
     "cl.title": {"de": "Cluster", "en": "Cluster"},

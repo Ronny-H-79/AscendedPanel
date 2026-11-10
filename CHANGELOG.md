@@ -4,6 +4,17 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.71] — 2026-11-10
+
+### Geändert
+- **Mod-Vorschläge beim Tippen**: sie kommen weiterhin ohne Enter (kurze Pause nach dem letzten
+  Zeichen), aber ohne CurseForge-API-Key blieb die Liste stumm. Jetzt steht an der Stelle der
+  Hinweis, dass Vorschläge einen Key brauchen — mit Link zu `console.curseforge.com` und zum
+  Key-Feld im Reiter.
+- **Veraltete Antworten werden verworfen.** Wer schnell weitertippt, konnte bisher eine ältere
+  Antwort über die neuere bekommen; jetzt trägt jeder Aufruf eine Sequenznummer und nur die
+  letzte Antwort wird angezeigt.
+
 ## [0.3.70] — 2026-11-09
 
 ### Geändert

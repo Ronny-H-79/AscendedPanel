@@ -4,6 +4,15 @@ Notable changes to noah. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.71] — 2026-11-10
+
+### Changed
+- **Mod suggestions while typing** still work without pressing Enter (short pause after the last
+  character), but without a CurseForge API key the list stayed silent. It now says that
+  suggestions need a key — with a link to `console.curseforge.com` and to the key field.
+- **Stale responses are discarded.** Typing quickly could show an older answer over a newer one;
+  every call now carries a sequence number and only the latest answer is rendered.
+
 ## [0.3.70] — 2026-11-09
 
 ### Changed
