@@ -1,3 +1,19 @@
+## [0.4.29] — 2026-11-11
+
+### Behoben
+- **„Restart" verhielt sich wie „Stop" — der Server kam nicht wieder hoch.** Der Neustart lief als
+  Folge `stop(); sleep(3); start()` in einem Thread ohne Fehlerbehandlung: scheiterte der Start (z. B.
+  weil Wine die Ports noch hielt), blieb der Server einfach aus, ohne jede Meldung. Jetzt gibt es
+  `runner.restart()`: Stop, warten bis Spiel-, Query- und RCON-Port wirklich frei sind (eigene
+  Wine-Reste werden dabei beendet), Start mit einem Wiederholungsversuch. Klappt es nicht, nennt die
+  Fehlermeldung alle Schritte und den blockierenden Port.
+- **Fehlschläge von Start/Restart/Update sind sichtbar.** Sie landen in `<instanz>/.start.log`, im
+  Supervisor-Log und als Ereignis in Discord — vorher verschluckte der Thread die Ausnahme still.
+- **Zeitplan-Aufgabe „Restart" tat nichts** (fiel auf „unbekannte Aktion"). Sie nutzt jetzt denselben
+  Ablauf.
+- Die Installation über die Oberfläche schickte nach der Erfolgsmeldung noch eine 404-Antwort
+  hinterher.
+
 ## [0.4.28] — 2026-11-11
 
 ### Behoben

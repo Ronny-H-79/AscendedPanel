@@ -1,3 +1,18 @@
+## [0.4.29] — 2026-11-11
+
+### Fixed
+- **"Restart" behaved like "Stop" — the server never came back.** A restart was `stop(); sleep(3);
+  start()` inside a thread without error handling: if the start failed (e.g. because Wine still held
+  the ports), the server simply stayed down without any message. There is now `runner.restart()`:
+  stop, wait until game, query and RCON ports are really free (leftover Wine processes of the instance
+  are terminated), then start with one retry. If it still fails, the error names every step and the
+  blocking port.
+- **Failures of start/restart/update are visible.** They are written to `<instance>/.start.log`, the
+  supervisor log and as a Discord event — the thread used to swallow the exception silently.
+- **The scheduled task "restart" did nothing** (fell through to "unknown action"). It now uses the
+  same routine.
+- Installing through the UI sent a 404 response after the success message.
+
 ## [0.4.28] — 2026-11-11
 
 ### Fixed
