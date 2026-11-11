@@ -108,6 +108,10 @@ T: dict[str, dict[str, str]] = {
     "inst.ban": {"de": "Bannen", "en": "Ban"},
     "inst.whitelist": {"de": "Whitelist", "en": "Whitelist"},
     "inst.item": {"de": "Item", "en": "Item"},
+    "inst.phase_downloading": {"de": "Lade herunter", "en": "Downloading"},
+    "inst.phase_preallocate": {"de": "Dateien werden angelegt", "en": "preallocating files"},
+    "inst.phase_verifying": {"de": "Prüfe Dateien", "en": "verifying files"},
+    "inst.phase_done": {"de": "Fertig", "en": "Done"},
     # ---------------------------------------------------------------- Mods
     "mods.active": {"de": "Aktiv", "en": "Active"},
     "mods.installed": {"de": "Installierte Mods", "en": "Installed mods"},
