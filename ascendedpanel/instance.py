@@ -101,7 +101,7 @@ class Instance:
             "ServerSettings": {
                 "RCONEnabled": "True",
                 "RCONPort": str(self.rcon_port),
-                "ServerAdminPassword": self.admin_password or self.rcon_password,
+                "ServerAdminPassword": self.admin_pw,
                 "ServerPassword": "",
                 "MaxPlayers": str(self.max_players),
                 "ServerPVE": "True",
@@ -152,6 +152,16 @@ class Instance:
         return cls(**{k: v for k, v in data.items() if k in known})
 
     @property
+    def admin_pw(self) -> str:
+        """Admin-Passwort der Instanz = RCON-Passwort fuer ASA.
+
+        ASA liest `?ServerAdminPassword=` aus der Startzeile und schreibt den Wert beim Start in
+        die GameUserSettings.ini zurueck. Startzeile und INI muessen deshalb denselben Wert haben,
+        sonst ist ein in der INI gepflegtes Admin-Passwort nach jedem Neustart/Update weg.
+        """
+        return self.admin_password or self.rcon_password
+
+    @property
     def cluster_name(self) -> str:
         return (self.cluster_id or self.name).strip()
 
@@ -168,8 +178,8 @@ class Instance:
         # ServerAdminPassword MUSS die letzte ?-Option sein, sonst schluckt sie den Rest.
         url = "%s?listen?Port=%d?QueryPort=%d?RCONEnabled=True?RCONServerGameLogBuffer=600?RCONPort=%d" % (
             self.map, self.port, self.query_port, self.rcon_port)
-        if self.rcon_password:
-            url += "?ServerAdminPassword=" + self.rcon_password
+        if self.admin_pw:
+            url += "?ServerAdminPassword=" + self.admin_pw
         argv = [
             self.exe,
             url,

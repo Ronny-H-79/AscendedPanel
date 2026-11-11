@@ -55,7 +55,7 @@ def _render(template: str) -> str:
 
 
 def rcon_cmd(inst: Instance, cmd: str, timeout: float = 12.0) -> str:
-    with RconClient("127.0.0.1", inst.rcon_port, inst.rcon_password, timeout=timeout) as rc:
+    with RconClient("127.0.0.1", inst.rcon_port, inst.admin_pw, timeout=timeout) as rc:
         return rc.command(cmd, timeout=timeout + 5)
 
 

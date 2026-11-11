@@ -157,7 +157,7 @@ class Supervisor:
 
     def _rcon(self, command: str) -> str:
         from .rcon import RconClient
-        with RconClient("127.0.0.1", self.inst.rcon_port, self.inst.rcon_password, timeout=10) as rc:
+        with RconClient("127.0.0.1", self.inst.rcon_port, self.inst.admin_pw, timeout=10) as rc:
             return rc.command(command, timeout=15)
 
     def run_task(self, task: dict) -> str:
@@ -192,7 +192,7 @@ class Supervisor:
     def _broadcast(self, text: str) -> None:
         try:
             from .rcon import RconClient
-            with RconClient("127.0.0.1", self.inst.rcon_port, self.inst.rcon_password,
+            with RconClient("127.0.0.1", self.inst.rcon_port, self.inst.admin_pw,
                             timeout=10) as rc:
                 rc.command("Broadcast %s" % text, timeout=12)
             notify(self.inst, "Broadcast: %s" % text)

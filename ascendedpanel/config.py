@@ -21,7 +21,7 @@ KNOWN = [
     ("gus", "ServerSettings", "DifficultyOffset", "Schwierigkeit", "0.0 - 1.0 (1.0 = max. Level)", "float"),
     ("gus", "ServerSettings", "OverrideOfficialDifficulty", "Offizielle Schwierigkeit ueberschreiben", "z. B. 5.0", "float"),
     ("gus", "ServerSettings", "MaxPlayers", "Max. Spieler", "1 - 70 (auf Steam)", "int"),
-    ("gus", "ServerSettings", "ServerAdminPassword", "Admin-Passwort", "leer = kein Admin-Zugang", "text"),
+    ("gus", "ServerSettings", "ServerAdminPassword", "Admin-Passwort", "gilt auch fuer RCON, leer = RCON-Passwort", "text"),
     ("gus", "ServerSettings", "ServerPassword", "Server-Passwort", "leer = Server offen", "text"),
     ("gus", "ServerSettings", "RCONEnabled", "RCON aktiv", "muss True sein fuer diesen Manager", "bool"),
     ("gus", "ServerSettings", "RCONPort", "RCON-Port", "TCP-Port", "int"),
@@ -123,6 +123,24 @@ def read(inst: Instance, which: str) -> str:
         return "; Datei konnte nicht gelesen werden: %s" % exc
 
 
+def _sync_admin_pw(inst: Instance, which: str) -> None:
+    """Admin-Passwort aus der GameUserSettings.ini in die Instanz-Config uebernehmen.
+
+    ASA liest `?ServerAdminPassword=` aus der Startzeile und schreibt diesen Wert beim Start in die
+    INI zurueck. Ein Admin-Passwort, das nur in der INI steht, ist beim naechsten Neustart (und damit
+    nach jedem Update) wieder weg. Deshalb wandert es hier in die Instanz - Startzeile, INI und
+    RCON-Anmeldung nutzen danach denselben Wert.
+    """
+    if which != "gus":
+        return
+    value = _parse_ini(read(inst, "gus")).get(("serversettings", "serveradminpassword"), "").strip()
+    if value == inst.admin_password:
+        return
+    inst.admin_password = value
+    from . import registry
+    registry.save(inst)
+
+
 def write(inst: Instance, which: str, text: str) -> str:
     if len(text) > MAX_BYTES:
         raise ValueError("Datei zu gross (max %d Bytes)" % MAX_BYTES)
@@ -134,6 +152,7 @@ def write(inst: Instance, which: str, text: str) -> str:
         shutil.copy2(path, backup)
     with open(path, "w", encoding="utf-8") as fh:
         fh.write(text)
+    _sync_admin_pw(inst, which)
     return backup
 
 
@@ -262,3 +281,4 @@ def set_value(inst: Instance, which: str, section: str, key: str, value: str) ->
 
     with open(path, "w", encoding="utf-8") as fh:
         fh.write("\n".join(lines) + "\n")
+    _sync_admin_pw(inst, which)

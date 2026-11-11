@@ -533,7 +533,7 @@ SET_EN: dict[str, tuple[str, str]] = {
     "DifficultyOffset": ("Difficulty", "0.0 - 1.0 (1.0 = max level)"),
     "OverrideOfficialDifficulty": ("Override official difficulty", "e.g. 5.0"),
     "MaxPlayers": ("Max players", "1 - 70 (on Steam)"),
-    "ServerAdminPassword": ("Admin password", "empty = no admin access"),
+    "ServerAdminPassword": ("Admin password", "also used for RCON, empty = RCON password"),
     "ServerPassword": ("Server password", "empty = server open"),
     "RCONEnabled": ("RCON enabled", "must be true for this manager"),
     "RCONPort": ("RCON port", "TCP port"),

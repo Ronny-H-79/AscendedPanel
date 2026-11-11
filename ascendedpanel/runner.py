@@ -259,7 +259,7 @@ def stop(inst: Instance, timeout: int = 45) -> str:
 
     # 1. Sauber ueber RCON: Welt speichern, dann beenden
     try:
-        with RconClient("127.0.0.1", inst.rcon_port, inst.rcon_password, timeout=15) as rc:
+        with RconClient("127.0.0.1", inst.rcon_port, inst.admin_pw, timeout=15) as rc:
             rc.command("SaveWorld", timeout=20)
             steps.append("SaveWorld ok")
             rc.command("DoExit", timeout=8)
@@ -369,7 +369,7 @@ def status(inst: Instance) -> dict[str, object]:
     }
     if pid:
         try:
-            with RconClient("127.0.0.1", inst.rcon_port, inst.rcon_password, timeout=12) as rc:
+            with RconClient("127.0.0.1", inst.rcon_port, inst.admin_pw, timeout=12) as rc:
                 out = rc.command("ListPlayers", timeout=12)
                 info["players"] = [l for l in out.splitlines() if l.strip()]
                 info["rcon"] = "ok"

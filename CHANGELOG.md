@@ -1,3 +1,19 @@
+## [0.4.28] — 2026-11-11
+
+### Behoben
+- **Das Admin-Passwort war nach jedem Neustart (und damit nach jedem Update) wieder das alte.**
+  Die Startzeile bekam immer das RCON-Passwort (`?ServerAdminPassword=<rcon_password>`), in die
+  `GameUserSettings.ini` wurde dagegen das Admin-Passwort geschrieben. ASA liest den Wert aus der
+  Startzeile und überschreibt damit beim Start die INI — ein gesetztes Admin-Passwort war also nach dem
+  nächsten Start weg. Startzeile, INI und RCON-Anmeldung nutzen jetzt dieselbe Quelle
+  (`Instance.admin_pw`: Admin-Passwort, sonst RCON-Passwort).
+- **Ein im Konfig-Editor gesetztes Admin-Passwort landet jetzt in der Instanz.** Bisher galt es nur bis
+  zum nächsten Start; `config.set_value` und `config.write` (Formular und Roh-INI) übernehmen den Wert
+  in die Instanz-Config und damit in die Startzeile.
+- **RCON-Anmeldung nutzt dieselbe Quelle** (Konsole, Spielerliste, Backups, Broadcast, CLI `rcon`).
+  Sonst antwortet RCON „Passwort falsch", sobald Admin- und RCON-Passwort auseinanderlaufen.
+- Hinweis am Feld korrigiert: „leer = RCON-Passwort" statt „leer = kein Admin-Zugang".
+
 ## [0.4.27] — 2026-11-11
 
 ### Neu

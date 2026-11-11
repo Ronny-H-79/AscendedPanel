@@ -80,7 +80,7 @@ def cmd_logs(args: argparse.Namespace) -> None:
 
 def cmd_rcon(args: argparse.Namespace) -> None:
     inst = load(args.name)
-    with RconClient("127.0.0.1", inst.rcon_port, inst.rcon_password, timeout=15) as rc:
+    with RconClient("127.0.0.1", inst.rcon_port, inst.admin_pw, timeout=15) as rc:
         print(rc.command(" ".join(args.command), timeout=20))
 
 

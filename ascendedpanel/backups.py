@@ -40,7 +40,7 @@ def create(inst: Instance, label: str = "manuell") -> dict:
     if runner.is_running(inst):
         try:
             from .rcon import RconClient
-            with RconClient("127.0.0.1", inst.rcon_port, inst.rcon_password, timeout=10) as rc:
+            with RconClient("127.0.0.1", inst.rcon_port, inst.admin_pw, timeout=10) as rc:
                 rc.command("SaveWorld", timeout=25)
             time.sleep(3)
         except Exception:  # noqa: BLE001 - Backup trotzdem versuchen

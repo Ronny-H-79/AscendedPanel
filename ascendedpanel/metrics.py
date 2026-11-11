@@ -68,7 +68,7 @@ def players_cached(inst: Instance) -> tuple[int, list[str]]:
     try:
         import re
         from .rcon import RconClient
-        with RconClient("127.0.0.1", inst.rcon_port, inst.rcon_password, timeout=8) as rc:
+        with RconClient("127.0.0.1", inst.rcon_port, inst.admin_pw, timeout=8) as rc:
             out = rc.command("ListPlayers", timeout=10)
         names = [m.group(2).strip() for m in
                  (re.match(r"^\s*(\d+)\.\s*(.+?)\s*,\s*[0-9]{15,17}\s*$", ln) for ln in out.splitlines())

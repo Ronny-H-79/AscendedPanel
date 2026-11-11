@@ -1,3 +1,19 @@
+## [0.4.28] — 2026-11-11
+
+### Fixed
+- **The admin password was back to the old value after every restart (and therefore after every
+  update).** The start line always got the RCON password (`?ServerAdminPassword=<rcon_password>`) while
+  the admin password was written into `GameUserSettings.ini`. ASA reads the value from the start line
+  and overwrites the INI with it on start — so a configured admin password was gone after the next
+  start. Start line, INI and RCON login now use the same source (`Instance.admin_pw`: admin password,
+  otherwise RCON password).
+- **An admin password set in the config editor is now stored in the instance.** Previously it only
+  lasted until the next start; `config.set_value` and `config.write` (form and raw INI) copy the value
+  into the instance config and thus into the start line.
+- **RCON login uses the same source** (console, player list, backups, broadcast, CLI `rcon`).
+  Otherwise RCON answers "wrong password" as soon as admin and RCON password differ.
+- Field hint corrected: "empty = RCON password" instead of "empty = no admin access".
+
 ## [0.4.27] — 2026-11-11
 
 ### Added
