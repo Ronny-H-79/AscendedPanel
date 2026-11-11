@@ -4,6 +4,15 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.4.10] — 2026-11-11
+
+### Geändert
+- **Update-Prüfung fragt nicht mehr jede Minute bei Steam nach.** Jede offene Browserseite rief alle
+  60 Sekunden `/api/update` auf, und der Server startete dafür jedes Mal einen eigenen
+  `steamcmd`-Prozess (`+app_info_print`, Timeout bis 180 s). Das Ergebnis wird jetzt **15 Minuten**
+  zwischengespeichert, die Oberfläche fragt nur noch alle **5 Minuten** nach. Ein Klick auf die
+  Build-Anzeige erzwingt eine frische Abfrage bei Steam.
+
 ## [0.4.9] — 2026-11-11
 
 ### Behoben
