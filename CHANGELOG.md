@@ -4,6 +4,15 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.4.5] — 2026-11-10
+
+### Behoben
+- **Installationsanleitung führte in die falsche Schreibweise.** `git clone … ascendedpanel` legt den
+  Ordner klein an, die Anleitung verlangte danach aber `cd AscendedPanel`. Auf einem case-sensitiven
+  Dateisystem bricht die Installation dort mit `No such file or directory` ab. Alle Befehle, die
+  Fehlerbehebungstabelle und die Falle mit dem gleichnamigen Paketordner nennen jetzt
+  `ascendedpanel`; die doppelte `cd`-Zeile in `INSTALL.de.md` ist entfernt.
+
 ## [0.4.4] — 2026-11-10
 
 ### Behoben

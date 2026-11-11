@@ -40,7 +40,7 @@ RCON for everything the server exposes.
 
 ```bash
 git clone https://github.com/Ronny-H-79/AscendedPanel.git ascendedpanel   # once
-cd AscendedPanel
+cd ascendedpanel
 ./install.sh --check     # check what is missing (changes nothing)
 ./install.sh             # install
 ascendedpanel web                 # start the web UI - the address with token is printed
@@ -104,7 +104,7 @@ At the end you get the command that matches your choice: the SSH tunnel with you
 | Message | Cause | Fix |
 |---|---|---|
 | `fatal: destination path 'AscendedPanel' already exists` | the folder is already there | `cd ascendedpanel && git pull` instead of cloning again |
-| `./install.sh: No such file or directory` **after** `cd AscendedPanel` | you are in the package folder `AscendedPanel/AscendedPanel` — only `.py` files live there | `cd ..` — `install.sh` is one level up |
+| `./install.sh: No such file or directory` **after** `cd ascendedpanel/ascendedpanel` | you are in the package folder `AscendedPanel/AscendedPanel` — only `.py` files live there | `cd ..` — `install.sh` is one level up |
 | `AscendedPanel: command not found` | `~/.local/bin` is not in `PATH` | as root the installer links `/usr/local/bin/AscendedPanel`; otherwise `export PATH="$HOME/.local/bin:$PATH"` and open a new shell |
 
 Details, requirements and uninstall: [INSTALL.md](INSTALL.md)

@@ -42,7 +42,7 @@ Mehr dazu: [docs/funktionen.md](docs/funktionen.md)
 
 ```bash
 git clone https://github.com/Ronny-H-79/AscendedPanel.git ascendedpanel   # einmalig
-cd AscendedPanel
+cd ascendedpanel
 ./install.sh --check     # prüfen, was fehlt (ändert nichts)
 ./install.sh             # installieren
 ascendedpanel web                 # Web-Oberfläche starten — die Adresse mit Token wird ausgegeben
@@ -106,11 +106,11 @@ Am Ende steht genau der Befehl, der zu deiner Wahl passt: der SSH-Tunnel mit dei
 | Meldung | Ursache | Lösung |
 |---|---|---|
 | `fatal: destination path 'AscendedPanel' already exists` | der Ordner liegt schon da | `cd ascendedpanel && git pull` statt erneut klonen |
-| `./install.sh: No such file or directory` **nach** `cd AscendedPanel` | du stehst im Paketordner `AscendedPanel/AscendedPanel` — dort liegen nur `.py`-Dateien | `cd ..` — `install.sh` liegt eine Ebene höher, im Projektordner |
+| `./install.sh: No such file or directory` **nach** `cd ascendedpanel/ascendedpanel` | du stehst im Paketordner `AscendedPanel/AscendedPanel` — dort liegen nur `.py`-Dateien | `cd ..` — `install.sh` liegt eine Ebene höher, im Projektordner |
 | `AscendedPanel: command not found` | `~/.local/bin` ist nicht im `PATH` | als root legt der Installer `/usr/local/bin/AscendedPanel` an; sonst `export PATH="$HOME/.local/bin:$PATH"` und neue Shell öffnen |
 
 **Eine Falle bei Namensgleichheit:** im Projektordner heißt der Python-Teil ebenfalls `ascendedpanel`.
-`cd AscendedPanel` führt dich also ein zweites Mal hinein — dort liegen `cli.py`, `i18n.py` und Co., aber kein
+`cd ascendedpanel/ascendedpanel` führt dich also ein zweites Mal hinein — dort liegen `cli.py`, `i18n.py` und Co., aber kein
 `install.sh`. Merksatz: der richtige Ordner ist der mit `install.sh`, `README.md` und `docs/`.
 
 Als **root** auf einem Server: alle Befehle in einer Sitzung hintereinander ausführen, sonst landet
