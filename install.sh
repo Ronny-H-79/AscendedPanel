@@ -120,6 +120,8 @@ t() {
     de:uninstall)          echo "AscendedPanel entfernen" ;;
     en:service_removed)    echo "service stopped and removed: $2" ;;
     de:service_removed)    echo "Dienst beendet und entfernt: $2" ;;
+    en:steam_removed)    echo "removing SteamCMD folder $2 ..." ;;
+    de:steam_removed)    echo "entferne SteamCMD-Ordner $2 ..." ;;
     en:removed)            echo "Launcher and program files removed." ;;
     de:removed)            echo "Launcher und Programmdateien entfernt." ;;
     en:kept)               echo "Instances, backups and settings are kept:" ;;
@@ -298,6 +300,13 @@ if [ "$UNINSTALL" = "1" ]; then
   rm -f "$BIN/ascendedpanel"
   rm -rf "$DEST"
   say "$(t removed)"
+  # SteamCMD mitnehmen: mehrere GB, ohne das Panel nutzt es hier niemand mehr
+  for _d in "$HOME/steamcmd" "$HOME/.steam"; do
+    if [ -d "$_d" ]; then
+      printf '  %s ' "$(t steam_removed "$_d")"
+      rm -rf "$_d" && echo ok
+    fi
+  done
   say "$(t kept)"
   say "  ~/.config/AscendedPanel   ~/arkserver-*   ~/ascendedpanel-backups   ~/ascendedpanel-snapshots"
   exit 0
