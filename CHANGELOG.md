@@ -4,6 +4,17 @@ Alle nennenswerten Änderungen an noah. Format nach
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.4.7] — 2026-11-10
+
+### Behoben
+- **`ascendedpanel web` warf bei belegtem Port einen Traceback.** Wer den Web-Dienst schon laufen hatte,
+  bekam `OSError: [Errno 98] Address already in use` samt Stacktrace. Jetzt erscheint eine klare
+  Meldung mit drei Wegen — Dienst prüfen (`systemctl --user status ascendedpanel-web`), anderer Port
+  (`ascendedpanel web --port <frei>`), oder nur die Adresse holen (`ascendedpanel url`) — und Exit-Code 1.
+- **Anleitung startete den Dienst doppelt.** Nach `install.sh` läuft der Dienst bereits; in der
+  Installationsanleitung stand trotzdem noch `ascendedpanel web`. Dort steht jetzt `ascendedpanel url`,
+  das nur die fertige Adresse mit Token ausgibt.
+
 ## [0.4.6] — 2026-11-10
 
 ### Geändert

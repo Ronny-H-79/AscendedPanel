@@ -45,7 +45,7 @@ git clone https://github.com/Ronny-H-79/AscendedPanel.git ascendedpanel   # einm
 cd ascendedpanel
 ./install.sh --check     # prüfen, was fehlt (ändert nichts)
 ./install.sh             # installieren
-ascendedpanel web                 # Web-Oberfläche starten — die Adresse mit Token wird ausgegeben
+ascendedpanel url                 # Adresse mit Token - der Web-Dienst laeuft bereits
 ```
 
 Instanzen legst du **im Browser** an: ausgegebene Adresse öffnen, Namen eintragen, Karte wählen,
