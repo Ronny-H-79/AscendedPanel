@@ -1,10 +1,4 @@
-# Changelog
-
-Alle nennenswerten Änderungen an noah. Format nach
-[Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach
-[Semantic Versioning](https://semver.org/lang/de/).
-
-## [0.4.18] — 2026-11-11
+## [0.4.19] — 2026-11-11
 
 ### Neu
 - **Fortschrittsbalken bei der Installation.** SteamCMD meldet während des Downloads
@@ -75,6 +69,7 @@ Alle nennenswerten Änderungen an noah. Format nach
 - **Anleitung startete den Dienst doppelt.** Nach `install.sh` läuft der Dienst bereits; in der
   Installationsanleitung stand trotzdem noch `ascendedpanel web`. Dort steht jetzt `ascendedpanel url`,
   das nur die fertige Adresse mit Token ausgibt.
+- **`xvfb` gehört jetzt zur Installation.** Fehlt der virtuelle Bildschirm, bricht der ARK-Ascended-Server unter Wine ab, bevor er ins Log schreibt — Startknopf ohne Wirkung, leeres Protokoll. Installer prüft `Xvfb` jetzt wie Wine, installiert es mit `--auto` (apt `xvfb`, dnf `xorg-x11-server-Xvfb`, pacman `xorg-server-xvfb`, zypper `xvfb`).
 
 ## [0.4.6] — 2026-11-10
 
