@@ -428,7 +428,11 @@ async function loadHost(){
     document.getElementById('hostram').textContent='RAM '+h.ram_used_gb+'/'+h.ram_total_gb+' GB ('+h.ram_pct+'%)';
   }catch(e){}
 }
-async function act(name,what){ await api('/api/'+what+'?name='+name,{method:'POST'}); setTimeout(load,1500); }
+async function act(name,what){
+  try{ await api('/api/'+what+'?name='+name,{method:'POST'}); }
+  catch(e){ alert((L['inst.action_failed']||'Aktion fehlgeschlagen:')+'\n\n'+(e&&e.message?e.message:e)); return; }
+  setTimeout(load,1500);
+}
 
 
 async function updInst(name){
@@ -836,7 +840,11 @@ async function refresh(){
       :'<span style="color:var(--dim)">– '+L['inst.no_players']+' –</span>';
   }catch(e){}
 }
-async function act(a){ await api('/api/'+a,{method:'POST'}); setTimeout(refresh,1200); }
+async function act(a){
+  try{ await api('/api/'+a,{method:'POST'}); }
+  catch(e){ alert((L['inst.action_failed']||'Aktion fehlgeschlagen:')+'\n\n'+(e&&e.message?e.message:e)); return; }
+  setTimeout(refresh,1200);
+}
 async function updCheck(){
   try{ const u=JSON.parse(await api('/api/update'+(window.__updForce?'?refresh=1':''))); window.__updForce=false; const b=document.getElementById('upd');
     if(u.installed==null || u.available==null){
