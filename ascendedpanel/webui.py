@@ -1085,7 +1085,31 @@ function _setField(v){
 function showSetGroup(g){
   document.querySelectorAll('#settings .setgroup').forEach(el=>el.classList.toggle('on', el.dataset.g===g));
   document.querySelectorAll('#settabs button').forEach(b=>b.classList.toggle('on', b.dataset.g===g));
+  window.__setGroup=g;
   try{ localStorage.setItem('AscendedPanel.setgroup', g); }catch(e){}
+}
+function filterSettings(q){
+  q=(q||'').trim().toLowerCase();
+  const groups=[...document.querySelectorAll('#settings .setgroup')];
+  if(!q){ showSetGroup(window.__setGroup||(groups[0]&&groups[0].dataset.g)); return; }
+  groups.forEach(g=>{
+    g.classList.add('on');
+    let sichtbar=0;
+    g.querySelectorAll('.setrow').forEach(r=>{
+      const treffer=r.textContent.toLowerCase().includes(q);
+      r.style.display=treffer?'':'none';
+      if(treffer) sichtbar++;
+    });
+    g.querySelectorAll('.meta').forEach(m=>{
+      let n=m.nextElementSibling, hat=false;
+      while(n && !n.classList.contains('meta')){
+        if(n.classList.contains('setrow') && n.style.display!=='none'){ hat=true; break; }
+        n=n.nextElementSibling;
+      }
+      m.style.display=hat?'':'none';
+    });
+    g.style.display=sichtbar?'':'none';
+  });
 }
 async function loadSettings(){
   SETTINGS=JSON.parse(await api('/api/settings'));
@@ -1106,7 +1130,9 @@ async function loadSettings(){
     }).join('');
     return `<div class="setgroup" data-g="${g}">${inner}</div>`;
   }).join('');
-  document.getElementById('settings').innerHTML=`<div class="settabs" id="settabs">${tabs}</div>`+blocks;
+  document.getElementById('settings').innerHTML=
+    `<input id="setsearch" type="search" oninput="filterSettings(this.value)" placeholder="${L['set.search']||'Einstellungen durchsuchen'}" style="width:100%;margin:0 0 10px;padding:7px 10px;box-sizing:border-box">`+
+    `<div class="settabs" id="settabs">${tabs}</div>`+blocks;
   let g=''; try{ g=localStorage.getItem('AscendedPanel.setgroup')||''; }catch(e){}
   if(!byGroup[g]) g=present[0]||'play';
   showSetGroup(g);

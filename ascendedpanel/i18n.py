@@ -71,6 +71,7 @@ T: dict[str, dict[str, str]] = {
     "dash.log": {"de": "Log", "en": "log"},
     "ui.discord": {"de": "Discord: Ark-ASA-ASE-Hilfe", "en": "Discord: Ark-ASA-ASE-Hilfe"},
     "ui.donate": {"de": "Spenden via PayPal", "en": "Donate via PayPal"},
+    "set.search": {"de": "Einstellungen durchsuchen (Name oder ini-Schlüssel)", "en": "search settings (name or ini key)"},
     "setg.srv": {"de": "Server & Zugang", "en": "Server & access"},
     "setg.play": {"de": "Spiel & Tempo", "en": "Gameplay & rates"},
     "setg.pvp": {"de": "PvP & Regeln", "en": "PvP & rules"},
