@@ -9,7 +9,7 @@ import subprocess
 import sys
 import time
 
-from .installer import pump_output
+from .installer import pump_output, _plattform_flagge
 from .instance import Instance
 from .rcon import RconClient, RconError
 
@@ -387,8 +387,9 @@ def update_log_path(inst: Instance) -> str:
 
 def update(inst: Instance, validate: bool = True) -> int:
     """SteamCMD-Update. Die Ausgabe landet in .update.log, damit die Oberflaeche mitlesen kann."""
-    argv = [STEAMCMD, "+force_install_dir", inst.directory, "+login", "anonymous",
-            "+app_update", "2430930"]
+    argv = ([STEAMCMD] + _plattform_flagge("2430930") +
+            ["+force_install_dir", inst.directory, "+login", "anonymous",
+             "+app_update", "2430930"])
     if validate:
         argv.append("validate")
     argv.append("+quit")
