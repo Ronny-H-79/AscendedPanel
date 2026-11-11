@@ -144,7 +144,7 @@ def start(inst: Instance, wait: int = 0) -> int:
     # In einer eigenen systemd-Scope, damit Wine-Prozesse nicht in der Prozessgruppe
     # des Web-Dienstes haengen und dessen Neustart blockieren.
     base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    argv = [sys.executable, "-m", "AscendedPanel.consoled", inst.name]
+    argv = [sys.executable, "-m", "ascendedpanel.consoled", inst.name]
     launcher = list(argv)
     scope_unit = "AscendedPanel-%s.scope" % re.sub(r"[^A-Za-z0-9_.-]", "-", inst.name)
     if os.environ.get("NOAH_NO_SCOPE") != "1" and shutil.which("systemd-run"):
@@ -159,8 +159,9 @@ def start(inst: Instance, wait: int = 0) -> int:
                 os.environ.setdefault("DBUS_SESSION_BUS_ADDRESS", "unix:path=%s/bus" % runtime)
 
     def _spawn(cmd: list[str]) -> None:
-        subprocess.Popen(cmd, cwd=base, stdout=subprocess.DEVNULL,
-                         stderr=subprocess.DEVNULL, start_new_session=True)
+        proto = open(os.path.join(inst.directory, ".start.log"), "ab")
+        subprocess.Popen(cmd, cwd=base, stdout=proto, stderr=subprocess.STDOUT,
+                         start_new_session=True)
 
     _spawn(launcher)
     deadline = time.time() + 45
