@@ -155,6 +155,22 @@ systemctl --user enable --now ascendedpanel-<name>
 loginctl enable-linger $USER      # läuft auch ohne angemeldete Sitzung
 ```
 
+## Melde-Webhook (Fehler melden)
+
+Der Knopf **Fehler melden** im Panel erscheint nur, wenn eine Webhook-Adresse hinterlegt ist — die
+Adresse eines Discord-Webhooks (Servereinstellungen → Integrationen → Webhooks → „Webhook-URL
+kopieren"). Gesetzt wird sie beim Installieren (der Installer fragt danach) oder jederzeit auf der
+Konsole:
+
+```bash
+./install.sh --report-hook https://discord.com/api/webhooks/…
+ascendedpanel report-webhook            # aktuellen Stand anzeigen (Token maskiert)
+ascendedpanel report-webhook -          # entfernen
+```
+
+Ohne Webhook bleibt der Knopf versteckt; der Eintrag in `~/.config/ascendedpanel/settings.json` bleibt bei
+einem erneuten `install.sh` erhalten und wird beim nächsten Lauf nur noch bestätigt.
+
 ## Deinstallieren
 
 ```bash
