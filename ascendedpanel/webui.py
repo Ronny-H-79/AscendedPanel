@@ -677,7 +677,9 @@ letter-spacing:.04em">AscendedPanel __VERSION__ · © 2026 Ronny H.</footer>
 <script>
 function closePlayers(){ document.getElementById('plModal').classList.remove('on'); }
 function plRow(inst, pl){
-  const n = String(pl.name).replace(/</g, '&lt;');
+  // Anfuehrungszeichen mit maskieren: der Name landet in einem data-Attribut.
+  const n = String(pl.name).replace(/&/g, '&amp;').replace(/</g, '&lt;')
+                           .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   const id = String(pl.steamid);
   // Aktionen ueber data-Attribute: keine verschachtelten Quotes im HTML
   return '<tr><td>'+n+'</td><td class="mono">'+id+'</td><td class="plAct">'+
@@ -944,12 +946,13 @@ async function refresh(){
        _end(); requestAnimationFrame(()=>{_end(); setTimeout(_end,60);}); }catch(e){}
   try{
     const pl=JSON.parse(await api('/api/players'));
+    window.PNAMES={}; pl.forEach(function(x){ window.PNAMES[x.steamid]=x.name; });
     loadBans();
     document.getElementById('players').innerHTML=pl.length?pl.map(p=>
       `<div class="p"><span><b>${p.name}</b><br><small>${p.steamid}</small></span>
        <span class="row">
          <button onclick="pa('${p.steamid}','kick')">${L['inst.kick']}</button>
-         <button class="danger" onclick="pa('${p.steamid}','ban',${JSON.stringify(p.name)})">${L['inst.ban']}</button>
+         <button class="danger" onclick="pa('${p.steamid}','ban')">${L['inst.ban']}</button>
          <button onclick="pa('${p.steamid}','whitelist')">${L['inst.whitelist']}</button>
          <button onclick="give('${p.steamid}')">${L['inst.item']}</button>
        </span></div>`).join('')
@@ -1525,7 +1528,8 @@ async function saveSchedule(){
     snaptimes:(document.getElementById('snapTimes')||{}).value||''});
   document.getElementById('schedmsg').textContent=await api('/api/schedule?'+p.toString(),{method:'POST'});
 }
-async function pa(sid,action,pname){ if(!confirm(action+' für '+(pname||sid)+'?'))return;
+async function pa(sid,action){ const pname=(window.PNAMES||{})[sid]||'';
+  if(!confirm(action+' für '+(pname||sid)+'?'))return;
   const url='/api/player/action?steamid='+encodeURIComponent(sid)+'&action='+action+
             (pname?('&pname='+encodeURIComponent(pname)):'');
   document.getElementById('out').textContent=await api(url,{method:'POST'});
