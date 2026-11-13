@@ -6,8 +6,9 @@
   Verbrauch, Rohstoffe, Rüstungen) samt Menge. Der vollständige Pfad steckt in
   `ascendedpanel/catalog.py`; ein eigener Blueprint lässt sich weiterhin eingeben.
 - Neuer Endpunkt `/api/catalog?q=` für die Suche.
-
-## [Unveröffentlicht]
+- **Entbannen-Fenster auf der Instanzseite.** Über der Spielerliste öffnet „Entbannen" ein
+  Fenster für die EOS-ID eines gesperrten Spielers — nötig, weil man Offline-Spieler nicht
+  anklicken kann und ARK keine Ban-Liste über RCON liefert.
 
 ### Geändert
 - **Ungenutzte Log-Styles entfernt** (`.logwrap`, `.loghead`, `.cardlog`) — Reste des

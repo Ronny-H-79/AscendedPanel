@@ -746,7 +746,12 @@ INST = """<!doctype html><html lang="__LANG__"><head><meta charset="utf-8">
     <pre id="out">–</pre>
   </section>
 
-  <section class="tab tab-overview on"><h2 data-t="inst.players">Spieler</h2><div id="players">…</div></section>
+  <section class="tab tab-overview on"><h2 data-t="inst.players">Spieler</h2>
+    <div class="row" style="margin-bottom:8px">
+      <button onclick="unbanOpen()" data-t="inst.unban">Entbannen</button>
+      <small style="color:var(--dim)" data-t="inst.unban_hint">EOS-ID eines gesperrten Spielers eingeben</small>
+    </div>
+    <div id="players">…</div></section>
 
   <section class="tab tab-server"><h2 data-t="wl.title">Whitelist &amp; Bans</h2>
     <div class="row" style="margin-bottom:8px">
@@ -1524,6 +1529,18 @@ applyLang(); restoreTab(); setTimeout(restoreTab, 250); refresh(); updCheck(); r
 setInterval(refresh,5000); setInterval(updCheck,300000);
 </script><footer style="text-align:center;padding:16px 0 10px;font-size:11.5px;color:var(--dim);
 letter-spacing:.04em">AscendedPanel __VERSION__ · © 2026 Ronny H.</footer>
+<div id="unbanModal" class="plModal"><div class="plBox" style="min-width:min(520px,94vw)">
+  <div class="row" style="justify-content:space-between">
+    <b data-t="inst.unban">Entbannen</b>
+    <button onclick="document.getElementById('unbanModal').classList.remove('on')">×</button>
+  </div>
+  <div style="margin:10px 0;color:var(--dim);font-size:11.5px" data-t="inst.unban_hint">EOS-ID eines gesperrten Spielers eingeben</div>
+  <div class="row" style="gap:8px">
+    <input id="unbanId" data-tp="inst.unban_id" placeholder="EOS-ID (32 Zeichen Hex)" style="flex:1;min-width:0">
+    <button onclick="unbanDo()" data-t="inst.unban">Entbannen</button>
+  </div>
+  <div id="unbanOut" class="plMsg"></div>
+</div></div>
 <div id="catModal" class="plModal"><div class="plBox">
   <div class="row" style="justify-content:space-between">
     <b id="catTitle">Item geben</b>
@@ -1537,6 +1554,21 @@ letter-spacing:.04em">AscendedPanel __VERSION__ · © 2026 Ronny H.</footer>
   <div id="catList" class="plBody">…</div>
 </div></div>
 <script>
+function unbanOpen(){
+  document.getElementById('unbanId').value='';
+  document.getElementById('unbanOut').textContent='';
+  document.getElementById('unbanModal').classList.add('on');
+  setTimeout(function(){ const el=document.getElementById('unbanId'); if(el) el.focus(); }, 50);
+}
+async function unbanDo(){
+  const id=document.getElementById('unbanId').value.trim();
+  const out=document.getElementById('unbanOut');
+  if(!id){ out.textContent='EOS-ID fehlt'; return; }
+  try{
+    const r=await api('/api/player/action?steamid='+encodeURIComponent(id)+'&action=unban',{method:'POST'});
+    out.textContent='unban: '+String(r||'ok');
+  }catch(e){ out.textContent='Fehler: '+String(e); }
+}
 let CAT_SID='';
 function closeCat(){ document.getElementById('catModal').classList.remove('on'); }
 async function catOpen(sid){

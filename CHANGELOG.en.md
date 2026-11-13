@@ -6,8 +6,9 @@
   Full blueprint paths live in `ascendedpanel/catalog.py`; a custom blueprint can still be
   entered manually.
 - New endpoint `/api/catalog?q=` for the search.
-
-## [Unreleased]
+- **Unban dialog on the instance page.** Above the player list, "Unban" opens a dialog for the
+  EOS id of a banned player - offline players cannot be clicked and ARK offers no ban list over
+  RCON.
 
 ### Changed
 - **Removed unused log styles** (`.logwrap`, `.loghead`, `.cardlog`) - leftovers of the log
