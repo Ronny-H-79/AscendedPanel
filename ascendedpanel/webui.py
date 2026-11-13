@@ -426,6 +426,8 @@ DASH = """<!doctype html><html lang="__LANG__"><head><meta charset="utf-8">
   <button onclick="noahUpdate()" id="verbtn" style="padding:2px 8px">AscendedPanel</button>
   <button onclick="openChangelog()" id="clogbtn" style="padding:2px 8px"
     data-t="self.changelog" title="Changelog">Changelog</button>
+  <button onclick="restartPanel()" id="rstpbtn" style="padding:2px 8px"
+    data-t="self.restart" title="Panel neu starten">Neustart</button>
   <button onclick="openReport()" id="repbtn" style="padding:2px 8px;display:none"
     data-t="report.open" title="Fehler im Panel melden">Fehler melden</button>
   <button onclick="toggleLang()" id="langbtn" style="padding:2px 8px">EN</button></span>""" + HEADER_ICONS + """</header>
@@ -734,6 +736,26 @@ function _mdToHtml(text){
   html=_links(html);
   return html;
 }
+async function restartPanel(){
+  if(!confirm(L['self.restart_ask']||'Panel neu starten?')) return;
+  const b=document.getElementById('rstpbtn');
+  if(b){ b.disabled=true; b.textContent='…'; }
+  try{ await api('/api/panel/restart',{method:'POST'}); }
+  catch(e){ /* Verbindung reisst beim Neustart ab - normal */ }
+  const o=document.getElementById('out');
+  if(o) o.textContent=(L['self.restarting']||'Panel startet neu …');
+  const start=Date.now();
+  const fertig=async function(){
+    if(Date.now()-start>90000){ location.reload(); return; }
+    try{
+      const r=await fetch('/api/host?token='+encodeURIComponent(T),{cache:'no-store'});
+      if(r.ok){ location.reload(); return; }
+    }catch(e){}
+    setTimeout(fertig,1500);
+  };
+  setTimeout(fertig,2500);
+}
+
 async function openChangelog(){
   const box=document.getElementById('mbody');
   box.innerHTML='<div class="meta">'+L['common.loading']+'</div>';
@@ -2217,6 +2239,13 @@ class Handler(BaseHTTPRequestHandler):
         u = urllib.parse.urlparse(self.path)
         # keep_blank_values: ein geleertes Feld (z. B. Uhrzeiten) muss auch geleert ankommen
         path, q = u.path, urllib.parse.parse_qs(u.query, keep_blank_values=True)
+
+        if path == "/api/panel/restart":
+            from . import selfupdate
+
+            threading.Timer(1.0, lambda: selfupdate.restart_service(no_block=True)).start()
+            self._json({"ok": True, "info": "Neustart ausgeloest"})
+            return
 
         if path == "/api/selfupdate":
             from . import selfupdate
