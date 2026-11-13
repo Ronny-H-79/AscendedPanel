@@ -1,3 +1,9 @@
+## [0.14] — 2026-11-13
+
+### Behoben
+- **Instanzkarte ohne leere Angaben.** Fehlt die Karte oder gibt es keinen RCON-Port, steht dort kein
+  nacktes „·" mehr, sondern nur die vorhandenen Werte (`<Karte> · Port <n> · RCON <n>`).
+
 ## [0.13] — 2026-11-13
 
 ### Neu

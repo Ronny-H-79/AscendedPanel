@@ -1,3 +1,9 @@
+## [0.14] — 2026-11-13
+
+### Fixed
+- **No empty entries on the instance card.** If the map or the RCON port is missing, the line no longer
+  shows a bare "·" but only the values that exist (`<map> · Port <n> · RCON <n>`).
+
 ## [0.13] — 2026-11-13
 
 ### New
