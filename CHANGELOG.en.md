@@ -1,3 +1,10 @@
+## [0.4.41] — 2026-11-13
+
+### Changed
+- **Wording in the ban window.** Instead of "Only bans issued through this panel" it now
+  reads "This list only shows players banned through this panel" — it is about people, not
+  bans.
+
 ## [0.4.40] — 2026-11-13
 
 ### Fixed
