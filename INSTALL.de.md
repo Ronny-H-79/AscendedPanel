@@ -178,7 +178,16 @@ ascendedpanel token --quiet  # nur der Token (für Skripte)
 ascendedpanel url            # fertige Adresse inklusive Token
 ```
 
-Der Token liegt zusätzlich in `~/.config/ascendedpanel/token` (Rechte `600`).
+Wenn der Befehl nicht im `PATH` liegt (Dienst-Benutzer, andere Sitzung) — voller Pfad:
+
+```bash
+/home/ascendedpanel/.local/bin/ascendedpanel token              # als Benutzer ascendedpanel
+su - ascendedpanel -c '/home/ascendedpanel/.local/bin/ascendedpanel token'   # als root
+cat /home/ascendedpanel/.config/ascendedpanel/token             # nur die Datei (Rechte 600)
+```
+
+Der Token liegt zusätzlich in `/home/ascendedpanel/.config/ascendedpanel/token` für den Dienst-Benutzer
+bzw. `~/.config/ascendedpanel/token` bei einer Installation im eigenen Konto (Rechte `600`).
 
 ## Deinstallieren
 

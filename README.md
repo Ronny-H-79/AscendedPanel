@@ -64,7 +64,16 @@ ascendedpanel token --quiet  # only the token (for scripts)
 ascendedpanel url            # ready-made address including the token
 ```
 
-The token is also stored in `~/.config/ascendedpanel/token` (mode `600`).
+If the command is not on your `PATH` (service user, other session) - full path:
+
+```bash
+/home/ascendedpanel/.local/bin/ascendedpanel token              # as user ascendedpanel
+su - ascendedpanel -c '/home/ascendedpanel/.local/bin/ascendedpanel token'   # as root
+cat /home/ascendedpanel/.config/ascendedpanel/token             # the file only (mode 600)
+```
+
+The token is also stored in `/home/ascendedpanel/.config/ascendedpanel/token` for the service user, or
+`~/.config/ascendedpanel/token` for an install in your own account (mode `600`).
 
 Instances are created **in the browser**: open the printed address, enter a name, pick the map, press
 **Anlegen / Create**, then **Install** on the card. No terminal is needed after that.
