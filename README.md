@@ -69,7 +69,18 @@ If the command is not on your `PATH` (service user, other session) - full path:
 ```bash
 /home/ascendedpanel/.local/bin/ascendedpanel token              # as user ascendedpanel
 su - ascendedpanel -c '/home/ascendedpanel/.local/bin/ascendedpanel token'   # as root
-cat /home/ascendedpanel/.config/ascendedpanel/token             # the file only (mode 600)
+```
+
+If you only want the **address** (with IP and token, ready to paste):
+
+```bash
+/home/ascendedpanel/.local/bin/ascendedpanel url        # http://<IP>:8790/?token=...
+```
+
+Without the command (plain shell, if nothing is installed or the PATH is missing):
+
+```bash
+echo "http://$(hostname -I | awk '{print $1}'):8790/?token=$(cat /home/ascendedpanel/.config/ascendedpanel/token)"
 ```
 
 The token is also stored in `/home/ascendedpanel/.config/ascendedpanel/token` for the service user, or

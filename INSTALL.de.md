@@ -183,7 +183,18 @@ Wenn der Befehl nicht im `PATH` liegt (Dienst-Benutzer, andere Sitzung) — voll
 ```bash
 /home/ascendedpanel/.local/bin/ascendedpanel token              # als Benutzer ascendedpanel
 su - ascendedpanel -c '/home/ascendedpanel/.local/bin/ascendedpanel token'   # als root
-cat /home/ascendedpanel/.config/ascendedpanel/token             # nur die Datei (Rechte 600)
+```
+
+Wenn du nur die **Adresse** willst (mit IP und Token fertig zum Kopieren):
+
+```bash
+/home/ascendedpanel/.local/bin/ascendedpanel url        # http://<IP>:8790/?token=...
+```
+
+Ohne den Befehl (reine Shell, falls nichts installiert ist oder der PATH fehlt):
+
+```bash
+echo "http://$(hostname -I | awk '{print $1}'):8790/?token=$(cat /home/ascendedpanel/.config/ascendedpanel/token)"
 ```
 
 Der Token liegt zusätzlich in `/home/ascendedpanel/.config/ascendedpanel/token` für den Dienst-Benutzer
