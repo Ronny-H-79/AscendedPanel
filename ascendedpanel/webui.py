@@ -57,7 +57,7 @@ def _render(template: str) -> str:
     """Sprachkatalog und Sprachcode einsetzen."""
     from . import __version__
     return (template
-            .replace("__FOOTER__", REPORT_MODAL + REPORT_JS + FOOTER)
+            .replace("__FOOTER__", FOOTER)
             .replace("__LANGJSON__", json.dumps(i18n.catalog(), ensure_ascii=False))
             .replace("__VERSION__", __version__)
             .replace("__LANG__", i18n.lang()))
@@ -766,7 +766,7 @@ async function noahUpdate(){
   setTimeout(()=>location.reload(), 4000);
 }
 applyLang(); load(); loadHost(); checkNoah(); setInterval(load,3000); setInterval(loadHost,3000); loadRepHook();
-</script>__FOOTER__
+</script>""" + REPORT_MODAL + REPORT_JS + """__FOOTER__
 <div id="plModal" class="plModal"><div class="plBox">
   <div class="row" style="justify-content:space-between">
     <b id="plTitle">Spieler</b>
@@ -830,8 +830,6 @@ INST = """<!doctype html><html lang="__LANG__"><head><meta charset="utf-8">
   <a href="/?token=__TOK__" style="margin-left:6px"><button data-t="common.back_dashboard">← Dashboard</button></a>
   <span class="badge" id="st">…</span><span class="badge" id="rd">…</span>
   <span class="badge">__NAME__</span><span class="badge" id="upd" role="button" tabindex="0">UPDATE ?</span>
-  <button onclick="openReport()" id="repbtn" style="padding:2px 8px;display:none"
-    data-t="report.open" title="Fehler im Panel melden">Fehler melden</button>
   <button onclick="toggleLang()" id="langbtn" style="padding:2px 8px">EN</button>""" + HEADER_ICONS + """
 </header>
 <div class="tabs">
