@@ -157,6 +157,7 @@ loginctl enable-linger $USER      # keeps running without a logged-in session
 ## Uninstall
 
 ```bash
+cd ~/ascendedpanel      # your clone of the repo
 ./install.sh --uninstall
 ```
 
@@ -168,6 +169,7 @@ backups (`~/ascendedpanel-backups`), snapshots (`~/ascendedpanel-snapshots`).
 ### Remove everything (instances and worlds too)
 
 ```bash
+cd ~/ascendedpanel      # your clone of the repo
 ./install.sh --uninstall
 rm -rf ~/arkserver-* ~/.config/ascendedpanel ~/ascendedpanel-backups ~/ascendedpanel-snapshots
 rm -f /etc/systemd/system/ascendedpanel-*.service
@@ -182,8 +184,8 @@ token `~/.config/ascendedpanel`, instances with worlds `~/arkserver-<name>`, Ste
 
 | Path | Content |
 |---|---|
-| `~/.local/share/AscendedPanel` | program |
-| `~/.local/bin/AscendedPanel` | launcher |
+| `~/.local/share/ascendedpanel` | program |
+| `~/.local/bin/ascendedpanel` | launcher |
 | `~/.config/ascendedpanel/<name>.json` | instance configuration |
 | `~/.config/ascendedpanel/token` | web token (0600) |
 | `~/arkserver-<name>` | server files of the instance |

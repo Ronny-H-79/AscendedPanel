@@ -308,7 +308,7 @@ if [ "$UNINSTALL" = "1" ]; then
     fi
   done
   say "$(t kept)"
-  say "  ~/.config/AscendedPanel   ~/arkserver-*   ~/ascendedpanel-backups   ~/ascendedpanel-snapshots"
+  say "  ~/.config/ascendedpanel   ~/arkserver-*   ~/ascendedpanel-backups   ~/ascendedpanel-snapshots"
   exit 0
 fi
 

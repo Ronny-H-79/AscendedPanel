@@ -158,6 +158,7 @@ loginctl enable-linger $USER      # läuft auch ohne angemeldete Sitzung
 ## Deinstallieren
 
 ```bash
+cd ~/ascendedpanel      # in den Klon des Repos wechseln
 ./install.sh --uninstall
 ```
 
@@ -169,6 +170,7 @@ Entfernt Programm und Launcher. **Bleiben:** Instanzen (`~/arkserver-*`), Einste
 ### Alles entfernen (auch Instanzen und Welten)
 
 ```bash
+cd ~/ascendedpanel      # in den Klon des Repos wechseln
 ./install.sh --uninstall
 rm -rf ~/arkserver-* ~/.config/ascendedpanel ~/ascendedpanel-backups ~/ascendedpanel-snapshots
 rm -f /etc/systemd/system/ascendedpanel-*.service
@@ -183,8 +185,8 @@ Token `~/.config/ascendedpanel`, Instanzen mit Welten `~/arkserver-<name>`, Stea
 
 | Pfad | Inhalt |
 |---|---|
-| `~/.local/share/AscendedPanel` | Programm |
-| `~/.local/bin/AscendedPanel` | Launcher |
+| `~/.local/share/ascendedpanel` | Programm |
+| `~/.local/bin/ascendedpanel` | Launcher |
 | `~/.config/ascendedpanel/<name>.json` | Instanz-Konfiguration |
 | `~/.config/ascendedpanel/token` | Web-Token (0600) |
 | `~/arkserver-<name>` | Serverdateien der Instanz |

@@ -105,7 +105,7 @@ At the end you get the command that matches your choice: the SSH tunnel with you
 |---|---|---|
 | `fatal: destination path 'AscendedPanel' already exists` | the folder is already there | `cd ascendedpanel && git pull` instead of cloning again |
 | `./install.sh: No such file or directory` **after** `cd ascendedpanel/ascendedpanel` | you are in the package folder `AscendedPanel/AscendedPanel` — only `.py` files live there | `cd ..` — `install.sh` is one level up |
-| `AscendedPanel: command not found` | `~/.local/bin` is not in `PATH` | as root the installer links `/usr/local/bin/AscendedPanel`; otherwise `export PATH="$HOME/.local/bin:$PATH"` and open a new shell |
+| `AscendedPanel: command not found` | `~/.local/bin` is not in `PATH` | as root the installer links `/usr/local/bin/ascendedpanel`; otherwise `export PATH="$HOME/.local/bin:$PATH"` and open a new shell |
 
 Details, requirements and uninstall: [INSTALL.md](INSTALL.md)
 
@@ -114,6 +114,7 @@ Details, requirements and uninstall: [INSTALL.md](INSTALL.md)
 **The program only** (instances, backups and settings stay):
 
 ```bash
+cd ~/ascendedpanel      # your clone of the repo
 ./install.sh --uninstall
 ```
 
@@ -121,9 +122,15 @@ This also stops and removes the systemd units (`ascendedpanel-web`, `ascendedpan
 file afterwards. If the source folder is already gone:
 
 ```bash
-systemctl --user disable --now ascendedpanel-web.service ascendedpanel-test.service
-rm -f ~/.config/systemd/user/ascendedpanel-*.service ~/.local/bin/AscendedPanel
-rm -rf ~/.local/share/AscendedPanel
+# user installation
+systemctl --user disable --now ascendedpanel-web.service
+rm -f ~/.config/systemd/user/ascendedpanel-*.service ~/.local/bin/ascendedpanel
+rm -rf ~/.local/share/ascendedpanel
+
+# installation as root (system service, ~ is /root)
+systemctl disable --now ascendedpanel-web.service
+rm -f /etc/systemd/system/ascendedpanel-*.service /usr/local/bin/ascendedpanel
+rm -rf ~/.local/share/ascendedpanel
 ```
 
 **Everything** — additionally config, token, backups and server files (about 24 GB):
@@ -144,6 +151,7 @@ restore everything later.
 ### Remove everything (instances and worlds too)
 
 ```bash
+cd ~/ascendedpanel      # your clone of the repo
 ./install.sh --uninstall
 rm -rf ~/arkserver-* ~/.config/ascendedpanel ~/ascendedpanel-backups ~/ascendedpanel-snapshots
 rm -f /etc/systemd/system/ascendedpanel-*.service

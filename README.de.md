@@ -107,7 +107,7 @@ Am Ende steht genau der Befehl, der zu deiner Wahl passt: der SSH-Tunnel mit dei
 |---|---|---|
 | `fatal: destination path 'AscendedPanel' already exists` | der Ordner liegt schon da | `cd ascendedpanel && git pull` statt erneut klonen |
 | `./install.sh: No such file or directory` **nach** `cd ascendedpanel/ascendedpanel` | du stehst im Paketordner `AscendedPanel/AscendedPanel` — dort liegen nur `.py`-Dateien | `cd ..` — `install.sh` liegt eine Ebene höher, im Projektordner |
-| `AscendedPanel: command not found` | `~/.local/bin` ist nicht im `PATH` | als root legt der Installer `/usr/local/bin/AscendedPanel` an; sonst `export PATH="$HOME/.local/bin:$PATH"` und neue Shell öffnen |
+| `AscendedPanel: command not found` | `~/.local/bin` ist nicht im `PATH` | als root legt der Installer `/usr/local/bin/ascendedpanel` an; sonst `export PATH="$HOME/.local/bin:$PATH"` und neue Shell öffnen |
 
 **Eine Falle bei Namensgleichheit:** im Projektordner heißt der Python-Teil ebenfalls `ascendedpanel`.
 `cd ascendedpanel/ascendedpanel` führt dich also ein zweites Mal hinein — dort liegen `cli.py`, `i18n.py` und Co., aber kein
@@ -124,6 +124,7 @@ Details, Voraussetzungen und Deinstallation: [INSTALL.md](INSTALL.de.md)
 **Nur das Programm** (Instanzen, Backups und Einstellungen bleiben):
 
 ```bash
+cd ~/ascendedpanel      # in den Klon des Repos wechseln
 ./install.sh --uninstall
 ```
 
@@ -131,9 +132,15 @@ Das beendet und entfernt auch die systemd-Dienste (`ascendedpanel-web`, `ascende
 kein Dienst mehr ins Leere zeigt. Ist der Quellordner schon weg, reicht von Hand:
 
 ```bash
-systemctl --user disable --now ascendedpanel-web.service ascendedpanel-test.service
-rm -f ~/.config/systemd/user/ascendedpanel-*.service ~/.local/bin/AscendedPanel
-rm -rf ~/.local/share/AscendedPanel
+# Benutzer-Installation
+systemctl --user disable --now ascendedpanel-web.service
+rm -f ~/.config/systemd/user/ascendedpanel-*.service ~/.local/bin/ascendedpanel
+rm -rf ~/.local/share/ascendedpanel
+
+# Installation als root (Systemdienst, ~ ist /root)
+systemctl disable --now ascendedpanel-web.service
+rm -f /etc/systemd/system/ascendedpanel-*.service /usr/local/bin/ascendedpanel
+rm -rf ~/.local/share/ascendedpanel
 ```
 
 **Alles weg** — zusätzlich Konfiguration, Token, Sicherungen und Serverdaten (zusammen etwa 24 GB):
@@ -154,6 +161,7 @@ Der letzte Schritt ist der einzige, der wirklich unwiederbringlich ist: Welt und
 ### Alles entfernen (auch Instanzen und Welten)
 
 ```bash
+cd ~/ascendedpanel      # in den Klon des Repos wechseln
 ./install.sh --uninstall
 rm -rf ~/arkserver-* ~/.config/ascendedpanel ~/ascendedpanel-backups ~/ascendedpanel-snapshots
 rm -f /etc/systemd/system/ascendedpanel-*.service
