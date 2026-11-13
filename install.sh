@@ -119,7 +119,9 @@ t() {
     en:uninstall)          echo "Removing AscendedPanel" ;;
     de:uninstall)          echo "AscendedPanel entfernen" ;;
     en:service_removed)    echo "service stopped and removed: $2" ;;
+    en:service_removed_sys) echo "system service stopped and removed: $2" ;;
     de:service_removed)    echo "Dienst beendet und entfernt: $2" ;;
+    de:service_removed_sys) echo "Systemdienst beendet und entfernt: $2" ;;
     en:steam_removed)    echo "removing SteamCMD folder $2 ..." ;;
     de:steam_removed)    echo "entferne SteamCMD-Ordner $2 ..." ;;
     en:removed)            echo "Launcher and program files removed." ;;
@@ -297,6 +299,22 @@ if [ "$UNINSTALL" = "1" ]; then
     say "$(t service_removed "$name")"
   done
   systemctl --user daemon-reload >/dev/null 2>&1 || true
+  # Installation als root legt einen Systemdienst an (/etc/systemd/system) - der muss hier auch weg
+  SYS_UD="${PANEL_SYSTEMD_DIR:-/etc/systemd/system}"
+  if [ "$(id -u)" = "0" ]; then
+    for unit in "$SYS_UD"/ascendedpanel-*.service; do
+      [ -e "$unit" ] || continue
+      uname="$(basename "$unit")"
+      systemctl disable --now "$uname" >/dev/null 2>&1 || true
+      rm -f "$unit"
+      say "$(t service_removed_sys "$uname")"
+    done
+    [ -d "$SYS_UD" ] && systemctl daemon-reload >/dev/null 2>&1 || true
+    # Symlink nur entfernen, wenn er auf unseren Launcher zeigt
+    if [ -L "/usr/local/bin/ascendedpanel" ] && [ "$(readlink "/usr/local/bin/ascendedpanel")" = "$BIN/ascendedpanel" ]; then
+      rm -f "/usr/local/bin/ascendedpanel"
+    fi
+  fi
   rm -f "$BIN/ascendedpanel"
   rm -rf "$DEST"
   say "$(t removed)"
