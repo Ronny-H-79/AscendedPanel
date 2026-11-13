@@ -1,3 +1,11 @@
+## [0.4.48] — 2026-11-13
+
+### Behoben
+- **Give speichert die Welt vorher, wenn die ID fehlt.** `PlayerCache.sav` wird nur beim
+  Welt-Speichern geschrieben — ein frisch gejointer Spieler fehlte dort bis zum nächsten
+  Autosave (Standard 15 Minuten). Findet das Panel keine dauerhafte ID, löst es jetzt einmal
+  `SaveWorld` aus, wartet kurz und versucht die Zuordnung erneut.
+
 ## [0.4.47] — 2026-11-13
 
 ### Behoben
