@@ -1,4 +1,4 @@
-## [0.10] — 2026-11-13
+## [0.11] — 2026-11-13
 
 ### Overview
 Rough summary of what the panels contain.
@@ -20,3 +20,17 @@ Rough summary of what the panels contain.
   switchable at any time, several instances in one process.
 - **Bug reports:** button in the panel, report goes to the operator (webhook, console-only) with
   version, instance, system and log excerpt, passwords stripped.
+
+### Fixed
+- **The install progress bar ran backwards or froze.** SteamCMD restarts every phase at 0 %
+  (download → verify → commit), so the bar jumped back. It now shows the overall progress across the
+  three steps and never drops below its previous maximum.
+- **`/api/install/progress` raised an error** as soon as a progress line appeared in the install log:
+  the phase table `_PHASE_STEP` was used but never defined, which left the bar stuck.
+- **"Install" shows the progress again.** If the remembered tab was "Settings", it covered the install
+  panel — the click looked like it landed in the settings while the install ran in the background.
+- **Deleting no longer blocks the UI.** Stopping (the server saves first) and removing several GB now
+  run as a background job; the card shows "stopping the server …", then "deleting server files …" and
+  finally the freed size. Every delete is logged with timestamp and freed MB in `panel.log`.
+- **Wine is installed without asking** — like Xvfb. The "install Wine?" question was answered with
+  "no" in practice, and afterwards no Windows game started.

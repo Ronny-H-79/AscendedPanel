@@ -1,4 +1,4 @@
-## [0.10] — 2026-11-13
+## [0.11] — 2026-11-13
 
 ### Überblick
 Grobe Zusammenfassung dessen, was in den Panels steckt.
@@ -20,3 +20,20 @@ Grobe Zusammenfassung dessen, was in den Panels steckt.
   Sprache Deutsch/Englisch jederzeit umschaltbar, mehrere Instanzen in einem Prozess.
 - **Fehlermeldungen:** Knopf im Panel, Meldung geht an den Betreiber (Webhook, nur auf der Konsole
   setzbar) — mit Version, Instanz, System und Logauszug, Passwörter entfernt.
+
+### Behoben
+- **Installationsbalken lief rückwärts bzw. blieb stehen.** SteamCMD beginnt jede Phase wieder bei
+  0 % (Download → Prüfen → Abschluss), der Balken sprang deshalb zurück. Er zeigt jetzt den
+  Gesamtfortschritt über die drei Schritte und wird nie kleiner als der bisherige Höchstwert.
+- **`/api/install/progress` warf einen Fehler**, sobald eine Fortschrittszeile im Installationslog
+  stand: die Phasentabelle `_PHASE_STEP` wurde benutzt, aber nie definiert. Damit blieb der Balken
+  im Installationsfenster stehen.
+- **„Installieren" öffnet wieder den Fortschritt.** Lag der zuletzt gemerkte Reiter auf
+  „Einstellungen", verdeckte er das Installationsfenster — der Klick wirkte, als lande man in den
+  Einstellungen, während im Hintergrund korrekt installiert wurde.
+- **Löschen blockiert die Oberfläche nicht mehr.** Stoppen (Server speichert vorher) und das
+  Entfernen mehrerer GB laufen als Hintergrund-Job; die Karte zeigt „Server wird gestoppt …", dann
+  „Serverdateien werden gelöscht …" und am Ende die freigegebene Größe. Jeder Löschvorgang steht mit
+  Zeitstempel und freigegebenen MB im `panel.log`.
+- **Wine wird im Installer ohne Rückfrage installiert** — wie Xvfb. Die Frage „Wine installieren?"
+  wurde erfahrungsgemäß mit „nein" beantwortet, danach startete kein Windows-Spiel.

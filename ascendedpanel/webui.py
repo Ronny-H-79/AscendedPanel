@@ -36,6 +36,9 @@ from .paths import TOKEN_PATH, CONF_DIR
 from . import catalog, bans, playerids
 RE_PLAYER = re.compile(r"^\s*(\d+)\.\s*(.+?)\s*,\s*([0-9A-Za-z]{15,32})\s*$")
 INSTALLS: dict[str, dict] = {}
+# Laufende Loeschvorgaenge: Stoppen (bis 90 s) + Dateien entfernen (mehrere GB) dauern Minuten.
+# Der Klick startet deshalb nur einen Hintergrund-Job; die Oberflaeche fragt den Fortschritt ab.
+DELETES: dict[str, dict] = {}
 # Laufende Aktion je Instanz (start/stop/restart/update). Die Oberflaeche sperrt danach
 # die Knoepfe: waehrend stop gar keiner, waehrend start/restart/update nur Stop.
 ACTIONS: dict[str, str] = {}
@@ -612,21 +615,35 @@ async function delInst(name, sizeGb){
     files = 1;
   }
   const msg = document.getElementById('instmsg');
-  if(msg) msg.textContent='…';
+  const zeige = (t)=>{ if(msg) msg.textContent=t; };
   window.LOCAL_ACT = window.LOCAL_ACT || {};
   window.LOCAL_ACT[name]={what:'delete',ts:Date.now()};
   load();
+  zeige(L['msg.delete_stopping']||'Server wird gestoppt …');
   try{
-    const raw = await api('/api/instance/delete?name='+encodeURIComponent(name)+'&files='+files, {method:'POST'});
-    let r; try{ r = JSON.parse(raw); }catch(e){ r = {ok:true}; }
-    if(r.ok){
-      const frei = r.freed_gb >= 1 ? (Math.round(r.freed_gb).toLocaleString('de-DE')+' GB')
-                 : (r.freed_mb ? (r.freed_mb.toLocaleString('de-DE')+' MB') : '');
-      if(msg) msg.textContent = frei ? (frei+' freigegeben · '+name+' entfernt') : (name+' entfernt');
-      if(r.hint) alert(r.hint);
-      load();
-    } else { alert(r.error || 'Fehler'); }
+    await api('/api/instance/delete?name='+encodeURIComponent(name)+'&files='+files, {method:'POST'});
+    // Loeschen laeuft im Hintergrund: Stoppen kann bis 90 s dauern, Dateien sind mehrere GB.
+    for(let i=0;i<240;i++){
+      await new Promise(r=>setTimeout(r,1500));
+      let p=null;
+      try{ p=JSON.parse(await api('/api/delete/progress?name='+encodeURIComponent(name))); }catch(e){ break; }
+      if(!p) break;
+      if(p.error){ zeige(name+': '+p.error); break; }
+      if(p.running){
+        zeige(p.phase==='stop' ? (L['msg.delete_stopping']||'Server wird gestoppt …')
+             : p.phase==='files' ? (L['msg.delete_files']||'Serverdateien werden gelöscht …')
+             : (L['msg.delete_config']||'Eintrag wird entfernt …'));
+        continue;
+      }
+      const frei = p.freed_gb>=1 ? (Math.round(p.freed_gb).toLocaleString('de-DE')+' GB')
+                 : (p.freed_mb ? (p.freed_mb.toLocaleString('de-DE')+' MB') : '');
+      zeige(frei ? (frei+' freigegeben · '+name+' entfernt') : (name+' entfernt'));
+      if(p.hint) alert(p.hint);
+      break;
+    }
   }catch(e){ alert(String(e)); }
+  delete window.LOCAL_ACT[name];
+  load();
 }
 async function createInst(){
   const name=document.getElementById('nname').value.trim();
@@ -1038,6 +1055,14 @@ async function setupPoll(){
   if(!p.running && !p.percent) return;
   box.style.display='';
   window._setupSichtbar=1;
+  // Installationsfenster nach vorn holen: sonst verdeckt der zuletzt gemerkte Reiter
+  // (z. B. "Einstellungen" aus localStorage) den Fortschritt - der Klick auf "Installieren"
+  // landet dann scheinbar in den Einstellungen, waehrend im Hintergrund installiert wird.
+  const aktiv=document.querySelector('.tabs button.on');
+  if(!aktiv || aktiv.dataset.tab!=='overview'){
+    const uebersicht=document.querySelector('.tabs button[data-tab="overview"]');
+    if(uebersicht) showTab('overview', uebersicht);
+  }
   const fill=document.getElementById('setupfill'), hint=document.getElementById('setuphint');
   const ph=p.phase||'';
   let text='';
@@ -1915,6 +1940,9 @@ PLAYER_ACTIONS = {
 
 
 _PROGRESS_RE = re.compile(r"progress:\s*([0-9]+(?:\.[0-9]+)?)")
+# Reihenfolge der SteamCMD-Phasen (0 = Vorbereitung), damit die Oberflaeche "Schritt 2/3" zeigen kann
+_PHASE_STEP = {"preallocating": 1, "downloading": 1, "verifying install": 2, "verifying": 2,
+               "committing": 3}
 _STATE_RE = re.compile(r"Update state \(0x[0-9a-f]+\)\s*([a-z ]+?)(?:,|$)")
 
 
@@ -1943,7 +1971,9 @@ def install_progress(inst) -> dict[str, object]:
         if m:
             wert = float(m.group(1))
             phase = (_STATE_RE.search(zeile).group(1).strip() if _STATE_RE.search(zeile) else "downloading")
-            # Balken je Phase: SteamCMD beginnt beim Phasenwechsel wieder bei 0
+            # Balken zeigt den GESAMT-Fortschritt (Download -> Pruefen -> Abschluss): SteamCMD
+            # beginnt bei jedem Phasenwechsel wieder bei 0, sonst springt der Balken zurueck.
+            schritt = _PHASE_STEP.get(phase, 1)
             eintrag = INSTALLS.get(inst.name)
             if eintrag is not None:
                 if eintrag.get("cur_phase") != phase:
@@ -1952,9 +1982,13 @@ def install_progress(inst) -> dict[str, object]:
                 wert = max(wert, float(eintrag.get("phase_max", 0.0)))
                 wert = min(wert, 100.0)
                 eintrag["phase_max"] = wert
-            daten["percent"] = wert
+            gesamt = ((schritt - 1) + wert / 100.0) / 3.0 * 100.0
+            if eintrag is not None:
+                gesamt = max(gesamt, float(eintrag.get("max_percent", 0.0)))   # nie rueckwaerts
+                eintrag["max_percent"] = gesamt
+            daten["percent"] = round(min(gesamt, 99.0), 1)
             daten["phase"] = phase
-            daten["step"] = _PHASE_STEP.get(phase, 0)
+            daten["step"] = schritt
             daten["steps"] = 3
             return daten
         s = _STATE_RE.search(zeile)
@@ -1997,6 +2031,48 @@ def _start_install(inst: Instance) -> None:
 
     threading.Thread(target=run, daemon=True).start()
 
+
+
+def _delete_start(inst, files: bool) -> dict:
+    """Loeschen im Hintergrund starten: Stoppen und Dateien entfernen dauern Minuten.
+
+    Der Klick soll nicht minutenlang haengen - die Oberflaeche fragt /api/delete/progress ab.
+    """
+    laufend = DELETES.get(inst.name)
+    if laufend and laufend.get("running"):
+        return {"ok": True, "running": True}
+    zustand = {"running": True, "done": False, "phase": "stop", "files": bool(files),
+               "freed_mb": 0, "freed_gb": 0.0, "hint": "", "error": ""}
+    DELETES[inst.name] = zustand
+    ACTIONS[inst.name] = "delete"          # Oberflaeche sperrt die Knoepfe der Karte
+    plog.write("[%s] loeschen angefordert (%s)"
+               % (inst.name, "mit Dateien" if files else "nur Eintrag"))
+
+    def _arbeit() -> None:
+        try:
+            if runner.is_running(inst):
+                zustand["phase"] = "stop"
+                runner.stop(inst, timeout=90)
+            zustand["phase"] = "files" if files else "config"
+            ergebnis = registry.forget(inst.name, delete_files=files)
+            if not ergebnis.get("ok", True):
+                zustand["error"] = ergebnis.get("error") or "Loeschen fehlgeschlagen"
+            zustand["freed_mb"] = int(ergebnis.get("freed_mb") or 0)
+            zustand["freed_gb"] = ergebnis.get("freed_gb") or 0.0
+            zustand["hint"] = ergebnis.get("hint") or ""
+            plog.write("[%s] geloescht (%s MB frei, Dateien %s)"
+                       % (inst.name, zustand["freed_mb"], "entfernt" if files else "behalten"))
+        except Exception as exc:                     # noqa: BLE001 - Job darf nicht stumm sterben
+            zustand["error"] = str(exc)[:200]
+            plog.write("[%s] loeschen fehlgeschlagen: %s" % (inst.name, exc))
+        finally:
+            zustand["phase"] = "done"
+            zustand["running"] = False
+            zustand["done"] = True
+            ACTIONS.pop(inst.name, None)
+
+    threading.Thread(target=_arbeit, daemon=True, name="delete-%s" % inst.name).start()
+    return {"ok": True, "running": True}
 
 
 def _uebersetzte_settings(inst) -> list:
@@ -2355,6 +2431,13 @@ class Handler(BaseHTTPRequestHandler):
             self._json(ergebnis)
             return
 
+        if path == "/api/delete/progress":
+            # Nach dem Loeschen liegt die Instanz-Config schon im .trash - deshalb hier ueber den
+            # Namen arbeiten und nicht ueber die geladene Instanz.
+            name = q.get("name", [""])[0]
+            self._json(DELETES.get(name) or {"running": False, "done": True})
+            return
+
         inst = self._inst(q)
         if not inst:
             self._send(404, b"keine Instanz")
@@ -2457,19 +2540,7 @@ class Handler(BaseHTTPRequestHandler):
             return
         elif path == "/api/instance/delete":
             files = q.get("files", ["0"])[0] in ("1", "true", "yes")
-            # Waehrend des Loeschens darf in der Oberflaeche nur noch Stop bedienbar sein
-            ACTIONS[inst.name] = "delete"
-            try:
-                if runner.is_running(inst):
-                    runner.stop(inst, timeout=90)
-                try:
-                    result = registry.forget(inst.name, delete_files=files)
-                except Exception as exc:  # noqa: BLE001
-                    self._json({"ok": False, "error": str(exc)[:200]})
-                    return
-            finally:
-                ACTIONS.pop(inst.name, None)
-            self._json(result)
+            self._json(_delete_start(inst, files))
             return
         elif path == "/api/notify/test":
             url = q.get("url", [""])[0].strip() or inst.webhook_url
