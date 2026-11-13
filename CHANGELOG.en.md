@@ -1,4 +1,4 @@
-## [Unreleased]
+## [0.4.33] — 2026-11-13
 
 ### Added
 - **Player window on the overview.** Clicking the player count opens a window listing every
