@@ -381,7 +381,7 @@ async function load(){
   if(window.__pressed){ setTimeout(load, 400); return; }   // Klick laeuft noch
   const list=JSON.parse(await api('/api/instances'));
   DATA=list;
-  document.getElementById('cnt').textContent=list.length+' '+L['dash.instances'];
+  document.getElementById('cnt').textContent=list.length+' '+L[list.length===1?'dash.instance_single':'dash.instances'];
   document.getElementById('cards').innerHTML=list.map(i=>`
     <div class="card${i.running?' running':''}">
       ${i.map_image?`<div class="bgimg" style="background-image:url('${i.map_image}?token=${encodeURIComponent(T)}')"></div>`:''}
