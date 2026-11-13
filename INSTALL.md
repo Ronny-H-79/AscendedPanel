@@ -53,6 +53,12 @@ Starting `install.sh` as **root** is handled automatically: it creates the servi
 `ascendedpanel` and installs there (`/home/ascendedpanel`), so neither the panel nor the servers run as
 root. A different name via `--user <name>`.
 
+Exactly this call, without questions:
+
+```bash
+git clone https://github.com/Ronny-H-79/AscendedPanel.git ascendedpanel && cd ascendedpanel && ./install.sh --auto --lang de --web
+```
+
 On a server shared by several people, a dedicated service user is cleaner:
 
 ```bash

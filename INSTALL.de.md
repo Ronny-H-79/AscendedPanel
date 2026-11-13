@@ -51,6 +51,14 @@ Wer `install.sh` als **root** startet, bekommt das automatisch: der Installer le
 `ascendedpanel` an und installiert dorthin (`/home/ascendedpanel`), damit weder Panel noch Server als
 root laufen. Ein anderer Benutzername geht mit `--user <name>`.
 
+Genau dieser Aufruf, ohne Rückfragen:
+
+```bash
+git clone https://github.com/Ronny-H-79/AscendedPanel.git ascendedpanel && cd ascendedpanel && ./install.sh --auto --lang de --web
+```
+
+Landet unter `/home/ascendedpanel`, Web-Dienst als Benutzer `ascendedpanel`, Port 8790.
+
 Weitere Aufrufe:
 
 ```bash

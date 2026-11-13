@@ -48,6 +48,14 @@ ascendedpanel web                 # start the web UI - the address with token is
 
 Install without `sudo`: panel and servers then run as your user instead of root.
 
+As **root** on a server (one line, no questions - creates the service user as well):
+
+```bash
+git clone https://github.com/Ronny-H-79/AscendedPanel.git ascendedpanel && cd ascendedpanel && ./install.sh --auto --lang de --web
+```
+
+Installs to `/home/ascendedpanel`, web service as user `ascendedpanel`, port 8790.
+
 **Token forgotten or address lost?**
 
 ```bash

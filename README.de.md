@@ -50,6 +50,14 @@ ascendedpanel url                 # Adresse mit Token - der Web-Dienst laeuft be
 
 Ohne `sudo` installieren: Panel und Server laufen dann unter deinem Benutzer statt als root.
 
+Als **root** auf einem Server (eine Zeile, ohne Rückfragen - legt den Dienst-Benutzer mit an):
+
+```bash
+git clone https://github.com/Ronny-H-79/AscendedPanel.git ascendedpanel && cd ascendedpanel && ./install.sh --auto --lang de --web
+```
+
+Landet unter `/home/ascendedpanel`, Web-Dienst als Benutzer `ascendedpanel`, Port 8790.
+
 **Token vergessen oder Adresse verloren?**
 
 ```bash
