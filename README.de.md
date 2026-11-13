@@ -50,6 +50,16 @@ ascendedpanel url                 # Adresse mit Token - der Web-Dienst laeuft be
 
 Ohne `sudo` installieren: Panel und Server laufen dann unter deinem Benutzer statt als root.
 
+**Token vergessen oder Adresse verloren?**
+
+```bash
+ascendedpanel token          # Web-Token mit Dateipfad und Adresse
+ascendedpanel token --quiet  # nur der Token (für Skripte)
+ascendedpanel url            # fertige Adresse inklusive Token
+```
+
+Der Token liegt zusätzlich in `~/.config/ascendedpanel/token` (Rechte `600`).
+
 Instanzen legst du **im Browser** an: ausgegebene Adresse öffnen, Namen eintragen, Karte wählen,
 **Anlegen** drücken, dann **Installieren** auf der Karte. Danach braucht es kein Terminal mehr.
 

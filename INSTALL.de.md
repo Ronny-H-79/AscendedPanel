@@ -162,6 +162,16 @@ systemctl --user enable --now ascendedpanel-<name>
 loginctl enable-linger $USER      # läuft auch ohne angemeldete Sitzung
 ```
 
+**Token vergessen oder Adresse verloren?**
+
+```bash
+ascendedpanel token          # Web-Token mit Dateipfad und Adresse
+ascendedpanel token --quiet  # nur der Token (für Skripte)
+ascendedpanel url            # fertige Adresse inklusive Token
+```
+
+Der Token liegt zusätzlich in `~/.config/ascendedpanel/token` (Rechte `600`).
+
 ## Deinstallieren
 
 ```bash

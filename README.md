@@ -48,6 +48,16 @@ ascendedpanel web                 # start the web UI - the address with token is
 
 Install without `sudo`: panel and servers then run as your user instead of root.
 
+**Token forgotten or address lost?**
+
+```bash
+ascendedpanel token          # web token plus file path and address
+ascendedpanel token --quiet  # only the token (for scripts)
+ascendedpanel url            # ready-made address including the token
+```
+
+The token is also stored in `~/.config/ascendedpanel/token` (mode `600`).
+
 Instances are created **in the browser**: open the printed address, enter a name, pick the map, press
 **Anlegen / Create**, then **Install** on the card. No terminal is needed after that.
 
