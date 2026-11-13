@@ -44,6 +44,19 @@ while [ $# -gt 0 ]; do
   shift
 done
 
+# ---------------------------------------------------------------- root = Dienst-Benutzer
+# Als root gestartet: Installation und Server laufen automatisch unter einem eigenen
+# Dienst-Benutzer. Nicht aus Bequemlichkeit - Satisfactory startet als root gar nicht,
+# und ein Webserver als root ist ohnehin keine gute Idee.
+if [ "$(id -u)" = "0" ] && [ -z "$SERVICE_USER" ] && [ "$CHECK_ONLY" = "0" ]; then
+  if [ "$UNINSTALL" = "1" ]; then
+    # beim Entfernen nur umschalten, wenn es den Benutzer wirklich gibt
+    getent passwd "ascendedpanel" >/dev/null 2>&1 && SERVICE_USER="ascendedpanel"
+  else
+    SERVICE_USER="ascendedpanel"
+  fi
+fi
+
 # ---------------------------------------------------------------- Dienst-Benutzer
 if [ -n "$SERVICE_USER" ]; then
   if [ "$(id -u)" != "0" ]; then
@@ -53,7 +66,7 @@ if [ -n "$SERVICE_USER" ]; then
   case "$SERVICE_USER" in
     *[!a-z0-9_-]*|"") echo "Ungueltiger Benutzername: $SERVICE_USER"; exit 1 ;;
   esac
-  if ! id "$SERVICE_USER" >/dev/null 2>&1; then
+  if [ "$UNINSTALL" = "0" ] && ! id "$SERVICE_USER" >/dev/null 2>&1; then
     useradd -m -s /bin/bash "$SERVICE_USER"
     echo "Benutzer $SERVICE_USER angelegt."
   fi
@@ -188,6 +201,8 @@ t() {
     de:web_failed)         echo "Dienst konnte nicht aktiviert werden - manuell starten mit: ascendedpanel web" ;;
     en:web_skipped)        echo "No service created - start the UI when needed with: ascendedpanel web" ;;
     de:web_skipped)        echo "Kein Dienst angelegt - Oberflaeche bei Bedarf starten mit: ascendedpanel web" ;;
+    en:as_user)            echo "Running as root - installing as service user $SERVICE_USER (servers must not run as root)" ;;
+    de:as_user)            echo "Als root gestartet - Installation und Server laufen als Dienst-Benutzer $SERVICE_USER" ;;
     en:language_saved)     echo "Language: English" ;;
     de:language_saved)     echo "Sprache: Deutsch" ;;
     *) return 1 ;;
@@ -332,6 +347,10 @@ fi
 
 t title
 echo "-------------------"
+
+if [ -n "$SERVICE_USER" ]; then
+  say "$(t as_user)"
+fi
 
 # ---------------------------------------------------------------- Pruefungen
 command -v "$PY" >/dev/null 2>&1 || die "$(t python_missing)"

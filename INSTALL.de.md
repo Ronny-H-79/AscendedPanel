@@ -45,11 +45,9 @@ git clone https://github.com/Ronny-H-79/AscendedPanel.git ascendedpanel
 cd ascendedpanel && ./install.sh
 ```
 
-Auf einem Server, den mehrere Leute nutzen, ist ein eigener Dienst-Benutzer sauberer:
-
-```bash
-sudo ./install.sh --user ascendedpanel      # legt den Benutzer an, installiert nach /home/ascendedpanel, User-Dienst + linger
-```
+Wer `install.sh` als **root** startet, bekommt das automatisch: der Installer legt den Dienst-Benutzer
+`ascendedpanel` an und installiert dorthin (`/home/ascendedpanel`), damit weder Panel noch Server als
+root laufen. Ein anderer Benutzername geht mit `--user <name>`.
 
 Weitere Aufrufe:
 
