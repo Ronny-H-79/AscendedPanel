@@ -1,4 +1,11 @@
-## [Unreleased]
+## [0.4.31] — 2026-11-13
+
+### Fixed
+- **Player count stayed at 0 even with players online.** `ListPlayers` line detection only accepted
+  15-17 digit player ids (SteamID style). ARK: Survival Ascended returns the **32 character hex EOS
+  id** there, so no line matched and the list stayed empty. Dashboard tile, process row and
+  `/api/players` now accept both formats and names with special characters
+  (`RunGunTeufel | Teufelswerk`).
 
 ### Changed
 - **Buttons lock according to state.** While a stop runs, every button is disabled. While start,
@@ -8,14 +15,6 @@
 - **"1 instances" instead of "1 instance".** The dashboard counter now uses the singular form when
   exactly one instance exists (new text key `dash.instance_single`).
 
-## [0.4.30] — 2026-11-12
-
-### Fixed
-- **Player count stayed at 0 even with players online.** `ListPlayers` line detection only accepted
-  15-17 digit player ids (SteamID style). ARK: Survival Ascended returns the **32 character hex EOS
-  id** there, so no line matched and the list stayed empty. Dashboard tile, process row and
-  `/api/players` now accept both formats and names with special characters
-  (`RunGunTeufel | Teufelswerk`).
 
 ## [0.4.29] — 2026-11-11
 

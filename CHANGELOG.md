@@ -1,4 +1,11 @@
-## [Unveröffentlicht]
+## [0.4.31] — 2026-11-13
+
+### Behoben
+- **Spielerzahl stand dauerhaft auf 0, obwohl Spieler online waren.** Die Erkennung der
+  `ListPlayers`-Zeilen akzeptierte als Spieler-ID nur 15–17 Ziffern (SteamID-Format). ARK:
+  Survival Ascended liefert dort aber die **32-stellige EOS-ID in Hex** — keine Zeile passte,
+  die Liste blieb leer. Dashboard-Kachel, Prozess-Zeile und `/api/players` akzeptieren jetzt
+  beide Formate und auch Namen mit Sonderzeichen (`RunGunTeufel | Teufelswerk`).
 
 ### Geändert
 - **Knöpfe sperren sich passend zum Zustand.** Läuft ein Stop, sind alle Knöpfe unbedienbar.
@@ -8,14 +15,6 @@
 - **„1 Instanzen" statt „1 Instanz".** Die Anzahl auf dem Dashboard nutzt jetzt die Einzahl,
   wenn genau eine Instanz existiert (neuer Textschlüssel `dash.instance_single`).
 
-## [0.4.30] — 2026-11-12
-
-### Behoben
-- **Spielerzahl stand dauerhaft auf 0, obwohl Spieler online waren.** Die Erkennung der
-  `ListPlayers`-Zeilen akzeptierte als Spieler-ID nur 15–17 Ziffern (SteamID-Format). ARK:
-  Survival Ascended liefert dort aber die **32-stellige EOS-ID in Hex** — keine Zeile passte,
-  die Liste blieb leer. Dashboard-Kachel, Prozess-Zeile und `/api/players` akzeptieren jetzt
-  beide Formate und auch Namen mit Sonderzeichen (`RunGunTeufel | Teufelswerk`).
 
 ## [0.4.29] — 2026-11-11
 
