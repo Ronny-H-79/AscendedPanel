@@ -359,7 +359,7 @@ FOOTER = """<footer class="sitefoot">
 document.querySelectorAll('a[data-tok]').forEach(function(a){
   a.href=a.dataset.tok+(t?'?token='+encodeURIComponent(t):'');});
 /* Der Fuss steht nach dem Hauptskript: Texte hier noch einmal in der aktiven Sprache setzen. */
-if(typeof applyLang==='function') applyLang(); loadRepHook();})();</script>"""
+if(typeof applyLang==='function') applyLang();})();</script>"""
 FOOTER = FOOTER.replace("__PAYPAL_URL__", PAYPAL_URL).replace("__DISCORD_URL__", DISCORD_URL)
 
 # Meldung an den Betreiber: Baustein + Skript, von Dashboard und Instanzseite benutzt.
@@ -413,6 +413,7 @@ async function sendReport(){
     }else{ state.textContent=(r.fehler||'Fehler'); }
   }catch(e){ state.textContent=String(e); }
 }
+loadRepHook();   // Skript steht hinter dem Hauptskript - der Aufruf dort liefe ins Leere
 </script>"""
 
 DASH = """<!doctype html><html lang="__LANG__"><head><meta charset="utf-8">
@@ -765,7 +766,7 @@ async function noahUpdate(){
   alert(L['self.done']);
   setTimeout(()=>location.reload(), 4000);
 }
-applyLang(); load(); loadHost(); checkNoah(); setInterval(load,3000); setInterval(loadHost,3000); loadRepHook();
+applyLang(); load(); loadHost(); checkNoah(); setInterval(load,3000); setInterval(loadHost,3000); if(typeof loadRepHook==='function') loadRepHook();
 </script>""" + REPORT_MODAL + REPORT_JS + """__FOOTER__
 <div id="plModal" class="plModal"><div class="plBox">
   <div class="row" style="justify-content:space-between">
