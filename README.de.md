@@ -132,14 +132,15 @@ Das beendet und entfernt auch die systemd-Dienste (`ascendedpanel-web`, `ascende
 kein Dienst mehr ins Leere zeigt. Ist der Quellordner schon weg, reicht von Hand:
 
 ```bash
-# Benutzer-Installation
-systemctl --user disable --now ascendedpanel-web.service
-rm -f ~/.config/systemd/user/ascendedpanel-*.service ~/.local/bin/ascendedpanel
-rm -rf ~/.local/share/ascendedpanel
-
-# Installation als root (Systemdienst, ~ ist /root)
+# Installation als root (Systemdienst) - der Normalfall auf einem Server
 systemctl disable --now ascendedpanel-web.service
 rm -f /etc/systemd/system/ascendedpanel-*.service /usr/local/bin/ascendedpanel
+rm -rf /root/.local/share/ascendedpanel
+
+# nur bei Installation als normaler Nutzer: dafuer muss eine Sitzung des Nutzers
+# laufen, sonst bricht systemctl --user ab ("DBUS_SESSION_BUS_ADDRESS not defined")
+systemctl --user disable --now ascendedpanel-web.service
+rm -f ~/.config/systemd/user/ascendedpanel-*.service ~/.local/bin/ascendedpanel
 rm -rf ~/.local/share/ascendedpanel
 ```
 

@@ -122,14 +122,15 @@ This also stops and removes the systemd units (`ascendedpanel-web`, `ascendedpan
 file afterwards. If the source folder is already gone:
 
 ```bash
-# user installation
-systemctl --user disable --now ascendedpanel-web.service
-rm -f ~/.config/systemd/user/ascendedpanel-*.service ~/.local/bin/ascendedpanel
-rm -rf ~/.local/share/ascendedpanel
-
-# installation as root (system service, ~ is /root)
+# installation as root (system service) - the normal case on a server
 systemctl disable --now ascendedpanel-web.service
 rm -f /etc/systemd/system/ascendedpanel-*.service /usr/local/bin/ascendedpanel
+rm -rf /root/.local/share/ascendedpanel
+
+# only for a normal user installation: needs a running session of that user,
+# otherwise systemctl --user fails ("DBUS_SESSION_BUS_ADDRESS not defined")
+systemctl --user disable --now ascendedpanel-web.service
+rm -f ~/.config/systemd/user/ascendedpanel-*.service ~/.local/bin/ascendedpanel
 rm -rf ~/.local/share/ascendedpanel
 ```
 
