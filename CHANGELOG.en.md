@@ -1,4 +1,4 @@
-## [Unreleased]
+## [0.4.36] — 2026-11-13
 
 ### Added
 - **Item dialog with a list instead of free text.** The "Item" button opens a searchable list

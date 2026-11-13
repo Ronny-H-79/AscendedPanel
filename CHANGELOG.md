@@ -1,4 +1,4 @@
-## [Unveröffentlicht]
+## [0.4.36] — 2026-11-13
 
 ### Neu
 - **Item-Dialog mit Liste statt Freitext.** Statt den Blueprint-Pfad zu tippen, öffnet der
