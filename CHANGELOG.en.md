@@ -1,3 +1,11 @@
+## [0.4.52] — 2026-11-13
+
+### Changed
+- **Quantity prompt as its own window.** Clicking "geben" opens a small "Menge für <item>"
+  window with a number field, **Geben** and **Abbrechen** (Enter confirms). The inline number
+  field in the header is gone. The **"custom blueprint"** path keeps its two prompts
+  (blueprint and quantity) — no extra window there.
+
 ## [0.4.51] — 2026-11-13
 
 ### Changed
