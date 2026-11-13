@@ -173,6 +173,7 @@ Entfernt Programm und Launcher. **Bleiben:** Instanzen (`~/arkserver-*`), Einste
 cd ~/ascendedpanel      # in den Klon des Repos wechseln
 ./install.sh --uninstall
 rm -rf ~/arkserver-* ~/.config/ascendedpanel ~/ascendedpanel-backups ~/ascendedpanel-snapshots
+rm -rf ~/.wine                  # Wine-Prefix
 rm -f /etc/systemd/system/ascendedpanel-*.service
 systemctl daemon-reload
 ```

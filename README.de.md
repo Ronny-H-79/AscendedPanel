@@ -165,6 +165,7 @@ Der letzte Schritt ist der einzige, der wirklich unwiederbringlich ist: Welt und
 cd ~/ascendedpanel      # in den Klon des Repos wechseln
 ./install.sh --uninstall
 rm -rf ~/arkserver-* ~/.config/ascendedpanel ~/ascendedpanel-backups ~/ascendedpanel-snapshots
+rm -rf ~/.wine                  # Wine-Prefix
 rm -f /etc/systemd/system/ascendedpanel-*.service
 systemctl daemon-reload
 ```

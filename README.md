@@ -155,6 +155,7 @@ restore everything later.
 cd ~/ascendedpanel      # your clone of the repo
 ./install.sh --uninstall
 rm -rf ~/arkserver-* ~/.config/ascendedpanel ~/ascendedpanel-backups ~/ascendedpanel-snapshots
+rm -rf ~/.wine                  # Wine prefix
 rm -f /etc/systemd/system/ascendedpanel-*.service
 systemctl daemon-reload
 ```
