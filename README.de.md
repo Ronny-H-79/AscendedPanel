@@ -88,6 +88,9 @@ echo "http://$(hostname -I | awk '{print $1}'):8790/?token=$(cat /home/ascendedp
 Der Token liegt zusätzlich in `/home/ascendedpanel/.config/ascendedpanel/token` für den Dienst-Benutzer
 bzw. `~/.config/ascendedpanel/token` bei einer Installation im eigenen Konto (Rechte `600`).
 
+Die fertige Adresse schreibt das Panel zusätzlich nach `/home/ascendedpanel/.config/ascendedpanel/url` (Rechte `600`) —
+`cat` genügt, sie bleibt auch nach einem Neustart aktuell.
+
 Instanzen legst du **im Browser** an: ausgegebene Adresse öffnen, Namen eintragen, Karte wählen,
 **Anlegen** drücken, dann **Installieren** auf der Karte. Danach braucht es kein Terminal mehr.
 

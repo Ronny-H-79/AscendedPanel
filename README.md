@@ -86,6 +86,9 @@ echo "http://$(hostname -I | awk '{print $1}'):8790/?token=$(cat /home/ascendedp
 The token is also stored in `/home/ascendedpanel/.config/ascendedpanel/token` for the service user, or
 `~/.config/ascendedpanel/token` for an install in your own account (mode `600`).
 
+The panel also writes the finished address to `/home/ascendedpanel/.config/ascendedpanel/url` (mode `600`) -
+`cat` is enough, and it stays current across restarts.
+
 Instances are created **in the browser**: open the printed address, enter a name, pick the map, press
 **Anlegen / Create**, then **Install** on the card. No terminal is needed after that.
 
