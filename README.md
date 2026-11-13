@@ -141,7 +141,7 @@ rm -rf ~/.config/ascendedpanel          # instances, token, mod cache
 rm -rf ~/ascendedpanel-backups          # world backups
 rm -rf ~/ascendedpanel-snapshots        # instance snapshots
 rm -rf ~/arkserver             # the server files (12 GB)
-rm -rf ~/.wine-arkserver       # Wine prefix
+rm -rf ~/.wine                 # Wine prefix (default; a path set on the instance is left alone)
 ```
 
 Only the last step is irreversible: worlds and configs live in `~/ascendedpanel-backups` — keep those and you can

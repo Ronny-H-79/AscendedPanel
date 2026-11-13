@@ -151,7 +151,7 @@ rm -rf ~/.config/ascendedpanel          # Instanzen, Token, Mod-Cache
 rm -rf ~/ascendedpanel-backups          # Welt-Backups
 rm -rf ~/ascendedpanel-snapshots        # Instanz-Snapshots
 rm -rf ~/arkserver             # die Serverdateien (12 GB)
-rm -rf ~/.wine-arkserver       # Wine-Prefix
+rm -rf ~/.wine                 # Wine-Prefix (Standard; ein in der Instanz gesetzter Pfad bleibt sonst liegen)
 ```
 
 Der letzte Schritt ist der einzige, der wirklich unwiederbringlich ist: Welt und Configs liegen in
