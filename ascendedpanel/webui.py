@@ -761,7 +761,7 @@ INST = """<!doctype html><html lang="__LANG__"><head><meta charset="utf-8">
     <div id="bans"><span style="color:var(--dim)">–</span></div>
   </section>
 
-  <section class="tab tab-server"><h2 data-t="wl.title">Whitelist &amp; Bans</h2>
+  <section class="tab tab-server"><h2 data-t="wl.title">Whitelist</h2>
     <div class="row" style="margin-bottom:8px">
       <button id="wlbtn" onclick="toggleWl()">Whitelist …</button>
       <span class="meta" id="wlcount"></span>
