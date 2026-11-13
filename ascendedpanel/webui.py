@@ -2118,6 +2118,11 @@ class Handler(BaseHTTPRequestHandler):
             lines = runner.tail(log_path, 40) if os.path.exists(log_path) else []
             self._send(200, ("[%s]\n" % state + "\n".join(lines)).encode())
             return
+        # Fehlermeldung: braucht keine Instanz - der Knopf muss auch auf dem Dashboard erscheinen
+        if path == "/api/report":
+            self._json({"webhook": bool(report_mod.webhook()), "version": __version__})
+            return
+
         if not inst:
             self._send(404, b"keine Instanz")
             return
@@ -2134,8 +2139,6 @@ class Handler(BaseHTTPRequestHandler):
             self._json(catalog.suche(q.get("q", [""])[0]))
         elif path == "/api/bans":
             self._json(bans.laden(inst))
-        elif path == "/api/report":
-            self._json({"webhook": bool(report_mod.webhook()), "version": __version__})
         elif path == "/api/playerids/debug":
             self._json(playerids.pfade(inst))
         elif path == "/api/update":
@@ -2234,6 +2237,21 @@ class Handler(BaseHTTPRequestHandler):
         if path == "/api/mods/key":
             i18n.put("curseforge_key", q.get("key", [""])[0].strip())
             self._send(200, b"ok")
+            return
+
+        # Fehlermeldung abschicken: ohne Instanzbezug, sonst geht sie vom Dashboard aus nicht raus
+        if path == "/api/report":
+            laenge = int(self.headers.get("Content-Length") or 0)
+            roh = self.rfile.read(laenge).decode("utf-8", "replace") if laenge else "{}"
+            try:
+                daten = json.loads(roh) if roh.strip() else {}
+            except ValueError:
+                daten = {}
+            ergebnis = report_mod.senden(None, str(daten.get("text", "")),
+                                         str(daten.get("steps", "")))
+            plog.write("Fehlermeldung: " + ("gesendet" if ergebnis.get("ok")
+                                             else "nicht gesendet (%s)" % ergebnis.get("fehler")))
+            self._json(ergebnis)
             return
 
         inst = self._inst(q)
@@ -2346,19 +2364,6 @@ class Handler(BaseHTTPRequestHandler):
                 self._json({"ok": False, "error": str(exc)[:200]})
                 return
             self._json(result)
-            return
-        elif path == "/api/report":
-            laenge = int(self.headers.get("Content-Length") or 0)
-            roh = self.rfile.read(laenge).decode("utf-8", "replace") if laenge else "{}"
-            try:
-                daten = json.loads(roh) if roh.strip() else {}
-            except ValueError:
-                daten = {}
-            ergebnis = report_mod.senden(None, str(daten.get("text", "")),
-                                         str(daten.get("steps", "")))
-            plog.write("Fehlermeldung: " + ("gesendet" if ergebnis.get("ok")
-                                             else "nicht gesendet (%s)" % ergebnis.get("fehler")))
-            self._json(ergebnis)
             return
         elif path == "/api/notify/test":
             url = q.get("url", [""])[0].strip() or inst.webhook_url
