@@ -44,9 +44,11 @@ Mehr dazu: [docs/funktionen.md](docs/funktionen.md)
 git clone https://github.com/Ronny-H-79/AscendedPanel.git ascendedpanel   # einmalig
 cd ascendedpanel
 ./install.sh --check     # prüfen, was fehlt (ändert nichts)
-./install.sh             # installieren
+./install.sh             # installieren (im eigenen Benutzerkonto, ohne sudo)
 ascendedpanel url                 # Adresse mit Token - der Web-Dienst laeuft bereits
 ```
+
+Ohne `sudo` installieren: Panel und Server laufen dann unter deinem Benutzer statt als root.
 
 Instanzen legst du **im Browser** an: ausgegebene Adresse öffnen, Namen eintragen, Karte wählen,
 **Anlegen** drücken, dann **Installieren** auf der Karte. Danach braucht es kein Terminal mehr.

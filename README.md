@@ -42,9 +42,11 @@ RCON for everything the server exposes.
 git clone https://github.com/Ronny-H-79/AscendedPanel.git ascendedpanel   # once
 cd ascendedpanel
 ./install.sh --check     # check what is missing (changes nothing)
-./install.sh             # install
+./install.sh             # install (in your own user account, no sudo)
 ascendedpanel web                 # start the web UI - the address with token is printed
 ```
+
+Install without `sudo`: panel and servers then run as your user instead of root.
 
 Instances are created **in the browser**: open the printed address, enter a name, pick the map, press
 **Anlegen / Create**, then **Install** on the card. No terminal is needed after that.

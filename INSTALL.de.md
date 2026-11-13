@@ -38,13 +38,20 @@ Gespeichert wird das in `~/.config/ascendedpanel/settings.json`. Spaeter jederze
 
 ## Installation
 
-Auf einem **Server** empfohlen: eigener Dienst-Benutzer, damit nichts als root läuft.
+Im eigenen Benutzerkonto installieren — **ohne sudo**:
 
 ```bash
-sudo ./install.sh --user ascendedpanel      # legt den Benutzer an, installiert nach /home/AscendedPanel, User-Dienst + linger
+git clone https://github.com/Ronny-H-79/AscendedPanel.git ascendedpanel
+cd ascendedpanel && ./install.sh
 ```
 
-Normale Installation (im eigenen Benutzerkonto):
+Auf einem Server, den mehrere Leute nutzen, ist ein eigener Dienst-Benutzer sauberer:
+
+```bash
+sudo ./install.sh --user ascendedpanel      # legt den Benutzer an, installiert nach /home/ascendedpanel, User-Dienst + linger
+```
+
+Weitere Aufrufe:
 
 ```bash
 git clone https://github.com/Ronny-H-79/AscendedPanel.git ascendedpanel   # oder Ordner kopieren

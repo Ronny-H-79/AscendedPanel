@@ -40,7 +40,14 @@ It is stored in `~/.config/ascendedpanel/settings.json`. Changeable later at any
 
 ## Installation
 
-On a **server**, use a dedicated service user so nothing runs as root:
+Install in your own user account — **without sudo**:
+
+```bash
+git clone https://github.com/Ronny-H-79/AscendedPanel.git ascendedpanel
+cd ascendedpanel && ./install.sh
+```
+
+On a server shared by several people, a dedicated service user is cleaner:
 
 ```bash
 sudo ./install.sh --user ascendedpanel      # creates the user, installs to /home/AscendedPanel, user service + linger
