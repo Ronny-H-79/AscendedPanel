@@ -1040,7 +1040,8 @@ async function setupPoll(){
   if(p.percent!==null && p.percent!==undefined){
     fill.classList.remove('indet');
     fill.style.width=Math.max(2,Math.min(100,p.percent))+'%';
-    text=(L[SETUP_HINTS[ph]]||L['setup.download']||'Serverdateien werden geladen')+' — '+Number(p.percent).toFixed(1)+' %';
+    const schritt=(p.step&&p.steps)?('Schritt '+p.step+'/'+p.steps+' · '):'';
+    text=schritt+(L[SETUP_HINTS[ph]]||L['setup.download']||'Serverdateien werden geladen')+' — '+Number(p.percent).toFixed(1)+' %';
   }else{
     fill.classList.add('indet'); fill.style.width='100%';
     const sek=(p.elapsed===null||p.elapsed===undefined)?null:Number(p.elapsed);
@@ -1925,15 +1926,20 @@ def install_progress(inst) -> dict[str, object]:
         m = _PROGRESS_RE.search(zeile)
         if m:
             wert = float(m.group(1))
-            # Balken nie rueckwaerts: SteamCMD springt zwischen Phasen zurueck
+            phase = (_STATE_RE.search(zeile).group(1).strip() if _STATE_RE.search(zeile) else "downloading")
+            # Balken je Phase: SteamCMD beginnt beim Phasenwechsel wieder bei 0
             eintrag = INSTALLS.get(inst.name)
             if eintrag is not None:
-                wert = max(wert, float(eintrag.get("max_percent", 0.0)))
-                wert = min(wert, 99.0)
-                eintrag["max_percent"] = wert
+                if eintrag.get("cur_phase") != phase:
+                    eintrag["cur_phase"] = phase
+                    eintrag["phase_max"] = 0.0
+                wert = max(wert, float(eintrag.get("phase_max", 0.0)))
+                wert = min(wert, 100.0)
+                eintrag["phase_max"] = wert
             daten["percent"] = wert
-            s = _STATE_RE.search(zeile)
-            daten["phase"] = (s.group(1).strip() if s else "downloading")
+            daten["phase"] = phase
+            daten["step"] = _PHASE_STEP.get(phase, 0)
+            daten["steps"] = 3
             return daten
         s = _STATE_RE.search(zeile)
         if s and not daten["phase"]:
