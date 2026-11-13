@@ -11,6 +11,7 @@ import threading
 import time
 import urllib.parse
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from html import escape as html_escape
 
 from .instance import Instance
 from . import commands as cmdreg
@@ -56,6 +57,7 @@ def _render(template: str) -> str:
     """Sprachkatalog und Sprachcode einsetzen."""
     from . import __version__
     return (template
+            .replace("__FOOTER__", FOOTER)
             .replace("__LANGJSON__", json.dumps(i18n.catalog(), ensure_ascii=False))
             .replace("__VERSION__", __version__)
             .replace("__LANG__", i18n.lang()))
@@ -187,6 +189,18 @@ border:1px solid #1d3a32;border-radius:6px;background:#0b1116;transition:filter 
 .iconlink svg{width:22px;height:22px;display:block}
 .iconlink.discord svg{fill:#5865F2}
 .iconlink.paypal svg{fill:#003087}
+.sitefoot{position:relative;z-index:2;width:100%;box-sizing:border-box;margin:26px 0 0;padding:16px 24px 22px;
+border-top:1px solid rgba(37,230,164,.14);display:flex;flex-wrap:wrap;gap:8px 20px;
+align-items:center;justify-content:center;font-size:11.5px;letter-spacing:.04em;color:var(--dim)}
+.sitefoot .flinks{display:inline-flex;flex-wrap:wrap;gap:16px;align-items:center}
+.sitefoot a{color:#a8d8c8;text-decoration:none;border-bottom:1px solid rgba(37,230,164,.28);
+padding-bottom:1px;transition:color .12s,border-color .12s}
+.sitefoot a:hover{color:#e6fff5;border-color:var(--acc)}
+.lic{padding:24px}
+.lictext{margin:0;white-space:pre-wrap;max-height:none;font-size:12px;line-height:1.65;color:#b9d6cc}
+.lichead{display:flex;flex-wrap:wrap;gap:10px;align-items:baseline;margin:0 0 12px}
+.lichead h2{margin:0}
+.lichead .meta{color:var(--dim);font-size:11.5px}
 .settabs{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px;border-bottom:1px solid #16302a;padding-bottom:8px}
 .settabs button small{opacity:.55;font-size:10px;margin-left:4px}
 .settabs button.on{border-color:var(--acc);color:var(--acc)}
@@ -323,6 +337,30 @@ HEADER_ICONS = """
   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.607 4.653H8.941L6.645 19.251H1.82L4.862 0h7.995c3.754 0 6.375 2.294 6.473 5.513-.648-.478-2.105-.86-3.722-.86m6.57 5.546c0 3.41-3.01 6.853-6.958 6.853h-2.493L11.595 24H6.74l1.845-11.538h3.592c4.208 0 7.346-3.634 7.153-6.949a5.24 5.24 0 0 1 2.848 4.686M9.653 5.546h6.408c.907 0 1.942.222 2.363.541-.195 2.741-2.655 5.483-6.441 5.483H8.714Z"/></svg></a>
 </span>
 """
+
+PAYPAL_URL = ("https://www.paypal.com/donate/?business=ronnyhase%40fn.de"
+              "&item_name=AscendedPanel%20Servermanager&currency_code=EUR")
+DISCORD_URL = "https://discord.gg/ark-ase-asa-hilfe"
+
+# Gemeinsamer Fuss: Copyright, Lizenz-Seite, Spenden- und Community-Link.
+# Der Lizenz-Link bekommt das Token per Skript, damit er auf jeder Seite funktioniert.
+FOOTER = """<footer class="sitefoot">
+<span class="fmeta">AscendedPanel __VERSION__ · © 2026 Ronny H. ·
+  <span data-t="foot.rights">alle Rechte vorbehalten</span></span>
+<span class="flinks">
+  <a data-tok="/license" data-t="foot.license" title="Lizenz">Lizenz</a>
+  <a href="__PAYPAL_URL__" target="_blank" rel="noopener" data-t="foot.donate"
+     data-ttitle="ui.donate" title="Spenden via PayPal">PayPal</a>
+  <a href="__DISCORD_URL__" target="_blank" rel="noopener" data-t="foot.discord"
+     data-ttitle="ui.discord" title="Discord: Ark-ASA-ASE-Hilfe">Discord-Community</a>
+</span>
+</footer>
+<script>(function(){var t=new URLSearchParams(location.search).get('token')||'';
+document.querySelectorAll('a[data-tok]').forEach(function(a){
+  a.href=a.dataset.tok+(t?'?token='+encodeURIComponent(t):'');});
+/* Der Fuss steht nach dem Hauptskript: Texte hier noch einmal in der aktiven Sprache setzen. */
+if(typeof applyLang==='function') applyLang(); loadRepHook();})();</script>"""
+FOOTER = FOOTER.replace("__PAYPAL_URL__", PAYPAL_URL).replace("__DISCORD_URL__", DISCORD_URL)
 
 DASH = """<!doctype html><html lang="__LANG__"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>AscendedPanel</title>
@@ -722,8 +760,7 @@ async function noahUpdate(){
   setTimeout(()=>location.reload(), 4000);
 }
 applyLang(); load(); loadHost(); checkNoah(); setInterval(load,3000); setInterval(loadHost,3000); loadRepHook();
-</script><footer style="text-align:center;padding:16px 0 10px;font-size:11.5px;color:var(--dim);
-letter-spacing:.04em">AscendedPanel __VERSION__ · © 2026 Ronny H.</footer>
+</script>__FOOTER__
 <div id="plModal" class="plModal"><div class="plBox">
   <div class="row" style="justify-content:space-between">
     <b id="plTitle">Spieler</b>
@@ -1614,8 +1651,7 @@ async function giveDirect(sid){
 }
 applyLang(); restoreTab(); setTimeout(restoreTab, 250); refresh(); updCheck(); renderCmds(); loadMods(); loadKeyState(); loadCfg(); loadWl(); loadSettings(); loadCluster(); loadSnaps(); loadBackups(); loadSchedule(); loadHooks();
 setInterval(refresh,5000); setInterval(updCheck,300000);
-</script><footer style="text-align:center;padding:16px 0 10px;font-size:11.5px;color:var(--dim);
-letter-spacing:.04em">AscendedPanel __VERSION__ · © 2026 Ronny H.</footer>
+</script>__FOOTER__
 <div id="unbanModal" class="plModal"><div class="plBox" style="min-width:min(520px,94vw)">
   <div class="row" style="justify-content:space-between">
     <b data-t="inst.unban">Entbannen</b>
@@ -1737,6 +1773,55 @@ document.addEventListener('click', function(ev){
 });
 </script>
 </body></html>"""
+
+LICENSE_PAGE = """<!doctype html><html lang="__LANG__"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>AscendedPanel · __TITLE__</title>
+<style>""" + SHARED_CSS + """</style></head><body>
+<canvas id="bg"></canvas>
+<header><h1>AscendedPanel</h1><span class="badge" data-t="license.title">__TITLE__</span>
+<span class="hostbar"><a href="/?token=__TOK__"><button>← Dashboard</button></a></span>""" + HEADER_ICONS + """</header>
+<main>
+  <section class="lic">
+    <div class="lichead"><h2>__TITLE__</h2>
+      <span class="meta">__SHORT__</span></div>
+    <pre class="lictext">__TEXT__</pre>
+    <p class="meta" style="margin:14px 0 0;color:var(--dim);font-size:11.5px">__HINT__</p>
+  </section>
+</main>""" + FOOTER + """
+<script>const L=__LANGJSON__;
+function applyLang(){document.querySelectorAll('[data-t]').forEach(function(e){
+  var k=e.dataset.t; if(L[k]) e.textContent=L[k]; });}
+applyLang();</script>
+<script>""" + BG_JS + """</script>
+</body></html>"""
+
+
+def license_text() -> str:
+    """Lizenztext in der aktiven Sprache aus der Datei LICENSE neben dem Paket."""
+    root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    for path in (os.path.join(root, "LICENSE"),
+                 os.path.expanduser("~/.local/share/ascendedpanel/LICENSE")):
+        if not os.path.isfile(path):
+            continue
+        with open(path, encoding="utf-8", errors="replace") as fh:
+            raw = fh.read().strip()
+        parts = raw.split("\n---\n")
+        if len(parts) >= 2:
+            return (parts[0] if i18n.lang() == "de" else parts[1]).strip()
+        return raw
+    return ("Copyright (c) 2026 Ronny H. (https://github.com/Ronny-H-79)\n\n"
+            + i18n.t("license.short"))
+
+
+def license_page(tok: str) -> str:
+    title = i18n.t("license.title")
+    return _render(LICENSE_PAGE
+                   .replace("__TITLE__", title)
+                   .replace("__SHORT__", i18n.t("license.short"))
+                   .replace("__HINT__", i18n.t("license.hint"))
+                   .replace("__TEXT__", html_escape(license_text()))
+                   .replace("__TOK__", urllib.parse.quote(tok)))
+
 
 PLAYER_ACTIONS = {
     "kick": "KickPlayer %s",
@@ -1926,6 +2011,10 @@ class Handler(BaseHTTPRequestHandler):
                 self._send(404, b"Instanz nicht gefunden")
                 return
             self._html(_render(INST.replace("__NAME__", inst.name).replace("__TOK__", tok)))
+            return
+
+        if path in ("/license", "/lizenz"):
+            self._html(license_page(tok))
             return
 
         if path.startswith("/static/maps/"):
