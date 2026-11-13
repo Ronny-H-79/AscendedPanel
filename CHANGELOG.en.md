@@ -1,3 +1,9 @@
+## [0.4.57] — 2026-11-13
+
+### Changed
+- **No test sending for bug reports any more** — neither in the UI nor on the console
+  (`report-test` removed). The report button only sends real reports.
+
 ## [0.4.56] — 2026-11-13
 
 ### Changed

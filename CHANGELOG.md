@@ -1,3 +1,9 @@
+## [0.4.57] — 2026-11-13
+
+### Geändert
+- **Kein Test-Versand mehr für Fehlermeldungen** — weder in der Oberfläche noch auf der Konsole
+  (`report-test` entfallen). Der Melde-Knopf schickt nur noch echte Meldungen.
+
 ## [0.4.56] — 2026-11-13
 
 ### Geändert

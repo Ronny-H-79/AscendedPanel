@@ -403,15 +403,6 @@ def cmd_report_hook(args: argparse.Namespace) -> None:
     print("Melde-Webhook gesetzt: %s" % report.maskiert())
 
 
-def cmd_report_test(args: argparse.Namespace) -> None:
-    """Testmeldung an den Melde-Webhook schicken."""
-    from . import report
-
-    inst = load(args.name)
-    ergebnis = report.test(inst)
-    print("Testmeldung:", "gesendet" if ergebnis.get("ok") else ergebnis.get("fehler"))
-
-
 def main(argv: list[str] | None = None) -> None:
     p = argparse.ArgumentParser(prog="AscendedPanel", description="ARK ASA Server-Manager")
     p.add_argument("--name", default=None, help="Instanzname (default: test)")
@@ -513,10 +504,6 @@ def main(argv: list[str] | None = None) -> None:
                          help="Melde-Webhook anzeigen/setzen/entfernen (ohne Wert: anzeigen)")
     prw.add_argument("url", nargs="?", default=None)
     prw.set_defaults(func=cmd_report_hook)
-
-    prt = sub.add_parser("report-test", parents=[common],
-                         help="Testmeldung an den Melde-Webhook schicken")
-    prt.set_defaults(func=cmd_report_test)
 
     args = p.parse_args(argv)
     if args.cmd != "wizard":
