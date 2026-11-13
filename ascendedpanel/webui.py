@@ -184,10 +184,6 @@ border:1px solid #1d3a32;border-radius:6px;background:#0b1116;transition:filter 
 .settabs button.on{border-color:var(--acc);color:var(--acc)}
 .setgroup{display:none}
 .setgroup.on{display:block}
-.logwrap{background:#070f13;border:1px solid #12241f;border-radius:4px;padding:6px 8px;min-width:0}
-.loghead{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin-bottom:4px}
-.cardlog{margin:0;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:9.5px;line-height:1.35;
-color:#9fb8ae;white-space:pre-wrap;word-break:break-word;max-height:132px;overflow:hidden}
 .card{border:1px solid #16302a;border-radius:6px;padding:14px 16px;background:rgba(11,17,22,.92);
 display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden;container-type:inline-size}
 .card .bgimg{position:absolute;inset:0;background-size:cover;background-position:center;

@@ -1,3 +1,9 @@
+## [Unveröffentlicht]
+
+### Geändert
+- **Ungenutzte Log-Styles entfernt** (`.logwrap`, `.loghead`, `.cardlog`) — Reste des
+  Karten-Logfensters von der Startseite.
+
 ## [0.4.35] — 2026-11-13
 
 ### Geändert
