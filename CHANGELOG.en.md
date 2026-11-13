@@ -1,5 +1,14 @@
 ## [Unreleased]
 
+### Added
+- **Item dialog with a list instead of free text.** The "Item" button opens a searchable list
+  of known items (tools, weapons, ammo, consumables, resources, armour) plus a quantity field.
+  Full blueprint paths live in `ascendedpanel/catalog.py`; a custom blueprint can still be
+  entered manually.
+- New endpoint `/api/catalog?q=` for the search.
+
+## [Unreleased]
+
 ### Changed
 - **Removed unused log styles** (`.logwrap`, `.loghead`, `.cardlog`) - leftovers of the log
   window on the overview cards.

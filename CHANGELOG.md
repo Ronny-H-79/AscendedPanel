@@ -1,5 +1,14 @@
 ## [Unveröffentlicht]
 
+### Neu
+- **Item-Dialog mit Liste statt Freitext.** Statt den Blueprint-Pfad zu tippen, öffnet der
+  Knopf „Item" eine durchsuchbare Liste bekannter Gegenstände (Werkzeuge, Waffen, Munition,
+  Verbrauch, Rohstoffe, Rüstungen) samt Menge. Der vollständige Pfad steckt in
+  `ascendedpanel/catalog.py`; ein eigener Blueprint lässt sich weiterhin eingeben.
+- Neuer Endpunkt `/api/catalog?q=` für die Suche.
+
+## [Unveröffentlicht]
+
 ### Geändert
 - **Ungenutzte Log-Styles entfernt** (`.logwrap`, `.loghead`, `.cardlog`) — Reste des
   Karten-Logfensters von der Startseite.
