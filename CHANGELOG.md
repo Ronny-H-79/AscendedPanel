@@ -1,3 +1,9 @@
+## [0.4.45] — 2026-11-13
+
+### Geändert
+- **Knopf „Spielerliste" aus dem Befehlsbereich entfernt.** Die Liste steht auf der
+  Instanzseite und im Dashboard-Fenster — als RCON-Knopf war sie doppelt.
+
 ## [0.4.44] — 2026-11-13
 
 ### Geändert
