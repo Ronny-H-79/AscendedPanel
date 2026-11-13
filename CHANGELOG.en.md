@@ -1,3 +1,10 @@
+## [0.4.39] — 2026-11-13
+
+### Added
+- **Note about the ban list.** The window now states that it only lists bans issued through
+  the panel — ARK does not expose the ban list over RCON. Bans made elsewhere can be lifted
+  via the EOS id field.
+
 ## [0.4.38] — 2026-11-13
 
 ### Added

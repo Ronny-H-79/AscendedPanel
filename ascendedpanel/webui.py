@@ -755,6 +755,7 @@ INST = """<!doctype html><html lang="__LANG__"><head><meta charset="utf-8">
     <div id="players">…</div></section>
 
   <section class="tab tab-overview on"><h2 data-t="inst.bans">Gesperrte Spieler</h2>
+    <div style="color:var(--dim);font-size:11px;line-height:1.45;margin:-4px 0 8px" data-t="inst.bans_hint">Nur Sperren, die über dieses Panel gesetzt wurden — ARK liefert die Ban-Liste nicht über RCON. Außerhalb gebannte Spieler über das EOS-ID-Feld entbannen.</div>
     <div id="bans"><span style="color:var(--dim)">–</span></div>
   </section>
 
