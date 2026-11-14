@@ -77,6 +77,10 @@ If you only want the **address** (with IP and token, ready to paste):
 /home/ascendedpanel/.local/bin/ascendedpanel url        # http://<IP>:8790/?token=...
 ```
 
+**The token never changes.** It is created once on first start and then reused from
+`~/.config/ascendedpanel/token` — restarts, updates and reinstalls of the panel keep it. Only if you
+delete that file does a new token get generated, and only then do old links stop working.
+
 Without the command (plain shell, if nothing is installed or the PATH is missing):
 
 ```bash

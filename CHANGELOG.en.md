@@ -1,3 +1,23 @@
+## [0.16] — 2026-11-14
+
+### Added
+- **Per-instance SFTP access.** Every instance card offers "SFTP einschalten" (enable): own user,
+  generated password, port from `sftp_base_port + running number` (default 2225), chroot to the
+  instance directory — FileZilla compatible (SFTP, not FTP). "New password" creates one instantly and
+  copies it to the clipboard, "off" closes the port again.
+- The service runs as `ascendedpanel-sftp` (systemd, user or system service). When no user bus is
+  reachable — e.g. the panel started via `nohup` — it starts detached with a PID file `sftp.pid` so the
+  access still works.
+- **Requirement:** `asyncssh` (`apt install python3-asyncssh`). Without it the panel keeps working;
+  only the SFTP service reports the missing module in the panel log.
+
+### Changed
+- **Token stays the same.** The web token is generated on the very first start only and read from
+  `~/.config/ascendedpanel/token` afterwards — restarts, updates and self-updates do not change it, so
+  old links keep working. A new token is only created when that file is deleted.
+- The instance JSON gained `sftp_enabled`, `sftp_user`, `sftp_password`, `sftp_port`; the card shows
+  `sftp://user@host:port`.
+
 ## [0.15] — 2026-11-14
 
 ### Added

@@ -528,6 +528,9 @@ async function load(){
       </div>
       <div class="meta">${i.map?i.map+' · ':''}Port ${i.port}${i.rcon_port?' · RCON '+i.rcon_port:''}</div>
       <div class="meta">${i.installed?('Build '+i.build+' · '+i.size_gb+' GB'):L['dash.not_installed']}</div>
+      <div class="meta">${i.sftp_enabled
+        ? `SFTP <code>sftp://${i.sftp_user}@${location.hostname}:${i.sftp_port}</code> · <a href="#" onclick="sftpAktion('${i.name}','neu');return false;">neues Passwort</a> · <a href="#" onclick="sftpAktion('${i.name}','aus');return false;">aus</a>`
+        : `<a href="#" onclick="sftpAktion('${i.name}','an');return false;">SFTP einschalten</a>`}</div>
       ${i.running?`<div class="stats">
         <div title="${L['dash.cpu_title'].replace('{p}',(i.cpu_pct!==undefined?i.cpu_pct:(i.cpu/(i.cores||navigator.hardwareConcurrency||1))).toFixed(1)).replace('{c}',(i.cpu/100).toFixed(1)).replace('{n}',i.cores||navigator.hardwareConcurrency||1)}"><b>${(i.cpu_pct!==undefined?i.cpu_pct:(i.cpu/(i.cores||navigator.hardwareConcurrency||1))).toFixed(1)}%</b><small>${L['dash.cpu']}</small></div>
         <div title="Spitze: ${i.ram_peak_gb||0} GB"><b>${i.ram_gb.toFixed(1)}G</b><small>${L['dash.ram']}</small></div>
@@ -587,6 +590,23 @@ async function loadHost(){
   }catch(e){}
 }
 window.LOCAL_ACT = window.LOCAL_ACT || {};
+async function sftpAktion(name,action){
+  // SFTP ein-/ausschalten oder neues Passwort holen; Passwort gleich in die Zwischenablage
+  try{
+    const roh=await api('/api/sftp?name='+encodeURIComponent(name)+'&action='+encodeURIComponent(action),{method:'POST'});
+    let r={}; try{ r=JSON.parse(roh); }catch(e){}
+    if(r && r.password){
+      toast('SFTP '+r.user+' · Port '+r.port+' · Passwort: '+r.password);
+      try{ await navigator.clipboard.writeText(r.password); }catch(e){}
+    } else if(r && r.info){
+      toast(r.info);
+    }
+    setTimeout(load,600);
+  }catch(e){
+    toast('SFTP: '+e);
+  }
+}
+
 async function act(name,what){
   window.LOCAL_ACT[name]={what:what,ts:Date.now()};   // sofort sperren, nicht erst nach dem Refresh
   load();
@@ -2464,6 +2484,35 @@ class Handler(BaseHTTPRequestHandler):
         inst = self._inst(q)
         if not inst:
             self._send(404, b"keine Instanz")
+            return
+
+        if path == "/api/sftp":
+            from . import sftp as sftpmod
+
+            aktion = q.get("action", ["status"])[0]
+            if aktion in ("an", "neu"):
+                if aktion == "neu":
+                    inst.sftp_password = sftpmod.generate_password()
+                daten = sftpmod.setze_zugang(inst)
+                registry.save(inst)
+                ok, meldung = sftpmod.ensure_service()
+                self._json({"ok": True,
+                            "info": ("SFTP aktiviert - " if ok
+                                     else "SFTP eingetragen, Dienst nicht gestartet: ") + meldung,
+                            **daten})
+                return
+            if aktion == "aus":
+                inst.sftp_enabled = False
+                registry.save(inst)
+                self._json({"ok": True, "info": "SFTP deaktiviert"})
+                return
+            self._json({
+                "ok": True,
+                "enabled": bool(inst.sftp_enabled),
+                "verfuegbar": sftpmod.verfuegbar(),
+                "user": inst.sftp_user or sftpmod.default_user(inst),
+                "port": inst.sftp_port or sftpmod.port_for(inst),
+            })
             return
 
         if path == "/api/install":

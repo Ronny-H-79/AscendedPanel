@@ -284,6 +284,13 @@ def cmd_web(args: argparse.Namespace) -> None:
         raise
 
 
+def cmd_sftp(args: argparse.Namespace) -> None:
+    """SFTP-Dienst im Vordergrund (systemd-Unit ascendedpanel-sftp)."""
+    from . import sftp
+
+    raise SystemExit(sftp.run())
+
+
 def cmd_version(args: argparse.Namespace) -> None:
     """Installierte Version und Stand auf GitHub anzeigen."""
     from . import selfupdate
@@ -488,6 +495,10 @@ def main(argv: list[str] | None = None) -> None:
     po.add_argument("--host", default="127.0.0.1")
     po.add_argument("--port", type=int, default=8790)
     po.set_defaults(func=cmd_open)
+
+    psftp = sub.add_parser("sftp", parents=[common],
+                           help="SFTP-Dienst fuer die Instanzen starten (Vordergrund)")
+    psftp.set_defaults(func=cmd_sftp)
 
     pv = sub.add_parser("version", parents=[common], help="Version und Update-Status anzeigen")
     pv.set_defaults(func=cmd_version)

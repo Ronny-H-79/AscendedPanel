@@ -91,6 +91,11 @@ bzw. `~/.config/ascendedpanel/token` bei einer Installation im eigenen Konto (Re
 Die fertige Adresse schreibt das Panel zusätzlich nach `/home/ascendedpanel/.config/ascendedpanel/url` (Rechte `600`) —
 `cat` genügt, sie bleibt auch nach einem Neustart aktuell.
 
+**Der Token bleibt immer gleich.** Er wird beim ersten Start einmal erzeugt und danach aus
+`~/.config/ascendedpanel/token` gelesen — Neustarts, Updates und Neuinstallationen des Panels ändern
+ihn nicht. Erst wenn du diese Datei löschst, entsteht ein neuer Token, und erst dann hören alte Links
+auf zu funktionieren.
+
 Instanzen legst du **im Browser** an: ausgegebene Adresse öffnen, Namen eintragen, Karte wählen,
 **Anlegen** drücken, dann **Installieren** auf der Karte. Danach braucht es kein Terminal mehr.
 

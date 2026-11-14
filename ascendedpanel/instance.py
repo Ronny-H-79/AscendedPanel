@@ -48,6 +48,11 @@ class Instance:
     cluster_id: str = ""                 # leer = Name der Instanz
     cluster_dir: str = ""                # leer = <instanz>/clusters (gemeinsam nutzbar)
     cluster_transfer_filtering: bool = True   # True = -NoTransferFromFiltering setzen
+    # SFTP-Zugang: eigener Benutzer je Instanz, Chroot auf den Instanzordner
+    sftp_enabled: bool = False
+    sftp_user: str = ""
+    sftp_password: str = ""
+    sftp_port: int = 0                   # 0 = Basis-Port + laufende Nummer
 
     # ------------------------------------------------------------------ Pfade
     @property

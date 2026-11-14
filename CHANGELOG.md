@@ -1,3 +1,23 @@
+## [0.16] — 2026-11-14
+
+### Neu
+- **SFTP-Zugang pro Instanz.** Jede Instanzkarte bietet „SFTP einschalten": eigener Benutzer,
+  generiertes Passwort, Port aus `sftp_base_port + laufender Nummer` (Standard 2225), Chroot auf den
+  Instanzordner — FileZilla-kompatibel (SFTP, kein FTP). „Neues Passwort" erzeugt sofort eines und
+  kopiert es in die Zwischenablage, „aus" schließt den Port wieder.
+- Der Dienst läuft als `ascendedpanel-sftp` (systemd, Benutzer- oder Systemdienst). Ist kein
+  Benutzerbus erreichbar — etwa weil das Panel per `nohup` läuft — startet er sich abgekoppelt mit
+  PID-Datei `sftp.pid`, damit der Zugang trotzdem steht.
+- **Voraussetzung:** `asyncssh` (`apt install python3-asyncssh`). Fehlt es, läuft das Panel
+  unverändert weiter; nur der SFTP-Dienst meldet im Panel-Log, was fehlt.
+
+### Geändert
+- **Token bleibt gleich.** Der Web-Token wird nur beim allerersten Start erzeugt und danach immer aus
+  `~/.config/ascendedpanel/token` gelesen — Neustart, Update und Selbst-Update ändern ihn nicht.
+  Alte Links funktionieren weiter; ein neuer Token entsteht erst, wenn die Datei gelöscht wird.
+- Instanz-JSON kennt `sftp_enabled`, `sftp_user`, `sftp_password`, `sftp_port`; die Karte zeigt
+  `sftp://benutzer@host:port`.
+
 ## [0.15] — 2026-11-14
 
 ### Neu
