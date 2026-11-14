@@ -1,3 +1,11 @@
+## [Unveröffentlicht]
+
+### Geändert
+- **Kein zusätzliches Fenster mehr beim Anlegen und Installieren.** Bisher öffnete das Panel für die
+  neue Instanz ein eigenes Fenster mit der Einrichtungsseite. Jetzt bleibt das Anlegen in der
+  Übersicht (die neue Karte erscheint dort), und die Installation öffnet ihren Fortschritt im selben
+  Tab.
+
 ## [0.17] — 2026-11-14
 
 ### Neu
