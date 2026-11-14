@@ -128,7 +128,7 @@ def create(name: str, map_name: str, port: int | None = None,
 
 
 def installed(inst: Instance) -> bool:
-    return os.path.exists(inst.exe)
+    return os.path.exists(inst.server_exe)
 
 
 def build_id(inst: Instance) -> str | None:

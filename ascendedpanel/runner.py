@@ -131,8 +131,8 @@ def start(inst: Instance, wait: int = 0) -> int:
             "Port %s ist schon belegt - vermutlich von einer anderen Instanz oder einem anderen "
             "Serverprogramm. Ports in den Einstellungen aendern (Spiel, Query, RCON)."
             % ", ".join(str(p) for p in busy))
-    if not os.path.exists(inst.exe):
-        raise RunnerError("Server nicht installiert: %s fehlt" % inst.exe)
+    if not os.path.exists(inst.server_exe):
+        raise RunnerError("Server nicht installiert: %s fehlt" % inst.server_exe)
     inst.write_ini()
     try:
         os.makedirs(inst.cluster_path, exist_ok=True)

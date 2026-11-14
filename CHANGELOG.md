@@ -1,3 +1,17 @@
+## [0.15] — 2026-11-14
+
+### Neu
+- **AsaApi-Unterstuetzung.** Eine Instanz kann jetzt über den ArkApi-Lader starten: Ist `asaapi`
+  gesetzt und liegt `ArkApi/AsaApiLoader.exe` in der Instanz, wird dieser statt
+  `ArkAscendedServer.exe` gestartet. Damit laufen Plugins im Spiel (z. B. das QuestPlugin mit
+  `!quests`/`!argy`). Die Installationsprüfung und der Startschutz orientieren sich weiterhin an
+  der echten Server-EXE, damit eine Instanz ohne Loader nicht als „nicht installiert" gilt.
+
+### Geändert
+- **Tribe-Logs über RCON.** Der Startbefehl enthält zusätzlich `-ServerRCONOutputTribeLogs`; zusammen
+  mit `-servergamelog` und `-servergamelogincludetribelogs` kommen Claim-/Tame-Zeilen sowohl in die
+  Serverlogdatei als auch in den RCON-Logpuffer (CrossArkChat).
+
 ## [0.14] — 2026-11-13
 
 ### Behoben

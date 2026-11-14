@@ -1,3 +1,17 @@
+## [0.15] — 2026-11-14
+
+### Added
+- **AsaApi support.** An instance can now start through the ArkApi loader: when `asaapi` is set and
+  `ArkApi/AsaApiLoader.exe` exists inside the instance, the panel launches the loader instead of
+  `ArkAscendedServer.exe`, which is what makes in-game plugins work (e.g. the quest plugin with
+  `!quests`/`!argy`). Install detection and the start guard still check the real server binary, so an
+  instance without a loader is not reported as "not installed".
+
+### Changed
+- **Tribe logs over RCON.** The start command now also passes `-ServerRCONOutputTribeLogs`; together
+  with `-servergamelog` and `-servergamelogincludetribelogs` claim/tame lines reach both the server log
+  file and the RCON log buffer (CrossArkChat).
+
 ## [0.14] — 2026-11-13
 
 ### Fixed

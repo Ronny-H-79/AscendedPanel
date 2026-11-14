@@ -8,6 +8,7 @@ from dataclasses import dataclass, asdict, field
 
 SERVER_APP_ID = "2430930"
 EXE_REL = os.path.join("ShooterGame", "Binaries", "Win64", "ArkAscendedServer.exe")
+LOADER_REL = os.path.join("ShooterGame", "Binaries", "Win64", "AsaApiLoader.exe")
 CONFIG_REL = os.path.join("ShooterGame", "Saved", "Config", "WindowsServer")
 LOG_REL = os.path.join("ShooterGame", "Saved", "Logs", "ShooterGame.log")
 
@@ -42,6 +43,8 @@ class Instance:
     max_restarts_per_hour: int = 4
     webhook_url: str = ""
     headless: bool = True
+    asaapi: bool = False                 # True = Start ueber ArkApi/AsaApiLoader.exe (Plugins im Spiel)
+
     cluster_id: str = ""                 # leer = Name der Instanz
     cluster_dir: str = ""                # leer = <instanz>/clusters (gemeinsam nutzbar)
     cluster_transfer_filtering: bool = True   # True = -NoTransferFromFiltering setzen
@@ -49,7 +52,18 @@ class Instance:
     # ------------------------------------------------------------------ Pfade
     @property
     def exe(self) -> str:
+        """Startdatei: normaler Server, mit asaapi der ArkApi-Lader (Plugins im Spiel)."""
+        if getattr(self, "asaapi", False) and os.path.exists(self.loader_exe):
+            return self.loader_exe
+        return self.server_exe
+
+    @property
+    def server_exe(self) -> str:
         return os.path.join(self.directory, EXE_REL)
+
+    @property
+    def loader_exe(self) -> str:
+        return os.path.join(self.directory, LOADER_REL)
 
     @property
     def config_dir(self) -> str:
@@ -188,6 +202,7 @@ class Instance:
             "-NoBattlEye",
             "-servergamelog",
             "-servergamelogincludetribelogs",
+            "-ServerRCONOutputTribeLogs",
             "-ServerPlatform=All",
             "-MaxPlayers=%d" % self.max_players,
             "-ClusterDirOverride=" + self.cluster_path,
