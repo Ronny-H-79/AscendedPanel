@@ -4,7 +4,9 @@
 - **Datei-Browser im Panel.** Der Reiter „Dateien" der Instanzseite zeigt den Instanzordner im
   Browser: Ordner öffnen, Dateien hochladen (mehrere gleichzeitig), herunterladen, umbenennen,
   löschen und neue Ordner anlegen. Alles bleibt im Instanzordner — Pfade mit `..` werden abgewiesen,
-  Downloads laufen als Stream.
+  Downloads laufen als Stream. **Dateien lesen und ändern:** Klick auf den Namen öffnet den Inhalt im
+  Browser (Text bis 2 MB, Binärdateien abgewiesen), „Speichern" schreibt zurück und legt eine
+  `.bak`-Sicherung an — praktisch für `GameUserSettings.ini` direkt im Panel.
 - **SFTP-Zugang pro Instanz.** Jede Instanzkarte bietet „SFTP einschalten": eigener Benutzer,
   generiertes Passwort, Port aus `sftp_base_port + laufender Nummer` (Standard 2225), Chroot auf den
   Instanzordner — FileZilla-kompatibel (SFTP, kein FTP). „Neues Passwort" erzeugt sofort eines und
