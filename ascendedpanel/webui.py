@@ -491,28 +491,6 @@ DASH = """<!doctype html><html lang="__LANG__"><head><meta charset="utf-8">
 </div>
 
 <main>
-  <section class="tab tab-files" id="filessec">
-    <h2 data-t="files.title">Dateien</h2>
-    <div class="row" style="gap:8px;flex-wrap:wrap;align-items:center">
-      <button onclick="dateien(DATEI_PFAD)" data-t="files.reload">Aktualisieren</button>
-      <button onclick="document.getElementById('dateiUpload').click()" data-t="files.upload">Hochladen</button>
-      <button onclick="dMkdir()" data-t="files.mkdir">Neuer Ordner</button>
-      <input type="file" id="dateiUpload" multiple style="display:none" onchange="dUpload(this)">
-      <span class="meta" id="dateiStatus"></span>
-    </div>
-    <div class="meta" id="dateiKrumen" style="margin:12px 0 6px"></div>
-    <div id="dateiListe"><div class="meta">…</div></div>
-
-    <h2 style="margin-top:26px" data-t="sftp.title">SFTP-Zugang</h2>
-    <div id="sftpbox"><div class="meta">…</div></div>
-    <div class="row" style="margin-top:10px;flex-wrap:wrap;gap:8px">
-      <button id="sftpToggle" onclick="sftpAktion(NAME,'an')">SFTP einschalten</button>
-      <button id="sftpNew" onclick="sftpAktion(NAME,'neu')" style="display:none">Neues Passwort</button>
-      <button id="sftpCopy" onclick="sftpCopy()" style="display:none" data-t="sftp.copy">Adresse kopieren</button>
-    </div>
-    <div class="meta" id="sftphint" style="margin-top:10px"></div>
-  </section>
-
   <section><h2 data-t="dash.new_instance">Neue Instanz</h2>
     <input id="nname" data-tp="dash.name_ph" placeholder="Name">
     <select id="nmap">__MAPS__</select>
@@ -940,6 +918,27 @@ INST = """<!doctype html><html lang="__LANG__"><head><meta charset="utf-8">
   <button data-tab="server" onclick="showTab('server',this)" data-t="tabs.manage">Verwaltung</button>
 </div>
 <main>
+    <section class="tab tab-files" id="filessec">
+    <h2 data-t="files.title">Dateien</h2>
+    <div class="row" style="gap:8px;flex-wrap:wrap;align-items:center">
+      <button onclick="dateien(DATEI_PFAD)" data-t="files.reload">Aktualisieren</button>
+      <button onclick="document.getElementById('dateiUpload').click()" data-t="files.upload">Hochladen</button>
+      <button onclick="dMkdir()" data-t="files.mkdir">Neuer Ordner</button>
+      <input type="file" id="dateiUpload" multiple style="display:none" onchange="dUpload(this)">
+      <span class="meta" id="dateiStatus"></span>
+    </div>
+    <div class="meta" id="dateiKrumen" style="margin:12px 0 6px"></div>
+    <div id="dateiListe"><div class="meta">…</div></div>
+
+    <h2 style="margin-top:26px" data-t="sftp.title">SFTP-Zugang</h2>
+    <div id="sftpbox"><div class="meta">…</div></div>
+    <div class="row" style="margin-top:10px;flex-wrap:wrap;gap:8px">
+      <button id="sftpToggle" onclick="sftpAktion(NAME,'an')">SFTP einschalten</button>
+      <button id="sftpNew" onclick="sftpAktion(NAME,'neu')" style="display:none">Neues Passwort</button>
+      <button id="sftpCopy" onclick="sftpCopy()" style="display:none" data-t="sftp.copy">Adresse kopieren</button>
+    </div>
+    <div class="meta" id="sftphint" style="margin-top:10px"></div>
+  </section>
   <section class="tab tab-overview on wide" id="setupsec" style="display:none">
     <h2 data-t="inst.setup">Installation</h2>
     <div id="setupbar" style="height:12px;border-radius:6px;background:rgba(255,255,255,.08);overflow:hidden;margin-bottom:6px">
@@ -1207,7 +1206,7 @@ function dGroesse(n){
   while(v>=1024 && i<u.length-1){ v/=1024; i++; }
   return (i? v.toFixed(1):v)+' '+u[i];
 }
-function dEsc(t){ return String(t).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function dEsc(t){ return String(t).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
 async function dateien(pfad){
   DATEI_PFAD = (pfad||'').replace(/^\/+|\/+$/g,'');
@@ -1215,8 +1214,9 @@ async function dateien(pfad){
   try{ d = JSON.parse(await api('/api/files?path='+encodeURIComponent(DATEI_PFAD))); }
   catch(e){ const s=document.getElementById('dateiStatus'); if(s) s.textContent='Fehler: '+e; return; }
   const teile = DATEI_PFAD ? DATEI_PFAD.split('/') : [];
-  let kr = '<a href="#" onclick="dateien(\'\');return false;">/</a>';
-  teile.forEach((t,i)=>{ kr += ' <span style="opacity:.5">›</span> <a href="#" onclick="dateien(\''+dEsc(teile.slice(0,i+1).join('/'))+'\');return false;">'+dEsc(t)+'</a>'; });
+  let kr = `<a href="#" onclick="dateien('')">/</a>`;
+  teile.forEach((t,i)=>{ const pfad = dEsc(teile.slice(0,i+1).join('/'));
+    kr += ` <span style="opacity:.5">›</span> <a href="#" onclick="dateien('${pfad}')">${dEsc(t)}</a>`; });
   document.getElementById('dateiKrumen').innerHTML = kr;
 
   const zeilen = (d.eintraege||[]).map(e=>{
