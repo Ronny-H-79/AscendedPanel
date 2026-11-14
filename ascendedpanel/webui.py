@@ -28,6 +28,7 @@ from . import __version__
 from . import mods as modlib
 from . import registry
 from . import runner
+from . import installer
 from . import snapshots as snap
 from . import supervisor
 from . import whitelist as wl
@@ -571,6 +572,7 @@ async function load(){
       </div>
       <div class="meta">${i.map?i.map+' · ':''}Port ${i.port}${i.rcon_port?' · RCON '+i.rcon_port:''}</div>
       <div class="meta">${i.installed?('Build '+i.build+' · '+i.size_gb+' GB'):L['dash.not_installed']}</div>
+      ${i.api_version?`<div class="meta">AsaApi ${i.api_version}${i.api_update?` <span class="badge warn">\u25b2 ${i.api_update.available}</span>`:''} · <a href="#" onclick="asaApiToggle('${i.name}',${i.asaapi?0:1});return false;">${i.asaapi?L['common.disable']:L['common.enable']}</a></div>`:''}
       <div class="meta">${i.sftp_enabled
         ? `SFTP <code>sftp://${i.sftp_user}@${location.hostname}:${i.sftp_port}</code> · <a href="#" onclick="sftpAktion('${i.name}','neu');return false;">neues Passwort</a> · <a href="#" onclick="sftpAktion('${i.name}','aus');return false;">aus</a>`
         : `<a href="#" onclick="sftpAktion('${i.name}','an');return false;">SFTP einschalten</a>`}</div>
@@ -594,20 +596,30 @@ async function load(){
           const bStart = (dis)=>`<button onclick="act('${i.name}','start')"${dis}>${L['common.start']}</button>`;
           const bRestart=(dis)=>`<button onclick="act('${i.name}','restart')"${dis}>${L['common.restart']}</button>`;
           const bUpdate = (dis)=>`<button onclick="updInst('${i.name}')"${dis}>${L['common.update']}</button>`;
+          const bApi    = (dis)=>{
+            // Knopf nur, wenn er etwas zu tun hat: AsaApi fehlt oder es gibt ein Update.
+            const _u=i.api_update, _have=i.api_version||'';
+            if(_have && !_u) return '';
+            const _tip = _u ? L['card.asaapi_new'].replace('{v}', _u.available) : L['card.asaapi_hint'];
+            const _lbl = _u ? `${L['card.asaapi']} <span class="badge warn">\u25b2 ${_u.available}</span>`
+                            : L['card.asaapi'];
+            return `<button onclick="apiInst('${i.name}')"${dis} title="${_tip}">${_lbl}</button>`;
+          };
           const bStop   = (dis)=>`<button class="danger" onclick="act('${i.name}','stop')"${dis}>${L['common.stop']}</button>`;
           const bDel    = (dis)=>`<button class="danger" onclick="delInst('${i.name}',${i.size_gb||0})"${dis}>${L['common.delete']}</button>`;
           if(!i.installed)
             return `<button class="primary" onclick="install('${i.name}')"${startingNow||stoppingNow?off:''}>${L['dash.install']}</button>
-                    <button class="danger" onclick="delInst('${i.name}',0)"${startingNow||stoppingNow?off:''}>${L['common.delete']}</button>`;
+                    <button class="danger" onclick="delInst('${i.name}',0)"${startingNow||stoppingNow?off:''}>${L['common.delete']}</button>
+                    <div class="meta" style="flex-basis:100%;margin-top:6px">${L['dash.install_asaapi']}</div>`;
           // Menue bleibt immer bedienbar - von dort kommt man an Log, Konfig und alles weitere.
           if(stoppingNow)
-            return menu('')+bStart(off)+bRestart(off)+bUpdate(off)+bStop(off)+bDel(off);
+            return menu('')+bStart(off)+bRestart(off)+bUpdate(off)+bApi(off)+bStop(off)+bDel(off);
           if(startingNow)
-            return menu('')+bStart(off)+bRestart(off)+bUpdate(off)+bStop('')+bDel(off);
+            return menu('')+bStart(off)+bRestart(off)+bUpdate(off)+bApi(off)+bStop('')+bDel(off);
           // Update ist bewusst auch bei gestoppter Instanz bedienbar: genau dann
           // lassen sich die Serverdateien tauschen.
           return menu('')+bStart(i.running?off:'')+bRestart(i.running?'':off)+
-                 bUpdate('')+bStop(i.running?'':off)+bDel('');
+                 bUpdate('')+bApi('')+bStop(i.running?'':off)+bDel('');
         })()}
       </div>
       </div>
@@ -667,6 +679,18 @@ async function updInst(name){
   try{
     await api('/api/update?name='+encodeURIComponent(name), {method:'POST'});
     alert(L['msg.update_started']);
+    setTimeout(load, 1500);
+  }catch(e){ alert(String(e)); }
+}
+async function apiInst(name){
+  // AsaApi samt Plugins installieren; vorhandene Plugins und der Offsets-Cache bleiben.
+  if(!confirm(L['msg.confirm_asaapi'])) return;
+  window.LOCAL_ACT = window.LOCAL_ACT || {};
+  window.LOCAL_ACT[name]={what:'asaapi',ts:Date.now()};
+  load();
+  try{
+    await api('/api/asaapi?name='+encodeURIComponent(name), {method:'POST'});
+    alert(L['msg.asaapi_started']);
     setTimeout(load, 1500);
   }catch(e){ alert(String(e)); }
 }
@@ -1006,6 +1030,18 @@ INST = """<!doctype html><html lang="__LANG__"><head><meta charset="utf-8">
       <span class="meta" id="mods-count"></span>
     </div>
     <div id="mods">…</div>
+    <div class="setrow" style="margin:10px 0 0">
+      <label><input type="checkbox" id="asaapion" onchange="setAsaApi(this.checked)" style="width:auto;margin-right:6px">
+        <b data-t="mods.asaapi">AsaApi aktiv (Plugins im Spiel)</b>
+        <small><span data-t="mods.asaapi_state" id="asaapistate"></span></small></label>
+    </div>
+    <div class="setrow" style="margin:10px 0 0">
+      <label><b data-t="mods.ids">Mod-IDs (Komma-getrennt)</b></label>
+      <input id="modids" data-tp="mods.ids_ph" placeholder="947033, 1234567" autocomplete="off"
+             onkeydown="if(event.key==='Enter')saveModIds()">
+    </div>
+    <div class="row"><button onclick="saveModIds()" data-t="common.save">Speichern</button>
+      <span class="meta" id="modidsmsg"></span></div>
     <div class="row" style="margin-top:8px">
       <input id="modid" data-tp="mods.search_ph" placeholder="Mod suchen oder ID eingeben"
         oninput="suggestMods()" onkeydown="if(event.key==='Enter')searchMods()"
@@ -1753,11 +1789,16 @@ async function loadMods(){
     const active=(d.active||[]), inactive=(d.inactive||[]);
     const anz=document.getElementById('mods-count');
     if(anz) anz.textContent = '· ' + (active.length+inactive.length);
+    const feld=document.getElementById('modids');
+    if(feld && document.activeElement!==feld){
+      feld.value=active.map(m=>m.id).join(', ');
+    }
     document.getElementById('mods').innerHTML =
       `<div class="meta" style="margin:6px 0 2px">${L['mods.active']} (${active.length})</div>` +
       (active.length?active.map(m=>modRow(m,true)).join(''):'<span style="color:var(--dim)">– '+L['mods.none_active']+' –</span>') +
       `<div class="meta" style="margin:14px 0 2px">${L['mods.inactive']} (${inactive.length})</div>` +
       (inactive.length?inactive.map(m=>modRow(m,false)).join(''):'<span style="color:var(--dim)">– '+L['mods.none_inactive']+' –</span>');
+    loadAsaApiState();
     if((d.missing_meta||[]).length && !META_BUSY){
       META_BUSY=true;
       api('/api/mods/refresh',{method:'POST'}).then(()=>{META_BUSY=false; loadMods();}).catch(()=>{META_BUSY=false;});
@@ -1765,6 +1806,41 @@ async function loadMods(){
   }catch(e){}
 }
 let META_BUSY=false;
+async function asaApiToggle(name, an){
+  try{
+    const r=await api('/api/asaapi?name='+encodeURIComponent(name)+'&enabled='+(an?'1':'0'),{method:'POST'});
+    if(r) alert(r);
+    load();
+  }catch(e){ alert(String(e)); }
+}
+async function setAsaApi(an){
+  // AsaApi ein-/ausschalten: betrifft die Startdatei (AsaApiLoader.exe vs ArkAscendedServer.exe)
+  const msg=document.getElementById('modidsmsg');
+  try{
+    const r=await api('/api/asaapi?name='+encodeURIComponent(NAME)+'&enabled='+(an?'1':'0'),{method:'POST'});
+    if(msg) msg.textContent=r;
+    loadAsaApiState();
+  }catch(e){ if(msg) msg.textContent='Fehler: '+e; }
+}
+async function loadAsaApiState(){
+  try{
+    const s=JSON.parse(await api('/api/asaapi/state?name='+encodeURIComponent(NAME)));
+    const cb=document.getElementById('asaapion');
+    if(cb) cb.checked=!!s.enabled;
+    const st=document.getElementById('asaapistate');
+    if(st) st.textContent = s.version ? ('v'+s.version+(s.enabled?'':' · aus')) : (s.enabled?'':'nicht installiert');
+  }catch(e){}
+}
+async function saveModIds(){
+  // Die ganze Mod-Liste in einem Feld, Komma/Leerzeichen/Zeilenumbruch getrennt
+  const feld=document.getElementById('modids');
+  const msg=document.getElementById('modidsmsg');
+  try{
+    const r=await api('/api/mods/set?ids='+encodeURIComponent((feld.value||'').trim()),{method:'POST'});
+    if(msg) msg.textContent=r;
+    loadMods();
+  }catch(e){ if(msg) msg.textContent='Fehler: '+e; }
+}
 async function enableMod(id){
   document.getElementById('modout').textContent=await api('/api/mods/add?id='+id,{method:'POST'});
   loadMods();
@@ -2575,6 +2651,17 @@ class Handler(BaseHTTPRequestHandler):
                 if obj:
                     row = registry.info(obj)
                     row["action"] = ACTIONS.get(row["name"], "")
+                    # AsaApi: installierte Version und Hinweis auf ein neueres Release.
+                    # asaapi_update() haelt das Ergebnis 30 Minuten im Cache, damit die
+                    # Uebersicht nicht bei jedem Aufruf die GitHub-API fragt.
+                    row["asaapi"] = bool(getattr(obj, "asaapi", False))
+                    try:
+                        row["api_version"] = installer.asaapi_tag(obj)
+                        upd = installer.asaapi_update(obj)
+                        row["api_update"] = upd if upd.get("update") else None
+                    except Exception:  # noqa: BLE001 - Anzeige darf nie brechen
+                        row["api_version"] = ""
+                        row["api_update"] = None
                     out.append(row)
             self._json(out)
             return
@@ -2669,6 +2756,9 @@ class Handler(BaseHTTPRequestHandler):
             self._json({"url": inst.webhook_url if inst else "", "log": notify_mod.log_path(inst) if inst else ""})
         elif path == "/api/commands":
             self._json([i18n.command(c) for c in cmdreg.COMMANDS])
+        elif path == "/api/asaapi/state":
+            self._json({"enabled": bool(getattr(inst, "asaapi", False)),
+                        "version": installer.asaapi_tag(inst) or ""})
         elif path == "/api/mods":
             data = modlib.list_all_enriched(inst)
             data["size_mb"] = modlib.mod_size_mb(inst)
@@ -2894,8 +2984,45 @@ class Handler(BaseHTTPRequestHandler):
                 self._send(200, b"Installation laeuft bereits")
                 return
             _start_install(inst)
-            self._send(200, ("Installation gestartet: %s\nDauer je nach Leitung 10-30 Minuten."
+            self._send(200, ("Installation gestartet: %s\nDauer je nach Leitung 10-30 Minuten.\n"
+                             "AsaApi (Plugins im Spiel) wird am Ende automatisch mitinstalliert."
                              % inst.directory).encode())
+            return
+        if path == "/api/asaapi":
+            if q.get("enabled", [""])[0] in ("0", "1"):
+                an = q.get("enabled", [""])[0] == "1"
+                if an and not os.path.exists(inst.loader_exe):
+                    self._send(200, "AsaApi ist nicht installiert - Dateien fehlen".encode())
+                    return
+                inst.asaapi = an
+                registry.save(inst)
+                self._send(200, ("AsaApi %s - Server neu starten, damit es greift."
+                                 % ("aktiv" if an else "aus (Start ohne Plugins)")).encode())
+                return
+            if inst.name in ACTIONS:
+                self._send(409, b"Es laeuft bereits eine Aktion fuer diese Instanz")
+                return
+
+            def _asaapi() -> None:
+                _log_step(inst, "asaapi: Installation angefordert")
+                ACTIONS[inst.name] = "asaapi"
+                try:
+                    res = installer.install_asaapi(
+                        inst, log=lambda m: _log_step(inst, "asaapi: %s" % m))
+                    if res.get("ok"):
+                        inst.asaapi = True
+                        registry.save(inst)
+                        _log_step(inst, "asaapi: %s installiert - Start ueber AsaApiLoader.exe "
+                                        "(Neustart noetig)" % res.get("tag", ""))
+                    else:
+                        _log_step(inst, "asaapi fehlgeschlagen: %s" % res.get("error", "?"))
+                except Exception as exc:  # noqa: BLE001 - Grund muss sichtbar werden
+                    _log_step(inst, "asaapi fehlgeschlagen: %s" % exc)
+                finally:
+                    ACTIONS.pop(inst.name, None)
+
+            threading.Thread(target=_asaapi, daemon=True).start()
+            self._json({"ok": True, "info": "AsaApi-Installation gestartet"})
             return
         if (path == "/api/start") and runner.is_running(inst):
             self._json({"ok": True, "info": "laeuft bereits"})
@@ -3003,6 +3130,16 @@ class Handler(BaseHTTPRequestHandler):
                                  % q.get("id", [""])[0]).encode())
             except ValueError as exc:
                 self._send(200, ("Fehler: %s" % exc).encode())
+        elif path == "/api/mods/set":
+            roh = q.get("ids", [""])[0]
+            ids = [t for t in re.split(r"[,;\s]+", roh) if t]
+            falsch = [t for t in ids if not t.isdigit()]
+            if falsch:
+                self._send(200, ("Fehler: keine Mod-ID: %s" % ", ".join(falsch[:5])).encode())
+                return
+            modlib.set_mods(inst, ids)
+            self._send(200, ("%d Mod-ID(s) eingetragen - Server neu starten, damit er sie laedt."
+                             % len({int(i) for i in ids})).encode())
         elif path == "/api/mods/remove":
             modlib.remove_mod(inst, q.get("id", [""])[0])
             self._send(200, ("Mod %s aus der Liste entfernt." % q.get("id", [""])[0]).encode())

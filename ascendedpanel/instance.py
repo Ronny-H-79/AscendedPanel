@@ -147,10 +147,18 @@ class Instance:
         cp2.optionxform = str
         if os.path.exists(self.game_ini):
             cp2.read(self.game_ini, encoding="utf-8-sig")
-        if not cp2.has_section("/script/shootergame.shootergamemode"):
-            cp2.add_section("/script/shootergame.shootergamemode")
+        # Sektion unabhängig von der Schreibweise finden: ARK normalisiert beim Start auf
+        # "[/Script/ShooterGame.ShooterGameMode]". Wer stur die Kleinschreibung anlegt,
+        # erzeugt eine zweite Sektion - und ARK liest dann die erste (falsche) ActiveMods-Zeile.
+        ziel = "/script/shootergame.shootergamemode"
+        for vorhanden in cp2.sections():
+            if vorhanden.strip().lower() == ziel:
+                ziel = vorhanden
+                break
+        if not cp2.has_section(ziel):
+            cp2.add_section(ziel)
         cp2.set(
-            "/script/shootergame.shootergamemode",
+            ziel,
             "ActiveMods",
             ",".join(str(m) for m in self.mods),
         )
@@ -193,7 +201,7 @@ class Instance:
 
     # ------------------------------------------------------------------ Start
     def launch_argv(self) -> list[str]:
-        # Map-URL wie bei AMP: ASA liest Port, RCON und Admin-Passwort aus der URL.
+        # Map-URL: ASA liest Port, RCON und Admin-Passwort aus der URL.
         # ServerAdminPassword MUSS die letzte ?-Option sein, sonst schluckt sie den Rest.
         url = "%s?listen?Port=%d?QueryPort=%d?RCONEnabled=True?RCONServerGameLogBuffer=600?RCONPort=%d" % (
             self.map, self.port, self.query_port, self.rcon_port)

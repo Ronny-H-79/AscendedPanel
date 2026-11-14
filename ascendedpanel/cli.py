@@ -100,6 +100,27 @@ def cmd_update(args: argparse.Namespace) -> None:
     sys.exit(0 if result["ok"] else 1)
 
 
+def cmd_asaapi(args: argparse.Namespace) -> None:
+    """AsaApi (Plugins im Spiel) installieren und den Start umstellen."""
+    from . import installer
+
+    inst = load(args.name)
+    print("AsaApi wird installiert (Quelle: GitHub-Release ArkServerApi/AsaApi)")
+    result = installer.install_asaapi(inst, log=lambda line: print("  " + line))
+    if result.get("ok"):
+        print("AsaApi %s installiert" % result.get("tag", "?"))
+        if args.no_enable:
+            print("Start bleibt bei ArkAscendedServer.exe (--no-enable)")
+        else:
+            inst.asaapi = True
+            inst.save(conf_path(inst.name))
+            print("Start ueber AsaApiLoader.exe aktiviert - Neustart noetig")
+    else:
+        print("Fehlgeschlagen: %s" % result.get("error", "unbekannt"))
+    print("Log: %s" % result.get("log", ""))
+    sys.exit(0 if result.get("ok") else 1)
+
+
 def cmd_supervise(args: argparse.Namespace) -> None:
     import threading
     import time as _time
@@ -395,6 +416,7 @@ def cmd_wizard(args: argparse.Namespace) -> None:
         print(t("wiz.downloading"))
         result = installer.install_server(inst, log=lambda line: None)
         print(t("wiz.done", r=("ok" if result["ok"] else "failed"), l=result["log"]))
+        # AsaApi installiert install_server() selbst mit - keine Extra-Frage mehr.
 
     if input(t("wiz.service_q") + " ").strip().lower() in ("j", "y", "ja", "ja", "yes"):
         unit = os.path.expanduser("~/.config/systemd/user")
@@ -500,6 +522,11 @@ def main(argv: list[str] | None = None) -> None:
                            help="SFTP-Dienst fuer die Instanzen starten (Vordergrund)")
     psftp.set_defaults(func=cmd_sftp)
 
+    paa = sub.add_parser("asaapi", parents=[common],
+                        help="AsaApi + Plugins installieren, Start umstellen")
+    paa.add_argument("--no-enable", action="store_true",
+                     help="asaapi-Flag nicht setzen (Start bleibt bei ArkAscendedServer.exe)")
+    paa.set_defaults(func=cmd_asaapi)
     pv = sub.add_parser("version", parents=[common], help="Version und Update-Status anzeigen")
     pv.set_defaults(func=cmd_version)
 

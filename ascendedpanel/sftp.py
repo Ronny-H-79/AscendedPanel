@@ -5,7 +5,7 @@ und Port stehen in der Instanz-JSON (`sftp_enabled`, `sftp_user`, `sftp_password
 `sftp_port`); ist `sftp_port` 0, wird `sftp_base_port + laufende Nummer` benutzt.
 
 Der Dienst haengt nicht am Laufzeitzustand der Instanz: Dateien hochladen geht auch,
-waehrend der Server aus ist (so macht es AMP auch).
+waehrend der Server aus ist.
 
 `asyncssh` ist eine optionale Abhaengigkeit. Fehlt sie, laeuft das Panel normal weiter,
 nur dieser Dienst startet nicht und sagt im Panel-Log, was fehlt.
