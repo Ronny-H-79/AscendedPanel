@@ -1,3 +1,10 @@
+## [0.18] — 2026-11-15
+
+### Added
+- **The card shows what is happening.** Previously an update in progress showed only
+  "STOPPED". Now a hint line appears (⏳ UPDATING, INSTALLING, RESTARTING, STOPPING,
+  DELETING, SETTING UP ASAPI).
+
 ## [Unreleased]
 
 - **Server password survives.** `write_ini()` hard-coded `ServerPassword` to empty on every start, so

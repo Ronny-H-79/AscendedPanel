@@ -1,3 +1,10 @@
+## [0.18] — 2026-11-15
+
+### Neu
+- **Karte zeigt, was gerade läuft.** Bisher stand bei einem laufenden Update nur "AUS".
+  Jetzt erscheint eine Hinweiszeile (⏳ UPDATE LÄUFT, INSTALLATION LÄUFT, NEUSTART LÄUFT,
+  WIRD GESTOPPT, WIRD GELÖSCHT, ASAPI WIRD EINGERICHTET).
+
 ## [Unveröffentlicht]
 
 - **Server-Passwort bleibt erhalten.** `write_ini()` hat `ServerPassword` bei jedem Start fest auf
