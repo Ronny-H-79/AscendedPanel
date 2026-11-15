@@ -304,12 +304,29 @@ def instance_pids(inst: Instance) -> list[int]:
     return pids
 
 
+# Laufende Stop-Vorgaenge: Name -> Startzeit. Die Karte zeigt damit "FAHRT HERUNTER",
+# solange der Prozess noch lebt (sonst stand dort bis zum letzten Moment "LAEUFT").
+STOP_STATE: dict[str, float] = {}
+
+
 def stop(inst: Instance, timeout: int = 45) -> str:
     """Beendet die Instanz und meldet, was passiert ist.
+
+    Setzt waehrend des Vorgangs STOP_STATE, damit die Oberflaeche den Zustand
+    anzeigen kann.
 
     Reihenfolge: SaveWorld -> DoExit -> warten, bis wirklich kein Prozess der
     Instanz mehr laeuft -> SIGTERM an die Gruppe -> SIGKILL auf die Reste.
     """
+    STOP_STATE[inst.name] = time.time()
+    try:
+        return _stop(inst, timeout)
+    finally:
+        STOP_STATE.pop(inst.name, None)
+
+
+def _stop(inst: Instance, timeout: int = 45) -> str:
+    """Arbeitsteil von stop() - ohne Zustandsverwaltung."""
     started = time.time()
     pid = read_pid(inst)
     leftovers = instance_pids(inst)

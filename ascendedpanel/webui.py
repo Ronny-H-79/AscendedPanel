@@ -577,7 +577,7 @@ async function load(){
         // ohne das stand bei einem Update nur "AUS" auf der Karte.
         const a=i.action||'';
         const txt={install:L['status.installing'],update:L['status.updating'],start:L['status.starting'],
-                   restart:L['status.restarting'],stop:L['status.stopping'],delete:L['status.deleting'],
+                   restart:L['status.restarting'],stop:L['status.stopping'],stopping:L['status.stopping'],delete:L['status.deleting'],
                    asaapi:L['status.asaapi']}[a];
         return txt?`<div class="meta" style="color:#e8b84b">\u23f3 ${txt}\u2026</div>`:'';
       })()}
@@ -601,7 +601,7 @@ async function load(){
           // Instanz hochfaehrt) bleibt nur Stop bedienbar - zum Abbrechen.
           // Loeschen laeuft wie Start/Restart/Update: nur Stop bleibt bedienbar
           const startingNow = (a==='start'||a==='restart'||a==='update'||a==='delete') || (i.running && !i.ready);
-          const stoppingNow = (a==='stop');
+          const stoppingNow = (a==='stop'||a==='stopping');
           const off = ' disabled';
           const menu = (dis)=>`<a href="/i/${i.name}?token=${encodeURIComponent(T)}"><button${dis}>${L['common.menu']}</button></a>`;
           const bStart = (dis)=>`<button onclick="act('${i.name}','start')"${dis}>${L['common.start']}</button>`;
@@ -2675,6 +2675,10 @@ class Handler(BaseHTTPRequestHandler):
                     elif (runner.UPDATE_STATE.get("name") == obj.name
                           and runner.UPDATE_STATE.get("running")):
                         row["action"] = "update"
+                    elif obj.name in getattr(runner, "STOP_STATE", {}):
+                        # Server faehrt herunter: Prozess lebt noch, ist aber nicht mehr
+                        # "laeuft" im Sinne der Karte.
+                        row["action"] = "stopping"
                     else:
                         row["action"] = ACTIONS.get(row["name"], "")
                     # AsaApi: installierte Version und Hinweis auf ein neueres Release.

@@ -65,7 +65,7 @@ T: dict[str, dict[str, str]] = {
     "status.updating": {"de": "UPDATE LÄUFT", "en": "UPDATING"},
     "status.installing": {"de": "INSTALLATION LÄUFT", "en": "INSTALLING"},
     "status.restarting": {"de": "NEUSTART LÄUFT", "en": "RESTARTING"},
-    "status.stopping": {"de": "WIRD GESTOPPT", "en": "STOPPING"},
+    "status.stopping": {"de": "FÄHRT HERUNTER", "en": "SHUTTING DOWN"},
     "status.deleting": {"de": "WIRD GELÖSCHT", "en": "DELETING"},
     "status.asaapi": {"de": "ASAPI WIRD EINGERICHTET", "en": "SETTING UP ASAPI"},
     "status.current": {"de": "AKTUELL", "en": "UP TO DATE"},
