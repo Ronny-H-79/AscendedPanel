@@ -1,3 +1,11 @@
+## [0.19] — 2026-11-16
+
+### Changed
+- **Mod descriptions** are translated completely (no 400-character cut, chunked with retry,
+  fallback service on Google rate limits, no English text cached) and wrapped for readability:
+  role sections and long sentences get their own lines. Up to five lines in the result list
+  instead of a hard 90-character cut.
+
 ## [0.18] — 2026-11-15
 
 ### Added

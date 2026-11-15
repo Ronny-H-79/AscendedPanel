@@ -268,6 +268,8 @@ background:linear-gradient(180deg,rgba(6,9,14,.30) 0%,rgba(6,9,14,.62) 45%,rgba(
 border-top:1px solid #16302a;border-bottom:1px solid #16302a}
 #modhits .p{padding:6px 0;border-bottom:1px solid #10201b}
 #modhits .p:last-child{border-bottom:0}
+#modhits .txt small{display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden;white-space:pre-line;line-height:1.35}
+#modhits .mrow{align-items:flex-start}
 .taskrow{display:flex;gap:5px;row-gap:2px;align-items:center;flex-wrap:wrap;padding:2px 0;border-bottom:1px solid #10201b}
 .taskrow select{width:auto;min-width:120px}
 .taskrow select,.taskrow input{width:auto;padding:3px 6px;font-size:12px}
@@ -1912,7 +1914,7 @@ async function searchMods(){
   box.innerHTML=hits.map(m=>`<div class="p"><span class="mrow">
       ${m.thumbnail?`<img class="thumb" src="${m.thumbnail}" alt="" loading="lazy">`:'<div class="thumb"></div>'}
       <span class="txt"><b>${m.title||('Mod '+m.id)}</b>
-      <small>${m.id}${m.downloads?(' · '+m.downloads.toLocaleString('de-DE')+' Downloads'):''}${m.summary?(' · '+m.summary.slice(0,90)):''}</small></span></span>
+      <small>${m.id}${m.downloads?(' · '+m.downloads.toLocaleString('de-DE')+' Downloads'):''}${m.summary?(' · '+m.summary):''}</small></span></span>
       <span class="row"><button class="primary" onclick="addModId('${m.id}')">${L['mods.add_hit']}</button></span></div>`).join('');
 }
 async function addModId(id){
@@ -2459,14 +2461,23 @@ def _uebersetzte_settings(inst) -> list:
 
 
 def _translate_hits(data: dict, field: str, limit: int = 24) -> dict:
-    """Mod-Beschreibungen in der deutschen Oberflaeche uebersetzen (Cache, fehlertolerant)."""
+    """Beschreibungen uebersetzen und lesbar umbrechen (gilt fuer alle Anbieter)."""
+    treffer = data.get("results") or []
     try:
         from . import i18n as _i18n
-        if _i18n.lang() != "de":
-            return data
-        from . import translate
-        translate.translate_items(data.get("results") or [], field, limit=limit)
+        if _i18n.lang() == "de":
+            from . import translate
+            translate.translate_items(treffer, field, limit=limit)
     except Exception:                       # noqa: BLE001 - Suche darf nie scheitern
+        pass
+    # Umbruch nach der Uebersetzung: Rollenangaben und lange Saetze auf eigene Zeilen
+    try:
+        from . import translate as _tr
+        for it in treffer:
+            wert = it.get(field)
+            if isinstance(wert, str) and wert and "\n" not in wert:
+                it[field] = _tr.umbrueche(wert)
+    except Exception:                       # noqa: BLE001
         pass
     return data
 

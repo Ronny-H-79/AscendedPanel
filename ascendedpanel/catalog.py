@@ -17,6 +17,7 @@ R_A = "/Game/PrimalEarth/CoreBlueprints/Resources/%s.%s"
 I_A = "/Game/PrimalEarth/CoreBlueprints/Items/%s.%s"
 M_A = "/Game/PrimalEarth/CoreBlueprints/Weapons/%s.%s"   # Munition liegt unter Weapons/
 ARM = "/Game/PrimalEarth/CoreBlueprints/Items/Armor/%s/%s.%s"
+SAD = "/Game/PrimalEarth/CoreBlueprints/Items/Armor/Saddles/%s.%s"
 
 # (Name, Bezeichnung DE, Kategorie-Vorlage, Zusatz fuer die Vorlage (z.B. Ruestungsset))
 ITEMS: list[tuple[str, str, str, str]] = [
@@ -107,9 +108,44 @@ ITEMS: list[tuple[str, str, str, str]] = [
     ("PrimalItemArmor_HazardSuitPants", "Hazard-Hose", "A", "Hazard"),
     ("PrimalItemArmor_HazardSuitBoots", "Hazard-Stiefel", "A", "Hazard"),
     ("PrimalItemArmor_HazardSuitGloves", "Hazard-Handschuhe", "A", "Hazard"),
+
+    # Saettel (eigene Vorlage: Items/Armor/Saddles/)
+    ("PrimalItemArmor_ArgentavisSaddle", "Argentavis-Sattel", "S", ""),
+    ("PrimalItemArmor_PteroSaddle", "Pteranodon-Sattel", "S", ""),
+    ("PrimalItemArmor_RexSaddle", "Rex-Sattel", "S", ""),
+    ("PrimalItemArmor_RaptorSaddle", "Raptor-Sattel", "S", ""),
+    ("PrimalItemArmor_TrikeSaddle", "Triceratops-Sattel", "S", ""),
+    ("PrimalItemArmor_StegoSaddle", "Stegosaurus-Sattel", "S", ""),
+    ("PrimalItemArmor_SauropodSaddle", "Brontosaurus-Sattel", "S", ""),
+    ("PrimalItemArmor_AnkyloSaddle", "Ankylosaurus-Sattel", "S", ""),
+    ("PrimalItemArmor_DoedSaddle", "Doedicurus-Sattel", "S", ""),
+    ("PrimalItemArmor_MammothSaddle", "Mammut-Sattel", "S", ""),
+    ("PrimalItemArmor_SaberSaddle", "Sabertooth-Sattel", "S", ""),
+    ("PrimalItemArmor_CarnoSaddle", "Carnotaurus-Sattel", "S", ""),
+    ("PrimalItemArmor_SpinoSaddle", "Spinosaurier-Sattel", "S", ""),
+    ("PrimalItemArmor_TherizinosaurusSaddle", "Therizinosaurus-Sattel", "S", ""),
+    ("PrimalItemArmor_AlloSaddle", "Allosaurus-Sattel", "S", ""),
+    ("PrimalItemArmor_YutySaddle", "Yutyrannus-Sattel", "S", ""),
+    ("PrimalItemArmor_GigantSaddle", "Giganotosaurus-Sattel", "S", ""),
+    ("PrimalItemArmor_MegalodonSaddle", "Megalodon-Sattel", "S", ""),
+    ("PrimalItemArmor_MosasaurSaddle", "Mosasaurus-Sattel", "S", ""),
+    ("PrimalItemArmor_TusoteuthisSaddle", "Tusoteuthis-Sattel", "S", ""),
+    ("PrimalItemArmor_BasilosaurusSaddle", "Basilosaurus-Sattel", "S", ""),
+    ("PrimalItemArmor_PlesiosaurSaddle", "Plesiosaurier-Sattel", "S", ""),
+    ("PrimalItemArmor_QuetzSaddle", "Quetzal-Sattel", "S", ""),
+    ("PrimalItemArmor_TapejaraSaddle", "Tapejara-Sattel", "S", ""),
+    ("PrimalItemArmor_ProcoptodonSaddle", "Procoptodon-Sattel", "S", ""),
+    ("PrimalItemArmor_BeaverSaddle", "Castoroides-Sattel", "S", ""),
+    ("PrimalItemArmor_GallimimusSaddle", "Gallimimus-Sattel", "S", ""),
+    ("PrimalItemArmor_BaryonyxSaddle", "Baryonyx-Sattel", "S", ""),
+    ("PrimalItemArmor_SarcoSaddle", "Sarcosuchus-Sattel", "S", ""),
+    ("PrimalItemArmor_ParacerSaddle", "Paraceratherium-Sattel", "S", ""),
+    ("PrimalItemArmor_WoollyRhinoSaddle", "Wollnashorn-Sattel", "S", ""),
+    ("PrimalItemArmor_MegatheriumSaddle", "Megatherium-Sattel", "S", ""),
+    ("PrimalItemArmor_ThylacoleoSaddle", "Thylacoleo-Sattel", "S", ""),
 ]
 
-VORLAGEN = {"W": W_A, "C": C_A, "R": R_A, "I": I_A, "M": M_A, "A": ARM}
+VORLAGEN = {"W": W_A, "C": C_A, "R": R_A, "I": I_A, "M": M_A, "A": ARM, "S": SAD}
 
 
 def blueprint(name: str, art: str, extra: str) -> str:

@@ -1,3 +1,12 @@
+## [0.19] — 2026-11-16
+
+### Geändert
+- **Mod-Beschreibungen** werden vollständig übersetzt (kein Abschneiden bei 400 Zeichen mehr,
+  Stücke mit Wiederholung, Ausweichdienst bei Google-Rate-Limit, keine englischen Texte mehr im
+  Cache) und lesbar umbrochen: Rollenangaben („Primary roles", „Hauptfunktionen", „Hauptaufgaben")
+  und lange Sätze auf eigenen Zeilen. In der Trefferliste bis zu fünf Zeilen statt hartem
+  Schnitt bei 90 Zeichen.
+
 ## [0.18] — 2026-11-15
 
 ### Neu
