@@ -1885,7 +1885,7 @@ function suggestMods(){
         <span class="mrow">
           ${m.thumbnail?`<img class="thumb" src="${m.thumbnail}" alt="" loading="lazy">`:'<div class="thumb"></div>'}
           <span class="txt"><b>${m.title||('Mod '+m.id)}</b>
-          <small>${m.id}${m.downloads?(' · '+m.downloads.toLocaleString('de-DE')):''}${m.summary?(' · '+m.summary.slice(0,80)):''}</small></span>
+          <small>${m.id}${m.downloads?(' · '+m.downloads.toLocaleString('de-DE')):''}${m.summary?(' · '+m.summary):''}</small></span>
         </span>
         <span class="row"><span class="badge">+</span></span></div>`).join('');
   }, 350);
