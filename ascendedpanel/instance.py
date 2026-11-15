@@ -29,6 +29,7 @@ class Instance:
     extra_args: str = ""
     max_players: int = 20
     admin_password: str = ""
+    server_password: str = ""        # Beitrittspasswort (ServerPassword)
     restart_times: list[str] = field(default_factory=list)
     # Zeitplan-Aufgaben: {"id","action","time":"HH:MM","days":[1..7] (leer = taeglich),"arg","on"}
     tasks: list[dict] = field(default_factory=list)
@@ -121,7 +122,7 @@ class Instance:
                 "RCONEnabled": "True",
                 "RCONPort": str(self.rcon_port),
                 "ServerAdminPassword": self.admin_pw,
-                "ServerPassword": "",
+                "ServerPassword": self.server_password,
                 "MaxPlayers": str(self.max_players),
                 "ServerPVE": "True",
                 "DifficultyOffset": "1.0",
@@ -205,6 +206,8 @@ class Instance:
         # ServerAdminPassword MUSS die letzte ?-Option sein, sonst schluckt sie den Rest.
         url = "%s?listen?Port=%d?QueryPort=%d?RCONEnabled=True?RCONServerGameLogBuffer=600?RCONPort=%d" % (
             self.map, self.port, self.query_port, self.rcon_port)
+        if self.server_password:
+            url += "?ServerPassword=" + self.server_password
         if self.admin_pw:
             url += "?ServerAdminPassword=" + self.admin_pw
         argv = [

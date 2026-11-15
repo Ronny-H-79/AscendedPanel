@@ -1,5 +1,14 @@
 ## [Unveröffentlicht]
 
+- **Server-Passwort bleibt erhalten.** `write_ini()` hat `ServerPassword` bei jedem Start fest auf
+  leer gesetzt; ein eingetragenes Beitrittspasswort war damit nach dem nächsten Start weg. Jetzt
+  steht es in der Instanz, wandert in die INI und als `?ServerPassword=` in die Startzeile
+  (Admin-Passwort bleibt die letzte Option, sonst schluckt sie den Rest).
+- **Munition im Gegenstands-Dialog.** Alle Munitionseinträge zeigten auf `Items/…`, die Assets
+  liegen aber unter `Weapons/…` — Geben scheiterte stillschweigend. Pfade korrigiert, fehlende
+  Munition ergänzt (u.a. Einfache Gewehrmunition). Beschriftung berichtigt: `OneShotRifle` ist das
+  Longneck-Gewehr, die Schrotflinte (`PrimalItem_WeaponShotgun`) fehlte ganz.
+
 ### Geändert
 - **Kein zusätzliches Fenster mehr beim Anlegen und Installieren.** Bisher öffnete das Panel für die
   neue Instanz ein eigenes Fenster mit der Einrichtungsseite. Jetzt bleibt das Anlegen in der

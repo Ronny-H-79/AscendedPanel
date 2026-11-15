@@ -1,5 +1,14 @@
 ## [Unreleased]
 
+- **Server password survives.** `write_ini()` hard-coded `ServerPassword` to empty on every start, so
+  a configured join password was gone after the next start. It now lives in the instance, is written
+  to the INI and passed as `?ServerPassword=` on the command line (admin password stays the last
+  option, otherwise it swallows the rest).
+- **Ammo in the item dialog.** All ammo entries pointed at `Items/…` while the assets live under
+  `Weapons/…` — giving failed silently. Paths corrected, missing ammo added (simple rifle ammo
+  among them). Label fixed: `OneShotRifle` is the longneck rifle, the shotgun
+  (`PrimalItem_WeaponShotgun`) was missing entirely.
+
 ### Changed
 - **No extra window when creating or installing.** The panel used to open a separate window with the
   setup page for the new instance. Creating now stays on the overview (the new card appears there),

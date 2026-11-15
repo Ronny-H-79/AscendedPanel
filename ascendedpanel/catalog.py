@@ -15,6 +15,7 @@ W_A = "/Game/PrimalEarth/CoreBlueprints/Weapons/%s.%s"
 C_A = "/Game/PrimalEarth/CoreBlueprints/Items/Consumables/%s.%s"
 R_A = "/Game/PrimalEarth/CoreBlueprints/Resources/%s.%s"
 I_A = "/Game/PrimalEarth/CoreBlueprints/Items/%s.%s"
+M_A = "/Game/PrimalEarth/CoreBlueprints/Weapons/%s.%s"   # Munition liegt unter Weapons/
 ARM = "/Game/PrimalEarth/CoreBlueprints/Items/Armor/%s/%s.%s"
 
 # (Name, Bezeichnung DE, Kategorie-Vorlage, Zusatz fuer die Vorlage (z.B. Ruestungsset))
@@ -30,7 +31,9 @@ ITEMS: list[tuple[str, str, str, str]] = [
     ("PrimalItem_WeaponCrossbow", "Armbrust", "W", ""),
     ("PrimalItem_WeaponBow", "Bogen", "W", ""),
     ("PrimalItem_WeaponLongneckRifle", "Longneck-Gewehr", "W", ""),
-    ("PrimalItem_WeaponOneShotRifle", "Schrotflinte", "W", ""),
+    ("PrimalItem_WeaponOneShotRifle", "Gewehr (Longneck)", "W", ""),
+    ("PrimalItem_WeaponShotgun", "Schrotflinte", "W", ""),
+    ("PrimalItem_WeaponMachinedShotgun", "Pump-Action-Schrotflinte", "W", ""),
     ("PrimalItem_WeaponMachinedPistol", "Pistole", "W", ""),
     ("PrimalItem_WeaponMachinedSniper", "Scharfschuetzengewehr", "W", ""),
     ("PrimalItem_WeaponRocketLauncher", "Raketenwerfer", "W", ""),
@@ -39,13 +42,16 @@ ITEMS: list[tuple[str, str, str, str]] = [
     ("PrimalItem_WeaponTorch", "Fackel", "W", ""),
     ("PrimalItem_WeaponSpyglass", "Fernglas", "W", ""),
     # Munition
-    ("PrimalItemAmmo_ArrowStone", "Steinpfeile", "I", ""),
-    ("PrimalItemAmmo_ArrowFlame", "Feuerpfeile", "I", ""),
-    ("PrimalItemAmmo_ArrowTranq", "Tranqpfeile", "I", ""),
-    ("PrimalItemAmmo_AdvancedBullet", "Gewehrmunition", "I", ""),
-    ("PrimalItemAmmo_SimpleBullet", "Pistolenmunition", "I", ""),
-    ("PrimalItemAmmo_SimpleShotgunBullet", "Schrotmunition", "I", ""),
-    ("PrimalItemAmmo_Rocket", "Rakete", "I", ""),
+    ("PrimalItemAmmo_ArrowStone", "Steinpfeile", "M", ""),
+    ("PrimalItemAmmo_ArrowFlame", "Feuerpfeile", "M", ""),
+    ("PrimalItemAmmo_ArrowTranq", "Tranqpfeile", "M", ""),
+    ("PrimalItemAmmo_SimpleBullet", "Pistolenmunition", "M", ""),
+    ("PrimalItemAmmo_SimpleRifleBullet", "Einfache Gewehrmunition", "M", ""),
+    ("PrimalItemAmmo_SimpleShotgunBullet", "Schrotmunition", "M", ""),
+    ("PrimalItemAmmo_AdvancedBullet", "Advanced-Munition", "M", ""),
+    ("PrimalItemAmmo_AdvancedRifleBullet", "Advanced-Gewehrmunition", "M", ""),
+    ("PrimalItemAmmo_AdvancedSniperBullet", "Scharfschuetzen-Munition", "M", ""),
+    ("PrimalItemAmmo_Rocket", "Rakete", "M", ""),
     # Verbrauch
     ("PrimalItemConsumable_Narcotic", "Narkotika", "C", ""),
     ("PrimalItemConsumable_Stimulant", "Stimulans", "C", ""),
@@ -103,7 +109,7 @@ ITEMS: list[tuple[str, str, str, str]] = [
     ("PrimalItemArmor_HazardSuitGloves", "Hazard-Handschuhe", "A", "Hazard"),
 ]
 
-VORLAGEN = {"W": W_A, "C": C_A, "R": R_A, "I": I_A, "A": ARM}
+VORLAGEN = {"W": W_A, "C": C_A, "R": R_A, "I": I_A, "M": M_A, "A": ARM}
 
 
 def blueprint(name: str, art: str, extra: str) -> str:

@@ -141,6 +141,23 @@ def _sync_admin_pw(inst: Instance, which: str) -> None:
     registry.save(inst)
 
 
+def _sync_server_pw(inst: Instance, which: str) -> None:
+    """ServerPassword aus der GameUserSettings.ini in die Instanz uebernehmen.
+
+    `Instance.write_ini()` schreibt das Beitrittspasswort aus der Instanz in die INI. Wird es
+    nur in der INI gesetzt (Einstellungsseite, Datei-Editor), waere es beim naechsten Start
+    wieder weg - deshalb wandert es hier in die Instanz.
+    """
+    if which != "gus":
+        return
+    value = _parse_ini(read(inst, "gus")).get(("serversettings", "serverpassword"), "").strip()
+    if value == inst.server_password:
+        return
+    inst.server_password = value
+    from . import registry
+    registry.save(inst)
+
+
 def _sync_gus_values(inst: Instance, which: str) -> None:
     """SessionName und MaxPlayers aus der GameUserSettings.ini in die Instanz uebernehmen.
 
@@ -178,6 +195,7 @@ def write(inst: Instance, which: str, text: str) -> str:
     with open(path, "w", encoding="utf-8") as fh:
         fh.write(text)
     _sync_admin_pw(inst, which)
+    _sync_server_pw(inst, which)
     _sync_gus_values(inst, which)
     return backup
 
@@ -308,4 +326,5 @@ def set_value(inst: Instance, which: str, section: str, key: str, value: str) ->
     with open(path, "w", encoding="utf-8") as fh:
         fh.write("\n".join(lines) + "\n")
     _sync_admin_pw(inst, which)
+    _sync_server_pw(inst, which)
     _sync_gus_values(inst, which)
