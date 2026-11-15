@@ -260,7 +260,7 @@ def translate_items(items: list[dict], field: str, limit: int = 12) -> list[dict
             it[field] = neu
     return items
 
-ROLLEN = re.compile(r"\s+(Primary roles|Secondary roles|Hauptfunktionen|Hauptaufgaben|"
+ROLLEN = re.compile(r"\s+(Primary roles|Secondary roles|Hauptrollen|Nebenrollen|Hauptfunktionen|Hauptaufgaben|"
                     r"Prim(?:ä|ae)re (?:Funktionen|Aufgaben)|Nebenfunktionen|Nebenaufgaben|"
                     r"Roles)\s*:", re.I)
 
