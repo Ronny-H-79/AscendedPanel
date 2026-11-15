@@ -1,3 +1,16 @@
+## [0.21] — 2026-11-16
+
+### Neu
+- **Statusabzeichen zeigen den laufenden Vorgang.** Auf Karte und Detailseite steht beim
+  Herunterfahren „FÄHRT HERUNTER" (gelb) statt bis zuletzt „LÄUFT"; ebenso INSTALLATION LÄUFT und
+  UPDATE LÄUFT.
+
+## [0.20] — 2026-11-16
+
+### Neu
+- **Stop-Vorgang ist sichtbar.** `runner.stop()` meldet den Zustand an die Oberfläche, damit die
+  Karte während des Herunterfahrens einen Hinweis zeigt und die Knöpfe gesperrt bleiben.
+
 ## [0.19] — 2026-11-16
 
 ### Geändert
