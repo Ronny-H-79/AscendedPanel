@@ -570,7 +570,7 @@ async function load(){
       <div class="cardgrid"><div class="cardmain">
       <div class="row" style="justify-content:space-between">
         <h3>${i.name}</h3>
-        <span class="badge ${i.running?(i.ready?'on':'warn'):'off'}">${i.running?(i.ready?L['status.running']:L['status.starting']):L['status.off']}</span>
+        <span class="badge ${['stop','stopping','install','update'].includes(i.action)?'warn':(i.running?(i.ready?'on':'warn'):'off')}">${['stop','stopping','install','update'].includes(i.action)?({stop:L['status.stopping'],stopping:L['status.stopping'],install:L['status.installing'],update:L['status.updating']}[i.action]):(i.running?(i.ready?L['status.running']:L['status.starting']):L['status.off'])}</span>
       </div>
       ${(()=>{
         // Laufende Aktion als Hinweiszeile (Update, Installation, Neustart ...):
@@ -1420,8 +1420,14 @@ async function refresh(){
   if(window.__pressed){ setTimeout(refresh, 400); return; }   // Klick laeuft noch
   try{
     const s=JSON.parse(await api('/api/status'));
-    const st=document.getElementById('st'); st.textContent=s.running?L['status.running']:L['status.off'];
-    st.className='badge '+(s.running?'on':'off');
+    const act=s.action||'';
+    const aktionText={install:L['status.installing'],update:L['status.updating'],
+                      start:L['status.starting'],restart:L['status.restarting'],
+                      stop:L['status.stopping'],stopping:L['status.stopping'],
+                      delete:L['status.deleting']}[act];
+    const st=document.getElementById('st');
+    st.textContent=aktionText?aktionText:(s.running?L['status.running']:L['status.off']);
+    st.className='badge '+(aktionText?'warn':(s.running?'on':'off'));
     const rd=document.getElementById('rd'); rd.textContent=s.ready?L['status.ready']:L['status.starting'];
     rd.className='badge '+(s.ready?'on':'');
     const infoEl=document.getElementById('info');
@@ -2764,7 +2770,19 @@ class Handler(BaseHTTPRequestHandler):
             return
 
         if path == "/api/status":
-            self._json(runner.status(inst))
+            _st = runner.status(inst)
+            # Laufende Aktion mitschicken: die Detailseite zeigte beim Herunterfahren
+            # bis zuletzt "LAEUFT" und gar keinen Hinweis.
+            if inst.name in getattr(runner, "STOP_STATE", {}):
+                _st["action"] = "stopping"
+            elif inst.name in INSTALLS:
+                _st["action"] = "install"
+            elif (runner.UPDATE_STATE.get("name") == inst.name
+                  and runner.UPDATE_STATE.get("running")):
+                _st["action"] = "update"
+            else:
+                _st["action"] = ACTIONS.get(inst.name, "")
+            self._json(_st)
         elif path == "/api/logs":
             self._send(200, "\n".join(runner.tail(inst.log_path, int(q.get("n", ["30"])[0]))).encode())
         elif path == "/api/console":
