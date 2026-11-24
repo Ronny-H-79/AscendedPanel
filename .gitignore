@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+noah/.build
+*.bak-*
+ascendedpanel/.build
