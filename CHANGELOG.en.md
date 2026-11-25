@@ -1,3 +1,8 @@
+## [0.40] - 2026-11-24
+
+- File editor: long lines are no longer wrapped but scroll sideways. The Bjarnheim ini has a single
+  line of 13,896 characters that used to wrap across the screen.
+
 ## [0.39] - 2026-11-24
 
 - Tests instead of "works on my machine". 27 checks using the standard library (`tests/`): ini

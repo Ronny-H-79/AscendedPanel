@@ -1,3 +1,9 @@
+## [0.40] - 2026-11-24
+
+- Dateien im Editor: lange Zeilen werden nicht mehr umbrochen, sondern seitlich gescrollt. Die
+  Ini unter Bjarnheim hat eine Zeile mit 13.896 Zeichen, die bisher über den halben Bildschirm
+  umgebrochen wurde.
+
 ## [0.39] - 2026-11-24
 
 - Tests statt „läuft bei mir". 27 Prüfungen mit der Standardbibliothek (`tests/`): Ini-Behandlung
