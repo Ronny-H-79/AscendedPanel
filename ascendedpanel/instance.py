@@ -119,6 +119,9 @@ class Instance:
     webhook_url: str = ""
     headless: bool = True
     asaapi: bool = False                 # True = Start ueber ArkApi/AsaApiLoader.exe (Plugins im Spiel)
+    # Gesetzt, wenn der Loader nach einem ARK-Update nicht mehr passt: Server startet dann ohne
+    # Plugins, statt gar nicht. Wird ueber die Oberflaeche wieder zurueckgenommen.
+    asaapi_fallback: bool = False
 
     cluster_id: str = ""                 # leer = Name der Instanz
     cluster_dir: str = ""                # leer = <instanz>/clusters (gemeinsam nutzbar)
@@ -133,7 +136,8 @@ class Instance:
     @property
     def exe(self) -> str:
         """Startdatei: normaler Server, mit asaapi der ArkApi-Lader (Plugins im Spiel)."""
-        if getattr(self, "asaapi", False) and os.path.exists(self.loader_exe):
+        if (getattr(self, "asaapi", False) and not getattr(self, "asaapi_fallback", False)
+                and os.path.exists(self.loader_exe)):
             return self.loader_exe
         return self.server_exe
 
