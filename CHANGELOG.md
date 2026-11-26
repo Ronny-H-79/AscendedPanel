@@ -1,3 +1,9 @@
+## [0.43] - 2026-11-26
+
+- Zeilennummern in der Datei-Ansicht: links am Rand, mitlaufend beim Scrollen und Tippen. Gilt im
+  Editor des Instanz-Reiters und in der Vollansicht. Zeilenumbrueche sind dort abgeschaltet, damit
+  Nummer und Zeile exakt auf einer Hoehe stehen.
+
 ## [0.42] - 2026-11-25
 
 - Neuer Schalter unter Mods: startet den Server ohne AsaApi, wenn der Loader nach einem ARK-Update

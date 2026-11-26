@@ -1,3 +1,9 @@
+## [0.43] - 2026-11-26
+
+- Line numbers in the file view: on the left margin, following scroll and typing. Applies to the
+  editor in the instance tab and to the full-screen view. Line wrapping is off there so numbers and
+  lines stay exactly aligned.
+
 ## [0.42] - 2026-11-25
 
 - New switch under Mods: start the server without AsaApi when the loader does not match after an
